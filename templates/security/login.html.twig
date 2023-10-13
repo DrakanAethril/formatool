@@ -18,7 +18,7 @@
                         {% endif %}
 
                         {% if app.user %}
-                            <div class="mb-3">
+                            <div class="mb-3 alert alert-infos">
                                 You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
                             </div>
                         {% endif %}
@@ -51,9 +51,11 @@
                     </form>
                 </div>
               </div>
+            {# 
               <div class="text-center text-secondary mt-3">
-                Don't have account yet? <a href="./sign-up.html" tabindex="-1">Sign up</a>
+                Don't have account yet? <a href="" tabindex="-1">Sign up</a>
               </div>
+            #}
             </div>
           </div>
           <div class="col-lg d-none d-lg-block">
