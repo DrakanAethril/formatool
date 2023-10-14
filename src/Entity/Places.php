@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PlacesRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,6 +23,14 @@ class Places
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $inactive = null;
+
+    #[ORM\OneToMany(mappedBy: 'place', targetEntity: Trainings::class)]
+    private Collection $trainings;
+
+    public function __construct()
+    {
+        $this->trainings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -49,5 +59,39 @@ class Places
         $this->inactive = $inactive;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Trainings>
+     */
+    public function getTrainings(): Collection
+    {
+        return $this->trainings;
+    }
+
+    public function addTraining(Trainings $training): static
+    {
+        if (!$this->trainings->contains($training)) {
+            $this->trainings->add($training);
+            $training->setPlace($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTraining(Trainings $training): static
+    {
+        if ($this->trainings->removeElement($training)) {
+            // set the owning side to null (unless already changed)
+            if ($training->getPlace() === $this) {
+                $training->setPlace(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString() : string {
+        return $this->getName();
     }
 }
