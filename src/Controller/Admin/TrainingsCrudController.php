@@ -22,6 +22,8 @@ class TrainingsCrudController extends AbstractCrudController
             TextField::new('level'),
             DateTimeField::new('inactive'),
             AssociationField::new('place')
+                ->setFormTypeOption('by_reference', false)
+                ->autocomplete()
         ];
     }
     
