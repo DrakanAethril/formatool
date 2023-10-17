@@ -31,8 +31,15 @@ class Trainings
     #[ORM\JoinColumn(nullable: false)]
     private ?Places $place = null;
 
+    #[ORM\OneToMany(mappedBy: 'trainings', targetEntity: TopicsTrainings::class)]
+    private Collection $trainings;
+
+    #[ORM\ManyToOne(inversedBy: 'ownedTrainings')]
+    private ?Users $owner = null;
+
     public function __construct()
     {
+        $this->trainings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -90,5 +97,47 @@ class Trainings
 
     public function __toString() : string {
         return $this->getTitle();
+    }
+
+    /**
+     * @return Collection<int, TopicsTrainings>
+     */
+    public function getTrainings(): Collection
+    {
+        return $this->trainings;
+    }
+
+    public function addTraining(TopicsTrainings $training): static
+    {
+        if (!$this->trainings->contains($training)) {
+            $this->trainings->add($training);
+            $training->setTrainings($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTraining(TopicsTrainings $training): static
+    {
+        if ($this->trainings->removeElement($training)) {
+            // set the owning side to null (unless already changed)
+            if ($training->getTrainings() === $this) {
+                $training->setTrainings(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getOwner(): ?Users
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?Users $owner): static
+    {
+        $this->owner = $owner;
+
+        return $this;
     }
 }

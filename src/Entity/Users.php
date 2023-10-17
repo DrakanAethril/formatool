@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UsersRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -36,6 +38,14 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $deleted = null;
+
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Trainings::class)]
+    private Collection $ownedTrainings;
+
+    public function __construct()
+    {
+        $this->ownedTrainings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -139,6 +149,44 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDeleted(?\DateTimeInterface $deleted): static
     {
         $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    public function getDisplayName() : ?string {
+        return $this->getFirstname()." ".$this->getLastName();
+    }
+
+    public function __toString() : string {
+        return $this->getDisplayName();
+    }
+
+    /**
+     * @return Collection<int, Trainings>
+     */
+    public function getOwnedTrainings(): Collection
+    {
+        return $this->ownedTrainings;
+    }
+
+    public function addOwnedTraining(Trainings $ownedTraining): static
+    {
+        if (!$this->ownedTrainings->contains($ownedTraining)) {
+            $this->ownedTrainings->add($ownedTraining);
+            $ownedTraining->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOwnedTraining(Trainings $ownedTraining): static
+    {
+        if ($this->ownedTrainings->removeElement($ownedTraining)) {
+            // set the owning side to null (unless already changed)
+            if ($ownedTraining->getOwner() === $this) {
+                $ownedTraining->setOwner(null);
+            }
+        }
 
         return $this;
     }

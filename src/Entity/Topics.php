@@ -24,8 +24,12 @@ class Topics
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $inactive = null;
 
+    #[ORM\OneToMany(mappedBy: 'topics', targetEntity: TopicsTrainings::class)]
+    private Collection $trainings;
+
     public function __construct()
     {
+        $this->trainings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -59,5 +63,35 @@ class Topics
 
     public function __toString() : string {
         return $this->getName();
+    }
+
+    /**
+     * @return Collection<int, TopicsTrainings>
+     */
+    public function getTrainings(): Collection
+    {
+        return $this->trainings;
+    }
+
+    public function addTraining(TopicsTrainings $training): static
+    {
+        if (!$this->trainings->contains($training)) {
+            $this->trainings->add($training);
+            $training->setTopics($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTraining(TopicsTrainings $training): static
+    {
+        if ($this->trainings->removeElement($training)) {
+            // set the owning side to null (unless already changed)
+            if ($training->getTopics() === $this) {
+                $training->setTopics(null);
+            }
+        }
+
+        return $this;
     }
 }
