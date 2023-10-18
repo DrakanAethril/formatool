@@ -16,4 +16,12 @@ class TrainingsController extends AbstractController
             'training' => $training,
         ]);
     }
+
+    #[Route('/training/{id}/topic/add', name: 'training_add_topic')]
+    public function addTopic(Trainings $training): Response
+    {
+        return $this->render('trainings/add_topic.html.twig', [
+            'training' => $training,
+        ]);
+    }
 }
