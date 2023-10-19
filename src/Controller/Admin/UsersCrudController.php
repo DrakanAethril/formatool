@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 
 class UsersCrudController extends AbstractCrudController
@@ -25,6 +26,7 @@ class UsersCrudController extends AbstractCrudController
             TextField::new('firstname'),
             TextField::new('lastname'),
             ArrayField::new('roles'),
+            BooleanField::new('is_verified'),
             DateTimeField::new('deleted'),
         ];
     }

@@ -3,5 +3,69 @@
 {% block title %}Formation : {{training.title}} - Ajouter une matière{% endblock %}
 
 {% block body %}
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                        {{ training.title}}
+                    </div>
+                    <h2 class="page-title">
+                        Ajout de matière
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-md-6">
+                    {{ form_errors(topicForm) }}
 
+                    {{ form_start(topicForm, { 'attr' : { 'class': 'card' } } ) }}
+                        <div class="card-body">
+                            <div class="mb-3">
+                                {{ form_label(topicForm.topics, 'Matière', {'label_attr': {'class': 'form-label required'}}) }}
+                                <div>
+                                    {{ form_widget(topicForm.topics, {'attr': {'class': 'form-select'}}) }}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(topicForm.cm, 'CM', {'label_attr': {'class': 'form-label required'}}) }}
+                                <div>
+                                    {{ form_widget(topicForm.cm, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                 {{ form_label(topicForm.td, 'TD', {'label_attr': {'class': 'form-label required'}}) }}
+                                <div>
+                                    {{ form_widget(topicForm.td, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(topicForm.tp, 'TP', {'label_attr': {'class': 'form-label required'}}) }}
+                                <div>
+                                    {{ form_widget(topicForm.tp, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                {{ form_label(topicForm.topicsTrainingsLabels, 'Label', {'label_attr': {'class': 'form-label'}}) }}
+                                <div>
+                                    {{ form_widget(topicForm.topicsTrainingsLabels, {
+                                            'attr' : {'class' : 'form-select'}
+                                        }) }}
+                                </div>
+                            </div>                                
+                        </div>
+                        <div class="card-footer text-end">
+                            <button type="submit" class="btn btn-primary ms-auto">Ajouter</button>
+                        </div>
+                        
+                    {{ form_end(topicForm) }}
+                </div>
+            </div>
+        </div>
+        
+    </div>
 {% endblock %}

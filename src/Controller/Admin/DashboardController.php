@@ -12,6 +12,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Places;
 use App\Entity\Trainings;
 use App\Entity\Topics;
+use App\Entity\TopicsTrainings;
+use App\Entity\TopicsTrainingsLabel;
 use App\Entity\Users;
 
 
@@ -43,10 +45,12 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToUrl('Website', 'fa fa-home', 'dashboard');
         yield MenuItem::linkToCrud('Places', 'fas fa-school', Places::class);
         yield MenuItem::linkToCrud('Trainings', 'fas fa-certificate', Trainings::class);
         yield MenuItem::linkToCrud('Topics', 'fas fa-chalkboard-user', Topics::class);
         yield MenuItem::linkToCrud('Users', 'fas fa-users', Users::class);
+        yield MenuItem::linkToCrud('Topics by Trainings', 'fas fa-chalkboard-user', TopicsTrainings::class);
+        yield MenuItem::linkToCrud('Labels', 'fas fa-tag', TopicsTrainingsLabel::class);
     }
 }

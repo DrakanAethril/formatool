@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Topics;
 use App\Entity\TopicsTrainings;
+use App\Entity\TopicsTrainingsLabel;
 use App\Entity\Trainings;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -21,6 +22,12 @@ class TopicsTrainingsType extends AbstractType
                         'class' => Topics::class
                     ]
                 )
+            ->add('topicsTrainingsLabels', EntityType::class,
+                [
+                    'class' => TopicsTrainingsLabel::class,
+                    'multiple' => true
+                ]
+            )   
             ->add('cm', IntegerType::class)
             ->add('td', IntegerType::class)
             ->add('tp', IntegerType::class)

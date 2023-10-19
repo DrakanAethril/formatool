@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\TopicsTrainingsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TopicsTrainingsRepository::class)]
@@ -31,6 +33,14 @@ class TopicsTrainings
     #[ORM\ManyToOne(inversedBy: 'trainings')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Trainings $trainings = null;
+
+    #[ORM\ManyToMany(targetEntity: TopicsTrainingsLabel::class, mappedBy: 'topicsTrainings')]
+    private Collection $topicsTrainingsLabels;
+
+    public function __construct()
+    {
+        $this->topicsTrainingsLabels = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -93,6 +103,37 @@ class TopicsTrainings
     public function setTrainings(?Trainings $trainings): static
     {
         $this->trainings = $trainings;
+
+        return $this;
+    }
+
+    public function getTotalVolume() : int {
+        return intval($this->getCm()+ $this->getTd() + $this->getTp());
+    }
+
+    /**
+     * @return Collection<int, TopicsTrainingsLabel>
+     */
+    public function getTopicsTrainingsLabels(): Collection
+    {
+        return $this->topicsTrainingsLabels;
+    }
+
+    public function addTopicsTrainingsLabel(TopicsTrainingsLabel $topicsTrainingsLabel): static
+    {
+        if (!$this->topicsTrainingsLabels->contains($topicsTrainingsLabel)) {
+            $this->topicsTrainingsLabels->add($topicsTrainingsLabel);
+            $topicsTrainingsLabel->addTopicsTraining($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTopicsTrainingsLabel(TopicsTrainingsLabel $topicsTrainingsLabel): static
+    {
+        if ($this->topicsTrainingsLabels->removeElement($topicsTrainingsLabel)) {
+            $topicsTrainingsLabel->removeTopicsTraining($this);
+        }
 
         return $this;
     }

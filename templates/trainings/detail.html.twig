@@ -8,6 +8,57 @@
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
+                    <h2 class="page-title">
+                        {{training.title}}
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="subheader">Nb Etudiants</div>
+                            <div class="h3 m-0">{{nbStudents}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="subheader">Volume Ens. Général</div>
+                            <div class="h3 m-0">{{volGen}}H</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="subheader">Volume Ens. Technique</div>
+                            <div class="h3 m-0">{{volTech}}H</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="subheader">Volume Projet</div>
+                            <div class="h3 m-0">{{volProjet}}H</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                    
+
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
                     <div class="page-pretitle">
                         {{training.title}}
                     </div>
@@ -17,11 +68,11 @@
                 </div>
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
-                        <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">
+                        <a href="{{path('training_add_topic', {'id': training.id})}}" class="btn btn-primary d-none d-sm-inline-block">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                             Nouvelle Matière
                         </a>
-                        <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                        <a href="{{path('training_add_topic', {'id': training.id})}}" class="btn btn-primary d-sm-none btn-icon" aria-label="Ajouter une matière">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                         </a>
                     </div>
@@ -42,28 +93,38 @@
                                         <th>CM</th>
                                         <th>TD</th>
                                         <th>TP</th>
-                                        <th></th>
+                                        <th>Volume Total</th>
+                                        <th>Label</th>
+                                        <th class="w-1"></th>   
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for topic in training.trainings %}
                                         <tr>
                                             <td>
-                                                <a href="" class="text-reset" tabindex="-1">
-                                                    {{topic.title}}
-                                                </a>
+                                                {{topic.topics.name}}
                                             </td>
-                                            <td>
+                                            <td class="">
                                                 {{topic.cm}}
                                             </td>
-                                            <td>
+                                            <td class="">
                                                 {{topic.td}}
                                             </td>
-                                            <td>
+                                            <td class="">
                                                 {{topic.tp}}
                                             </td>
+                                            <td class="">
+                                                {{topic.totalVolume}}
+                                            </td>
+                                            <td>
+                                                 {{topic.topicsTrainingsLabels|join(', ')}}
+                                            </td>
                                             <td class="text-end">
-                                                
+                                                <div class="btn-list flex-nowrap">
+                                                    <a href="{{path('training_remove_topic', {'id':topic.id})}}" class="btn btn-danger">
+                                                        Supprimer
+                                                    </a>
+                                                </div>
                                             </td>
                                         </tr>
                                     {%endfor%}
