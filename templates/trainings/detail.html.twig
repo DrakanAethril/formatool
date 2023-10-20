@@ -3,7 +3,6 @@
 {% block title %}Formation : {{training.title}}{% endblock %}
 
 {% block body %}
-
     <div class="page-header d-print-none">
         <div class="container-xl">
             <div class="row g-2 align-items-center">
@@ -86,7 +85,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="table-responsive">
-                            <table class="table card-table table-vcenter text-nowrap datatable">
+                            <table class="table card-table table-vcenter text-nowrap datatable" id="topics-table">
                                 <thead>
                                     <tr>
                                         <th>Nom</th>
@@ -136,6 +135,21 @@
             </div>
         </div>
     </div>
-  
 
+{% endblock %}
+{% block javascripts_bottom %}
+    <script>
+            $('#topics-table').dataTable( {
+                "pageLength": 50,
+                "order": [[0, 'asc']],
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                },
+                'columnDefs': [ {
+                    'targets': [6], /* column index */
+                    'orderable': false, /* true or false */
+                }],
+                "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>'
+            } );
+    </script>
 {% endblock %}

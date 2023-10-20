@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>{% block title %}Welcome!{% endblock %}</title>
 
+    <link href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
+
     <link href="{{ asset('assets/css/tabler.min.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/tabler-flags.min.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/tabler-payments.min.css') }}" rel="stylesheet"/>
@@ -30,5 +32,12 @@
         </div>
      </div>
     <script src="{{ asset('assets/js/tabler.min.js') }}" defer></script>
+    <script
+        src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous">
+    </script>
+    <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"> </script>
+    {% block javascripts_bottom %}{% endblock %}
     </body>
 </html>

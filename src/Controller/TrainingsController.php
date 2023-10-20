@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+//#[Route('/manager')]
+
 class TrainingsController extends AbstractController
 {
     #[Route('/training/{id}', name: 'training_detail')]

@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes informations{% endblock %}
+
+{% block body %}
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <h2 class="page-title">
+                  Mes informations
+                </h2>
+              </div>
+            </div>
+          </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+        <div class="card">
+            <div class="row g-0">
+            <div class="col-12 col-md-3 border-end">
+                {% include('profile/leftmenu.html.twig') %}
+            </div>
+            <div class="col-12 col-md-9 d-flex flex-column">
+                {% include('profile/maincontent.html.twig') %}
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}
