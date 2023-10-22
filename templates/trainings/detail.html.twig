@@ -85,7 +85,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="table-responsive">
-                            <table class="table card-table table-vcenter text-nowrap datatable" id="topics-table">
+                            <table class="table card-table table-vcenter text-nowrap datatable" id="topics-table" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>Nom</th>
@@ -124,10 +124,10 @@
                                             </td>
                                             <td class="text-end">
                                                 <div class="btn-list flex-nowrap">
-                                                    <a href="{{path('training_add_topic', {'id':training.id, 'tt':topic.id})}}" class="btn btn-secondary">
+                                                    <a href="{{path('training_add_topic', {'id':training.id, 'tt':topic.id})}}" class="btn btn-ghost-info">
                                                         Modifier
                                                     </a>
-                                                    <a href="{{path('training_remove_topic', {'id':topic.id})}}" class="btn btn-danger">
+                                                    <a href="{{path('training_remove_topic', {'id':topic.id})}}" class="btn btn-ghost-danger">
                                                         Supprimer
                                                     </a>
                                                 </div>
@@ -146,18 +146,70 @@
 {% endblock %}
 {% block javascripts_bottom %}
     <script>
+            function addCell(tr, content, colSpan = 1) {
+                let td = document.createElement('td');
+            
+                td.colSpan = colSpan;
+                td.textContent = content;
+            
+                tr.appendChild(td);
+            }
             $('#topics-table').dataTable( {
                 "pageLength": 50,
-                "order": [[0, 'asc']],
+                "order": [[5, 'asc'],[0, 'asc']],
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
                 },
-                'columnDefs': [ {
-                    'targets': [7], /* column index */
-                    'orderable': false, /* true or false */
-                }],
+                'columnDefs': [ 
+                    {
+                        'targets': [7], /* column index */
+                        'orderable': false, /* true or false */
+                    },
+                    {
+                        'targets': [5],
+                        'visible': false
+                    }
+                ],
                 "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
-                
+                rowGroup: {
+                    dataSrc: 5,
+                    startRender: function ( rows, group ) {
+                        return $('<tr/>')
+                            .append( '<td class="text-center fw-bold" colspan="7">'+group +' ('+rows.count()+' matière(s))'+'</td>' );
+                    },
+                    endRender: function (rows, group) {
+                        let sumCm =
+                            rows
+                                .data()
+                                .pluck(1)
+                                .reduce((a, b) => a*1 + b*1);
+                        let sumTd =
+                            rows
+                                .data()
+                                .pluck(2)
+                                .reduce((a, b) => a*1 + b*1);
+                        let sumTp =
+                            rows
+                                .data()
+                                .pluck(3)
+                                .reduce((a, b) => a*1 + b*1);
+                        let sumTotal =
+                            rows
+                                .data()
+                                .pluck(4)
+                                .reduce((a, b) => a*1 + b*1);
+
+                        let tr = document.createElement('tr');
+                        tr.classList.add("text-muted")
+                        addCell(tr, 'Totaux pour ' + group, 0);
+                        addCell(tr, sumCm+' H');
+                        addCell(tr, sumTd+' H');
+                        addCell(tr, sumTp+' H');
+                        addCell(tr, sumTotal+' H');
+                        addCell(tr, '', 2);
+                        return tr;
+                    }
+                }
             } );
     </script>
 {% endblock %}

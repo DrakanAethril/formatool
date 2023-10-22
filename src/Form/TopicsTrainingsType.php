@@ -35,6 +35,7 @@ class TopicsTrainingsType extends AbstractType
                     'class' => TopicsTrainingsLabel::class,
                     'multiple' => true,
                     'by_reference' => false,
+                    'required' => false,
                     'query_builder' => function (EntityRepository $er): QueryBuilder {
                         return $er->createQueryBuilder('u')
                             ->orderBy('u.name', 'ASC');
@@ -44,7 +45,9 @@ class TopicsTrainingsType extends AbstractType
             ->add('topicsGroups', EntityType::class,
                     [
                         'class' => TopicsGroups::class,
-                       'query_builder' => function (EntityRepository $er): QueryBuilder {
+                        'required' => false,
+                        'placeholder' => 'Aucune',
+                        'query_builder' => function (EntityRepository $er): QueryBuilder {
                             return $er->createQueryBuilder('u')
                                 ->orderBy('u.name', 'ASC');
                         },

@@ -49,7 +49,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToUrl('Website', 'fa fa-home', 'dashboard');
         yield MenuItem::linkToCrud('Etablissements', 'fas fa-school', Places::class);
         yield MenuItem::linkToCrud('Formations', 'fas fa-certificate', Trainings::class);
-        yield MenuItem::linkToCrud('Blocs de compétences', 'fas fa-tag', TopicsGroups::class);
+        yield MenuItem::linkToCrud('Unités d\'enseignements', 'fas fa-tag', TopicsGroups::class);
         yield MenuItem::linkToCrud('Matières', 'fas fa-chalkboard-user', Topics::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', Users::class);
         yield MenuItem::linkToCrud('Matières par formation', 'fas fa-chalkboard-user', TopicsTrainings::class);
