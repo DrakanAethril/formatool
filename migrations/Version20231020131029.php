@@ -34,6 +34,36 @@ final class Version20231020131029 extends AbstractMigration
         $this->addSql('ALTER TABLE topics_trainings_label_topics_trainings ADD CONSTRAINT FK_79E70F5CED7B79 FOREIGN KEY (topics_trainings_id) REFERENCES topics_trainings (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE trainings ADD CONSTRAINT FK_66DC4330DA6A219 FOREIGN KEY (place_id) REFERENCES places (id)');
         $this->addSql('ALTER TABLE trainings ADD CONSTRAINT FK_66DC43307E3C61F9 FOREIGN KEY (owner_id) REFERENCES users (id)');
+
+        // First account
+        $this->addSql("INSERT INTO `users` (`id`, `email`, `roles`, `password`, `firstname`, `lastname`, `deleted`, `is_verified`) VALUES
+        (1, 'sebthar@gmail.com', '[\"ROLE_USER\", \"ROLE_ADMIN\"]', '\$2y\$13\$TjoUHmb88oZeBYznH8RDtuSAVLSLlH3jITikhAePs/7U.Xs.nk2rC', 'Sébastien', 'Tharaud', NULL, 1),
+        (2, 'sautourbts@gmail.com', '[\"ROLE_USER\", \"ROLE_ADMIN\"]', '\$2y\$13\$TjoUHmb88oZeBYznH8RDtuSAVLSLlH3jITikhAePs/7U.Xs.nk2rC', 'Florent', 'Sautour', NULL, 1);");
+
+        // DATA
+        $this->addSql("INSERT INTO `topics` (`id`, `name`, `inactive`) VALUES
+        (1, 'Anglais', NULL),
+        (2, 'Maths', NULL),
+        (3, 'CEJM', NULL),
+        (4, 'Français', NULL),
+        (5, 'Gestion de projets', NULL),
+        (6, 'Base de données SQL', NULL),
+        (7, 'Base de données NoSQL', NULL),
+        (8, 'Projets', NULL),
+        (9, 'Outils informatiques', NULL),
+        (10, 'Développement backend', NULL),
+        (11, 'Développement frontend', NULL),
+        (12, 'Développement mobile', NULL),
+        (13, 'Développement Qualité/Performance', NULL),
+        (14, 'Systèmes et réseaux', NULL);");
+
+        $this->addSql("INSERT INTO `topics_trainings_label` (`id`, `name`, `inactive`) VALUES
+        (1, 'Ens. Général', NULL),
+        (2, 'Ens. Technique', NULL),
+        (3, 'Projet', NULL);");
+
+        $this->addSql("INSERT INTO `places` (`id`, `name`, `inactive`) VALUES
+        (1, 'Beaupeyrat', NULL);");
     }
 
     public function down(Schema $schema): void

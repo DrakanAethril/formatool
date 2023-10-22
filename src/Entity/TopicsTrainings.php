@@ -37,6 +37,9 @@ class TopicsTrainings
     #[ORM\ManyToMany(targetEntity: TopicsTrainingsLabel::class, mappedBy: 'topicsTrainings')]
     private Collection $topicsTrainingsLabels;
 
+    #[ORM\ManyToOne(inversedBy: 'topicsTrainings')]
+    private ?TopicsGroups $topicsGroups = null;
+
     public function __construct()
     {
         $this->topicsTrainingsLabels = new ArrayCollection();
@@ -134,6 +137,18 @@ class TopicsTrainings
         if ($this->topicsTrainingsLabels->removeElement($topicsTrainingsLabel)) {
             $topicsTrainingsLabel->removeTopicsTraining($this);
         }
+
+        return $this;
+    }
+
+    public function getTopicsGroups(): ?TopicsGroups
+    {
+        return $this->topicsGroups;
+    }
+
+    public function setTopicsGroups(?TopicsGroups $topicsGroups): static
+    {
+        $this->topicsGroups = $topicsGroups;
 
         return $this;
     }

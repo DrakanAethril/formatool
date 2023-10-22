@@ -8,6 +8,7 @@ use App\Entity\Trainings;
 use App\Form\TopicsTrainingsType;
 use App\Repository\TopicsTrainingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,29 +61,36 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/training/{id}/topic/add', name: 'training_add_topic')]
-    public function addTopic(Trainings $training, Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/training/{id<\d+>}/topic/add/{tt<\d+>?0}', name: 'training_add_topic')]
+    public function addTopic(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, TopicsTrainingsRepository $topicsTrainingsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
-
-        $topicTraining = new TopicsTrainings();
-        $topicTraining->setTrainings($training);
+        $create = false;
+        if(empty($tt)) {
+            $topicTraining = new TopicsTrainings();
+            $topicTraining->setTrainings($training);
+            $create = true;
+        } else {
+            $topicTraining = $topicsTrainingsRepository->findOneBy(['id'=> $tt]);
+            /*$oldTopicTrainingLabels = new TopicsTrainings();
+            if(!empty($topicTraining->getTopicsTrainingsLabels())) {
+                foreach($topicTraining->getTopicsTrainingsLabels() as $label) {
+                    $oldTopicTrainingLabels->addTopicsTrainingsLabel($label);
+                }
+            }
+            */
+            if(empty($topicTraining) || $topicTraining->getTrainings()->getId() !== $training->getId()) {
+                return $this->redirectToRoute('home');
+            }
+        }
+        
+        
         $form = $this->createForm(TopicsTrainingsType::class, $topicTraining);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //dd($topicTraining);
             $entityManager->persist($topicTraining);
             $entityManager->flush();
-
-            if(!empty($topicTraining->getTopicsTrainingsLabels())) {
-                foreach($topicTraining->getTopicsTrainingsLabels() as $label) {
-                    $label->addTopicsTraining($topicTraining);
-                    $entityManager->persist($label);
-                    $entityManager->flush();
-                }
-            }
-
-            //redirect on traingin page
+            //redirect on training page
             return $this->redirectToRoute('training_detail', ['id' => $training->getId()]);
         }
 

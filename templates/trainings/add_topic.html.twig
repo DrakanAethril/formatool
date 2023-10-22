@@ -50,6 +50,12 @@
                                 </div>
                             </div>
                             <div class="mb-3">
+                                {{ form_label(topicForm.topics, 'Unité d\'enseignements', {'label_attr': {'class': 'form-label'}}) }}
+                                <div>
+                                    {{ form_widget(topicForm.topicsGroups, {'attr': {'class': 'form-select'}}) }}
+                                </div>
+                            </div>
+                            <div class="mb-3">
                                 {{ form_label(topicForm.topicsTrainingsLabels, 'Label', {'label_attr': {'class': 'form-label'}}) }}
                                 <div>
                                     {{ form_widget(topicForm.topicsTrainingsLabels, {

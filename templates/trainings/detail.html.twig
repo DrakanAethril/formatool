@@ -67,11 +67,11 @@
                 </div>
                 <div class="col-auto ms-auto d-print-none">
                     <div class="btn-list">
-                        <a href="{{path('training_add_topic', {'id': training.id})}}" class="btn btn-primary d-none d-sm-inline-block">
+                        <a href="{{path('training_add_topic', {'id': training.id, 'tt': 0})}}" class="btn btn-primary d-none d-sm-inline-block">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                             Nouvelle Matière
                         </a>
-                        <a href="{{path('training_add_topic', {'id': training.id})}}" class="btn btn-primary d-sm-none btn-icon" aria-label="Ajouter une matière">
+                        <a href="{{path('training_add_topic', {'id': training.id, 'tt': 0})}}" class="btn btn-primary d-sm-none btn-icon" aria-label="Ajouter une matière">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                         </a>
                     </div>
@@ -93,6 +93,7 @@
                                         <th>TD</th>
                                         <th>TP</th>
                                         <th>Volume Total</th>
+                                        <th>U.E.</th>
                                         <th>Label</th>
                                         <th class="w-1"></th>   
                                     </tr>
@@ -116,10 +117,16 @@
                                                 {{topic.totalVolume}}
                                             </td>
                                             <td>
+                                                {{topic.topicsGroups.name|default('NA')}}
+                                            </td>
+                                            <td>
                                                  {{topic.topicsTrainingsLabels|join(', ')}}
                                             </td>
                                             <td class="text-end">
                                                 <div class="btn-list flex-nowrap">
+                                                    <a href="{{path('training_add_topic', {'id':training.id, 'tt':topic.id})}}" class="btn btn-secondary">
+                                                        Modifier
+                                                    </a>
                                                     <a href="{{path('training_remove_topic', {'id':topic.id})}}" class="btn btn-danger">
                                                         Supprimer
                                                     </a>
@@ -146,10 +153,11 @@
                     "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
                 },
                 'columnDefs': [ {
-                    'targets': [6], /* column index */
+                    'targets': [7], /* column index */
                     'orderable': false, /* true or false */
                 }],
-                "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>'
+                "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
+                
             } );
     </script>
 {% endblock %}

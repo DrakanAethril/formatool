@@ -23,7 +23,9 @@ class TopicsTrainingsCrudController extends AbstractCrudController
             IntegerField::new('cm'),
             IntegerField::new('tp'),
             IntegerField::new('td'),
+            AssociationField::new('topicsGroups')->autocomplete(),
             AssociationField::new('topicsTrainingsLabels')->setFormTypeOption('by_reference', false)->autocomplete(),
+            
         ];
     }
     

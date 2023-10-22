@@ -42,6 +42,18 @@ services:
             - symfony_app
         env_file:
             - .env.nginx.local
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: pma
+        depends_on:
+            - db
+        environment:
+            PMA_HOST: db
+            PMA_PORT: 3306
+        ports:
+            - 8081:80
+        networks:
+            - symfony_app
 
 volumes:
     symfony_app_var:

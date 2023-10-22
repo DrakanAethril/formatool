@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Topics;
+use App\Entity\TopicsGroups;
 use App\Entity\TopicsTrainings;
 use App\Entity\TopicsTrainingsLabel;
 use App\Entity\Trainings;
@@ -33,12 +34,22 @@ class TopicsTrainingsType extends AbstractType
                 [
                     'class' => TopicsTrainingsLabel::class,
                     'multiple' => true,
+                    'by_reference' => false,
                     'query_builder' => function (EntityRepository $er): QueryBuilder {
                         return $er->createQueryBuilder('u')
                             ->orderBy('u.name', 'ASC');
                     },
                 ]
-            )   
+            )
+            ->add('topicsGroups', EntityType::class,
+                    [
+                        'class' => TopicsGroups::class,
+                       'query_builder' => function (EntityRepository $er): QueryBuilder {
+                            return $er->createQueryBuilder('u')
+                                ->orderBy('u.name', 'ASC');
+                        },
+                    ]
+                )   
             ->add('cm', IntegerType::class)
             ->add('td', IntegerType::class)
             ->add('tp', IntegerType::class)
