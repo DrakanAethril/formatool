@@ -29,3 +29,20 @@
         </div>
     </div>
 {% endblock %}
+
+{% block javascripts_bottom %}
+<script>
+  $(function(){
+    $('#profile_avatarFile_file').change(function(){
+      $('#avatar-info').removeClass('d-none');
+      $('#profile_avatarFile_delete').prop( "checked", false );
+    });
+    $('#avatar-delete').click(function(){
+      $('#profile_avatarFile_delete').prop( "checked", true );
+      $('#avatar-info').removeClass('d-none');
+    });
+
+
+  });
+</script>
+{% endblock %}

@@ -11,6 +11,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
@@ -46,6 +51,19 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+
+    #[ORM\Column(nullable: true)]
+    private ?string $avatarName = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $avatarSize = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[Vich\UploadableField(mapping: 'avatars', fileNameProperty: 'avatarName', size: 'avatarSize')]
+    #[Ignore]
+    private ?File $avatarFile = null;
 
     public function __construct()
     {
@@ -206,5 +224,75 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isVerified = $isVerified;
 
         return $this;
+    }
+
+    public function setAvatarFile(?File $imageFile = null): void
+    {
+        $this->avatarFile = $imageFile;
+
+        if (null !== $imageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getAvatarFile(): ?File
+    {
+        return $this->avatarFile;
+    }
+
+    public function setAvatarName(?string $imageName): void
+    {
+        $this->avatarName = $imageName;
+    }
+
+    public function getAvatarName(): ?string
+    {
+        return $this->avatarName;
+    }
+
+    public function setAvatarSize(?int $imageSize): void
+    {
+        $this->avatarSize = $imageSize;
+    }
+
+    public function getAvatarSize(): ?int
+    {
+        return $this->avatarSize;
+    }
+
+    public function __serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'email' => $this->email,
+            'password' => $this->password,
+        ];
+    }
+
+    /**
+     * Restore security relevant data
+     *
+     * @param array $data
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->id = $data['id'];
+        $this->email = $data['email'];
+        $this->password = $data['password'];
+    }
+
+    public function getAvatarUrl(): ?string {
+        if(!empty($this->getAvatarName())) {
+            $avatar = 'uploads/avatars/'.$this->getAvatarName();
+        } else {
+            $avatar = $this->getDefaultAvatar();
+        }
+        return $avatar;
+    }
+    
+    public function getDefaultAvatar(): ?string {
+        return 'static/avatars/default.png';
     }
 }

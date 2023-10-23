@@ -1,40 +1,42 @@
- <div class="card-body">
-    <h2 class="mb-4">Mon compte</h2>
-    <h3 class="card-title mt-4">Photo de profil</h3>
-    <div class="row align-items-center">
-        <div class="col-auto"><span class="avatar avatar-xl" style="background-image: url({{asset('static/avatars/default.png')}})"></span>
+ {{ form_start(profileForm) }}
+    <div class="card-body">
+        <h2 class="mb-4">Mon compte</h2>
+        <h3 class="card-title mt-4">Photo de profil</h3>
+        <div class="row align-items-center">
+            <div class="col-auto"><span id="userAvatar" class="avatar avatar-xl" style="background-image: url({{ asset(app.user.avatarUrl)}})"></span>
+            </div>
+            <div class="col-auto">
+                {{form_label(profileForm.avatarFile, 'Changer', {'label_attr': {'class': 'btn btn-ghost-info', 'for':'profile_avatarFile_file'}})}}
+                <div class="d-none">
+                    {{form_widget(profileForm.avatarFile, {'attr': {}})}}
+                </div>
+            </div>
+            <div class="col-auto">
+                <div id="avatar-delete" class="btn btn-ghost-danger">
+                    Supprimer
+                </div>
+            </div>
+            <div id="avatar-info" class="mt-2 alert alert-info d-none">Veuillez valider pour prendre en compte votre changement d'avatar.</div>
         </div>
-        <div class="col-auto">
-            <a href="#" class="btn">
-                Change avatar
-            </a>
-        </div>
-        <div class="col-auto">
-            <a href="#" class="btn btn-ghost-danger">
-                Delete avatar
-            </a>
+        <h3 class="card-title mt-4">Informations personnelles</h3>
+        <div class="row g-3">
+            <div class="col-md">
+                {{ form_label(profileForm.lastname, 'Nom', {'label_attr': {'class': 'form-label required'}}) }}
+                {{ form_widget(profileForm.lastname, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md">
+                {{ form_label(profileForm.firstname, 'Prénom', {'label_attr': {'class': 'form-label required'}}) }}
+                {{ form_widget(profileForm.firstname, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="col-md">
+                {{ form_label(profileForm.email, 'Email', {'label_attr': {'class': 'form-label required'}}) }}
+                {{ form_widget(profileForm.email, {'attr': {'class': 'form-control'}}) }}
+            </div>
         </div>
     </div>
-    <h3 class="card-title mt-4">Informations personnelles</h3>
-    <div class="row g-3">
-        <div class="col-md">
-            <div class="form-label">Nom</div>
-            <input type="text" class="form-control" value="Tabler">
-        </div>
-        <div class="col-md">
-            <div class="form-label">Prénom</div>
-            <input type="text" class="form-control" value="560afc32">
-        </div>
-        <div class="col-md">
-            <div class="form-label">Email</div>
-            <input type="text" class="form-control" value="Peimei, China">
+    <div class="card-footer bg-transparent mt-auto">
+        <div class="btn-list justify-content-end">
+            <input type="submit" class="btn btn-primary" value="Mettre à jour"/>
         </div>
     </div>
-</div>
-<div class="card-footer bg-transparent mt-auto">
-    <div class="btn-list justify-content-end">
-        <a href="#" class="btn btn-primary">
-            Mettre à jour
-        </a>
-    </div>
-</div>
+{{ form_end(profileForm) }}
