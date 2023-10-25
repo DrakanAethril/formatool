@@ -55,13 +55,14 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
         return $query->getResult(); 
     }
 
-//    /**
-//     * @return Users[] Returns an array of Users objects
-//     */
-//    public function findByExampleField($value): array
+   /**
+    * @return Users[] Returns an array of Users objects
+    */
+//    public function findAllByRole($role): array
 //    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
+//         $qb = $this->createQueryBuilder('u');
+//         return $qb
+//             ->where($qb->expr()->isNull('u.deleted'))
 //            ->setParameter('val', $value)
 //            ->orderBy('u.id', 'ASC')
 //            ->setMaxResults(10)
