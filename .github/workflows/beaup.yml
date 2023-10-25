@@ -25,13 +25,15 @@ jobs:
 #          echo "${{ secrets.TLS_KEY }}" > tls.key          
 
       - name: Connect VPN
-        run: sudo openvpn --config ".github/workflows/beaup.ovpn" --log "vpn.log" --daemon
+        run: |
+          sudo openvpn --config ".github/workflows/beaup.ovpn" --log "vpn.log" --daemon
+          sleep 30
 
-      - name: Wait for a VPN connection
-        timeout-minutes: 1
-        run: until ping -c1 195.83.236.181; do sleep 2; done
-        # OR
-        #run: until dig @your-dns-resolver your-server-address A +time=1; do sleep 2; done
+      # - name: Wait for a VPN connection
+      #   timeout-minutes: 1
+      #   run: until ping -c1 195.83.236.181; do sleep 2; done
+      #   # OR
+      #   #run: until dig @your-dns-resolver your-server-address A +time=1; do sleep 2; done
 
       - name: Deploy
         run: |
