@@ -26,7 +26,7 @@ jobs:
 
       - name: Connect VPN
         run: |
-          sudo openvpn --config ".github/workflows/beaup.ovpn" --log "vpn.log" --daemon --comp-lzo adaptive
+          sudo openvpn --config ".github/workflows/beaup.ovpn" --log "vpn.log" --daemon
           sudo tail -f vpn.log
 
       - name: Wait for a VPN connection
