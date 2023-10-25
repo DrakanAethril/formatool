@@ -1,0 +1,48 @@
+name: Beaup deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install OpenVPN
+        run: |
+          sudo apt-get update
+          sudo apt-get --assume-yes --no-install-recommends install openvpn          
+
+      - name: Setup VPN config
+        run: |
+          echo "${{ secrets.OVPN_CA }}" > ca.crt
+          echo "${{ secrets.OVPN_CERT }}" > user.crt
+          echo "${{ secrets.OVPN_USER_KEY }}" > user.key
+          echo "${{ secrets.OVPN_USER_CREDENTIALS }}" > secret.txt
+#          echo "${{ secrets.TLS_KEY }}" > tls.key          
+
+      - name: Connect VPN
+        run: sudo openvpn --config ".github/workflows/beaup.ovpn" --log "vpn.log" --daemon
+
+      - name: Wait for a VPN connection
+        timeout-minutes: 1
+        run: until ping -c1 your-server-address; do sleep 2; done
+        # OR
+        run: until dig @your-dns-resolver your-server-address A +time=1; do sleep 2; done
+
+      - name: Deploy
+        run: some-command
+
+      - name: Kill VPN connection
+        if: always()
+        run: |
+          sudo chmod 777 vpn.log
+          sudo killall openvpn          
+
+      - name: Upload VPN logs
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: VPN logs
+          path: vpn.log
