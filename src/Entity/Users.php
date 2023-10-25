@@ -65,9 +65,13 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[Ignore]
     private ?File $avatarFile = null;
 
+    #[ORM\OneToMany(mappedBy: 'teacher', targetEntity: TopicsTrainings::class)]
+    private Collection $teachingTopics;
+
     public function __construct()
     {
         $this->ownedTrainings = new ArrayCollection();
+        $this->teachingTopics = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -294,5 +298,35 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     
     public function getDefaultAvatar(): ?string {
         return 'static/avatars/default.png';
+    }
+
+    /**
+     * @return Collection<int, TopicsTrainings>
+     */
+    public function getTeachingTopics(): Collection
+    {
+        return $this->teachingTopics;
+    }
+
+    public function addTeachingTopic(TopicsTrainings $teachingTopic): static
+    {
+        if (!$this->teachingTopics->contains($teachingTopic)) {
+            $this->teachingTopics->add($teachingTopic);
+            $teachingTopic->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeachingTopic(TopicsTrainings $teachingTopic): static
+    {
+        if ($this->teachingTopics->removeElement($teachingTopic)) {
+            // set the owning side to null (unless already changed)
+            if ($teachingTopic->getTeacher() === $this) {
+                $teachingTopic->setTeacher(null);
+            }
+        }
+
+        return $this;
     }
 }

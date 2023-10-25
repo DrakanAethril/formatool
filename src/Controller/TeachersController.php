@@ -13,7 +13,8 @@ class TeachersController extends AbstractController
     public function index(UsersRepository $usersRepository): Response
     {
         return $this->render('teachers/index.html.twig', [
-            'teachers' => $usersRepository->findAllByRole('ROLE_TEACHER')
+            'teachers' => $usersRepository->findAllByRole('ROLE_TEACHER'),
+            'menuTeachers' => 'active'
         ]);
     }
 }

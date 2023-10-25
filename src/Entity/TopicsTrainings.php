@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\TopicsTrainingsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TopicsTrainingsRepository::class)]
@@ -39,6 +40,12 @@ class TopicsTrainings
 
     #[ORM\ManyToOne(inversedBy: 'topicsTrainings')]
     private ?TopicsGroups $topicsGroups = null;
+
+    #[ORM\ManyToOne(inversedBy: 'teachingTopics')]
+    private ?Users $teacher = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
     public function __construct()
     {
@@ -149,6 +156,30 @@ class TopicsTrainings
     public function setTopicsGroups(?TopicsGroups $topicsGroups): static
     {
         $this->topicsGroups = $topicsGroups;
+
+        return $this;
+    }
+
+    public function getTeacher(): ?Users
+    {
+        return $this->teacher;
+    }
+
+    public function setTeacher(?Users $teacher): static
+    {
+        $this->teacher = $teacher;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }

@@ -14,6 +14,7 @@ class HomeController extends AbstractController
     {
         return $this->render('home/index.html.twig', [
             'trainings' => $trainings->findAll(),
+            'menuHome' => 'active'
         ]);
     }
 }

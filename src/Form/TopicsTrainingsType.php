@@ -7,11 +7,13 @@ use App\Entity\TopicsGroups;
 use App\Entity\TopicsTrainings;
 use App\Entity\TopicsTrainingsLabel;
 use App\Entity\Trainings;
+use App\Entity\Users;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -52,10 +54,24 @@ class TopicsTrainingsType extends AbstractType
                                 ->orderBy('u.name', 'ASC');
                         },
                     ]
-                )   
+                )
+            ->add('teacher', EntityType::class,
+                [
+                    'class' => Users::class,
+                    'required' => false,
+                    'placeholder' => 'Aucun',
+                    'query_builder' => function (EntityRepository $er): QueryBuilder {
+                        return $er->createQueryBuilder('u')
+                            ->orderBy('u.lastname', 'ASC');
+                    },
+                ]
+            )   
             ->add('cm', IntegerType::class)
             ->add('td', IntegerType::class)
             ->add('tp', IntegerType::class)
+            ->add('description', TextareaType::class, [
+                'required'=> false,
+            ])
         ;
     }
 

@@ -89,6 +89,7 @@
                                 <thead>
                                     <tr>
                                         <th>Nom</th>
+                                        <th>Enseignant</th>
                                         <th>CM</th>
                                         <th>TD</th>
                                         <th>TP</th>
@@ -103,6 +104,9 @@
                                         <tr>
                                             <td>
                                                 {{topic.topics.name}}
+                                            </td>
+                                             <td>
+                                                {{topic.teacher.displayName|default('')}}
                                             </td>
                                             <td class="">
                                                 {{topic.cm}}
@@ -123,8 +127,24 @@
                                                  {{topic.topicsTrainingsLabels|join(', ')}}
                                             </td>
                                             <td class="text-end">
-                                                <div class="btn-list flex-nowrap">
-                                                    <a href="{{path('training_add_topic', {'id':training.id, 'tt':topic.id})}}" class="btn btn-ghost-info">
+                                                <div class="btn-list flex-nowrap justify-content-end">
+                                                    {% if topic.description is not empty %}
+                                                        <a class="btn btn-ghost-info" data-bs-toggle="offcanvas" href="#topic_desc_{{topic.id}}" role="button">
+                                                            Infos
+                                                        </a>
+                                                        <div class="offcanvas offcanvas-end" tabindex="-1" id="topic_desc_{{topic.id}}">
+                                                            <div class="offcanvas-header">
+                                                                <h2 class="offcanvas-title" id="offcanvasEndLabel">{{topic.topics.name}}</h2>
+                                                                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="offcanvas-body">
+                                                                <div class="d-table-cell">
+                                                                    {{topic.description}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                    <a href="{{path('training_add_topic', {'id':training.id, 'tt':topic.id})}}" class="btn btn-ghost-warning">
                                                         Modifier
                                                     </a>
                                                     <a href="{{path('training_remove_topic', {'id':topic.id})}}" class="btn btn-ghost-danger">
@@ -156,52 +176,52 @@
             }
             $('#topics-table').dataTable( {
                 "pageLength": 50,
-                "order": [[5, 'asc'],[0, 'asc']],
+                "order": [[6, 'asc'],[0, 'asc']],
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
                 },
                 'columnDefs': [ 
                     {
-                        'targets': [7], /* column index */
+                        'targets': [8], /* column index */
                         'orderable': false, /* true or false */
                     },
                     {
-                        'targets': [5],
+                        'targets': [6],
                         'visible': false
                     }
                 ],
                 "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
                 rowGroup: {
-                    dataSrc: 5,
+                    dataSrc: 6,
                     startRender: function ( rows, group ) {
                         return $('<tr/>')
-                            .append( '<td class="text-center fw-bold" colspan="7">'+group +' ('+rows.count()+' matière(s))'+'</td>' );
+                            .append( '<td class="text-center fw-bold" colspan="8">'+group +' ('+rows.count()+' matière(s))'+'</td>' );
                     },
                     endRender: function (rows, group) {
                         let sumCm =
                             rows
                                 .data()
-                                .pluck(1)
+                                .pluck(2)
                                 .reduce((a, b) => a*1 + b*1);
                         let sumTd =
                             rows
                                 .data()
-                                .pluck(2)
+                                .pluck(3)
                                 .reduce((a, b) => a*1 + b*1);
                         let sumTp =
                             rows
                                 .data()
-                                .pluck(3)
+                                .pluck(4)
                                 .reduce((a, b) => a*1 + b*1);
                         let sumTotal =
                             rows
                                 .data()
-                                .pluck(4)
+                                .pluck(5)
                                 .reduce((a, b) => a*1 + b*1);
 
                         let tr = document.createElement('tr');
                         tr.classList.add("text-muted")
-                        addCell(tr, 'Totaux pour ' + group, 0);
+                        addCell(tr, 'Totaux pour ' + group, 2);
                         addCell(tr, sumCm+' H');
                         addCell(tr, sumTd+' H');
                         addCell(tr, sumTp+' H');

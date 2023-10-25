@@ -47,6 +47,7 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
             'SELECT u
             FROM App\Entity\Users u
             WHERE u.roles LIKE :role
+            AND u.deleted IS NULL
             ORDER BY u.lastname ASC'
         )->setParameter('role', '%'.$role.'%');
 
