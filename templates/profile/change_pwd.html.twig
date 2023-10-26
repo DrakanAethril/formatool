@@ -1,0 +1,25 @@
+ {{ form_start(changePwdForm) }}
+    <div class="card-body">
+        <h2 class="mb-4">Mon mot de passe</h2>
+       {% if success == true %}
+            <div class="alert alert-success">Votre mot de passe a bien été modifié.</div>
+       {% endif %}
+        
+        <div class="mb-3">
+            <h3 class="card-title mt-4">{{ form_label(changePwdForm.plainPassword.first, 'Mot de passe', {'label_attr': {'class': 'form-label required'}}) }}</h3>
+            {{ form_widget(changePwdForm.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+            <div class="invalid-feedback d-block">{{form_errors(changePwdForm.plainPassword.first)}}</div>
+        </div>
+        <div class="mb-3">
+            <h3 class="card-title mt-4">{{ form_label(changePwdForm.plainPassword.second, 'Confirmation du mot de passe', {'label_attr': {'class': 'form-label required'}}) }}</h3>
+            {{ form_widget(changePwdForm.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+            <div class="invalid-feedback d-block">{{form_errors(changePwdForm.plainPassword.second)}}</div>
+        </div>
+
+    </div>
+    <div class="card-footer bg-transparent mt-auto">
+        <div class="btn-list justify-content-end">
+            <input type="submit" class="btn btn-primary" value="Mettre à jour"/>
+        </div>
+    </div>
+{{ form_end(changePwdForm) }}

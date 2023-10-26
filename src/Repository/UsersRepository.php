@@ -8,6 +8,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * @extends ServiceEntityRepository<Users>
@@ -53,6 +55,35 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
 
         // returns an array of Product objects
         return $query->getResult(); 
+    }
+
+    public static function getPasswordContstraints(): array {
+        return [
+            new Length([
+                'min' => 8,
+                'max' => 100,
+                'minMessage' => 'Le mot de passe est trop court. Il doit contenir au moins {{ limit }} caractères.',
+                'maxMessage' => 'Le mot de passe est trop long. Il doit contenir au maximum {{ limit }} caractères.'
+            ]),
+            new Regex([
+                'pattern' => '/^[a-z]+$/',
+                'match' => false,
+                'message' => 'Le mot de passe doit contenir au moins une minucule'
+            ]),
+            new Regex([
+                'pattern' => '/^[A-Z]+$/',
+                'match' => false,
+                'message' => 'Le mot de passe doit contenir au moins une majuscule'
+            ]),
+            new Regex([
+                'pattern' => '/^[0-9]+$/i',
+                'match' => false,
+                'message' => 'Le mot de passe doit contenir au moins un chiffre'
+            ]),
+
+        ];
+
+        
     }
 
    /**
