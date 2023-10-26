@@ -21,8 +21,7 @@ jobs:
           echo "${{ secrets.OVPN_CA }}" > ca.crt
           echo "${{ secrets.OVPN_CERT }}" > user.crt
           echo "${{ secrets.OVPN_USER_KEY }}" > user.key
-          echo "${{ secrets.OVPN_USER_CREDENTIALS }}" > secret.txt
-#          echo "${{ secrets.TLS_KEY }}" > tls.key          
+          echo "${{ secrets.OVPN_USER_CREDENTIALS }}" > secret.txt         
 
       - name: Connect VPN
         run: |
@@ -34,21 +33,21 @@ jobs:
         # OR
         #run: until dig @your-dns-resolver your-server-address A +time=1; do sleep 2; done
 
-     - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.BEAUP_SSH_HOST }}
-        username: ${{ secrets.BEAUP_SSH_USER }}
-        key: ${{ secrets.BEAUP_SSH_KEY }}
-        script: |
-            sudo -i -u deploy
-            cd /home/aethril/formatool
-            git pull
-            docker exec -it formatool2-php-1 /bin/bash
-            composer update
-            sf d:m:m --no-interaction
-            sf c:c
-            sf assets:install
+      - name: executing remote ssh commands using password
+          uses: appleboy/ssh-action@master
+            with:
+              host: ${{ secrets.BEAUP_SSH_HOST }}
+              username: ${{ secrets.BEAUP_SSH_USER }}
+              key: ${{ secrets.BEAUP_SSH_KEY }}
+              script: |
+                  sudo -i -u deploy
+                  cd /home/aethril/formatool
+                  git pull
+                  docker exec -it formatool2-php-1 /bin/bash
+                  composer update
+                  sf d:m:m --no-interaction
+                  sf c:c
+                  sf assets:install
 
       - name: Kill VPN connection
         if: always()
