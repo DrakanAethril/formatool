@@ -66,18 +66,15 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
                 'maxMessage' => 'Le mot de passe est trop long. Il doit contenir au maximum {{ limit }} caractères.'
             ]),
             new Regex([
-                'pattern' => '/^[a-z]+$/',
-                'match' => false,
+                'pattern' => '/[a-z]+/',
                 'message' => 'Le mot de passe doit contenir au moins une minucule'
             ]),
             new Regex([
-                'pattern' => '/^[A-Z]+$/',
-                'match' => false,
+                'pattern' => '/[A-Z]+/',
                 'message' => 'Le mot de passe doit contenir au moins une majuscule'
             ]),
             new Regex([
-                'pattern' => '/^[0-9]+$/i',
-                'match' => false,
+                'pattern' => '/[0-9]+/',
                 'message' => 'Le mot de passe doit contenir au moins un chiffre'
             ]),
 
