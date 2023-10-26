@@ -42,11 +42,10 @@ jobs:
           script: |
               cd /home/aethril/formatool
               sudo git pull
-              docker exec -t formatool2-php-1 /bin/bash
-              composer update
-              sf d:m:m --no-interaction
-              sf c:c
-              sf assets:install
+              docker exec -t formatool2-php-1 composer update
+              docker exec -t formatool2-php-1 php bin/console d:m:m --no-interaction
+              docker exec -t formatool2-php-1 php bin/console c:c
+              docker exec -t formatool2-php-1 php bin/console assets:install
 
       - name: Kill VPN connection
         if: always()
