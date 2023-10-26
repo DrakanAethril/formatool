@@ -34,24 +34,23 @@ jobs:
         # OR
         #run: until dig @your-dns-resolver your-server-address A +time=1; do sleep 2; done
 
-      - name: Deploy
-        run: |
+      - name: Use SSH
+        uses: appleboy/ssh-action@master
+        with: 
+          host: ${{ secrets.FORMATOOL_HOST }}
+          username: ${{ secrets.FORMATOOL_SERVER_USERNAME }}
+          password: ${{ secrets.FORMATOOL_SERVER_PASSW }}
+          script: |
             cd /home/aethril/formatool
             git pull
-            composer update
-            sf d:m:m
-            sf c:c
-            sf assets:install
+            
+            # composer update
+            # sf d:m:m
+            # sf c:c
+            # sf assets:install
 
       - name: Kill VPN connection
         if: always()
         run: |
           sudo chmod 777 vpn.log
-          sudo killall openvpn          
-
-      - name: Upload VPN logs
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: VPN logs
-          path: vpn.log
+          sudo killall openvpn
