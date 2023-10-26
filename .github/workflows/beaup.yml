@@ -42,7 +42,7 @@ jobs:
           script: |
               cd /home/aethril/formatool
               sudo git pull
-              docker exec -T formatool2-php-1 /bin/bash
+              docker exec -t formatool2-php-1 /bin/bash
               composer update
               sf d:m:m --no-interaction
               sf c:c
