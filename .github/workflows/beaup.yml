@@ -35,19 +35,19 @@ jobs:
 
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
-          with:
-            host: ${{ secrets.BEAUP_SSH_HOST }}
-            username: ${{ secrets.BEAUP_SSH_USER }}
-            key: ${{ secrets.BEAUP_SSH_KEY }}
-            script: |
-                sudo -i -u deploy
-                cd /home/aethril/formatool
-                git pull
-                docker exec -it formatool2-php-1 /bin/bash
-                composer update
-                sf d:m:m --no-interaction
-                sf c:c
-                sf assets:install
+        with:
+          host: ${{ secrets.BEAUP_SSH_HOST }}
+          username: ${{ secrets.BEAUP_SSH_USER }}
+          key: ${{ secrets.BEAUP_SSH_KEY }}
+          script: |
+              sudo -i -u deploy
+              cd /home/aethril/formatool
+              git pull
+              docker exec -it formatool2-php-1 /bin/bash
+              composer update
+              sf d:m:m --no-interaction
+              sf c:c
+              sf assets:install
 
       - name: Kill VPN connection
         if: always()
