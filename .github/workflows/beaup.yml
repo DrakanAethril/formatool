@@ -40,7 +40,7 @@ jobs:
           username: ${{ secrets.BEAUP_SSH_USER }}
           key: ${{ secrets.BEAUP_SSH_KEY }}
           script: |
-              sudo cd /home/aethril/formatool
+              cd /home/aethril/formatool
               sudo git pull
               docker exec -it formatool2-php-1 /bin/bash
               composer update
