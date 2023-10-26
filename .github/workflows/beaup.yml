@@ -34,13 +34,14 @@ jobs:
         # OR
         #run: until dig @your-dns-resolver your-server-address A +time=1; do sleep 2; done
 
-      - name: Use SSH
-        uses: appleboy/ssh-action@master
-        with: 
-          host: ${{ secrets.FORMATOOL_HOST }}
-          username: ${{ secrets.FORMATOOL_SERVER_USERNAME }}
-          password: ${{ secrets.FORMATOOL_SERVER_PASSW }}
-          script: |
+     - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.BEAUP_SSH_HOST }}
+        username: ${{ secrets.BEAUP_SSH_USER }}
+        key: ${{ secrets.BEAUP_SSH_KEY }}
+        script: |
+            sudo -i -u deploy
             cd /home/aethril/formatool
             git pull
             docker exec -it formatool2-php-1 /bin/bash
