@@ -33,4 +33,17 @@ RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} >
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+#install node and npm
+RUN apt-get install -y nodejs npm
+
+# install nvm to handle node versions and update node
+SHELL ["/bin/bash", "--login", "-i", "-c"]
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+RUN source /root/.bashrc && nvm install 20
+SHELL ["/bin/bash", "--login", "-c"]
+
+
+#install yarn
+RUN npm install -g yarn
+
 WORKDIR /var/www/symfony

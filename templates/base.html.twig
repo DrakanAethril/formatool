@@ -5,22 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>{% block title %}Welcome!{% endblock %}</title>
 
-    <link href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('formatool') }}
+    {% endblock %}
+    {% block javascripts %}
+        {{ encore_entry_script_tags('formatool') }}
+    {% endblock %}
 
-    <link href="{{ asset('assets/css/tabler.min.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/tabler-flags.min.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/tabler-payments.min.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/tabler-vendors.min.css') }}" rel="stylesheet"/>
-    
-    <style>
-      @import url('https://rsms.me/inter/inter.css');
-      :root {
-      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-      }
-      body {
-      	font-feature-settings: "cv03", "cv04", "cv11";
-      }
-    </style>
+    <link href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet"/>
   </head>
   <body >
      <div class="page">
@@ -31,14 +23,6 @@
             {% block body %}{% endblock %}
         </div>
      </div>
-    <script src="{{ asset('assets/js/tabler.min.js') }}" defer></script>
-    <script
-        src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-        crossorigin="anonymous">
-    </script>
-    <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"> </script>
-    <script src="//cdn.datatables.net/rowgroup/1.4.1/js/dataTables.rowGroup.min.js"></script>
     {% block javascripts_bottom %}{% endblock %}
     </body>
 </html>
