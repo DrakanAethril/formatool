@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Places;
+use App\Entity\TimeSlots;
+use App\Entity\TimeSlotsTypes;
 use App\Entity\Trainings;
 use App\Entity\Topics;
 use App\Entity\TopicsGroups;
@@ -54,5 +56,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', Users::class);
         yield MenuItem::linkToCrud('Matières par formation', 'fas fa-chalkboard-user', TopicsTrainings::class);
         yield MenuItem::linkToCrud('Labels', 'fas fa-tag', TopicsTrainingsLabel::class);
+        yield MenuItem::linkToCrud('Périodes', 'fas fa-calendar', TimeSlots::class);
+        yield MenuItem::linkToCrud('Types de périodes', 'fas fa-calendar-xmark', TimeSlotsTypes::class);
     }
 }

@@ -40,10 +40,14 @@ class Trainings
     #[ORM\OneToMany(mappedBy: 'training', targetEntity: TopicsGroups::class)]
     private Collection $topicsGroups;
 
+    #[ORM\OneToMany(mappedBy: 'training', targetEntity: TimeSlots::class)]
+    private Collection $timeSlots;
+
     public function __construct()
     {
         $this->trainings = new ArrayCollection();
         $this->topicsGroups = new ArrayCollection();
+        $this->timeSlots = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -169,6 +173,36 @@ class Trainings
             // set the owning side to null (unless already changed)
             if ($topicsGroup->getTraining() === $this) {
                 $topicsGroup->setTraining(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TimeSlots>
+     */
+    public function getTimeSlots(): Collection
+    {
+        return $this->timeSlots;
+    }
+
+    public function addTimeSlot(TimeSlots $timeSlot): static
+    {
+        if (!$this->timeSlots->contains($timeSlot)) {
+            $this->timeSlots->add($timeSlot);
+            $timeSlot->setTraining($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTimeSlot(TimeSlots $timeSlot): static
+    {
+        if ($this->timeSlots->removeElement($timeSlot)) {
+            // set the owning side to null (unless already changed)
+            if ($timeSlot->getTraining() === $this) {
+                $timeSlot->setTraining(null);
             }
         }
 
