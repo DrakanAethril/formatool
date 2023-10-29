@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TrainingsController extends AbstractController
 {
+
     #[Route('/training/{id}', name: 'training_detail')]
     public function detail(Trainings $training): Response
     {
@@ -57,7 +58,8 @@ class TrainingsController extends AbstractController
             'volGen' => $volGen,
             'volTech' => $volTech,
             'volProjet' => $volProjet,
-            'nbStudents' => $nbStudents
+            'nbStudents' => $nbStudents,
+            'menuTrainings' => 'active'
         ]);
     }
 
@@ -98,6 +100,7 @@ class TrainingsController extends AbstractController
         return $this->render('trainings/add_topic.html.twig', [
             'training' => $training,
             'topicForm' => $form->createView(),
+            'menuTrainings' => 'active'
         ]);
     }
 
@@ -113,5 +116,18 @@ class TrainingsController extends AbstractController
         } else {
             return $this->redirectToRoute('home');
         }
+    }
+
+    #[Route('/training/{id<\d+>}/parameters', name: 'training_parameters')]
+    public function parameters(Trainings $training): Response
+    {
+
+        if(empty($training))
+        return $this->redirectToRoute('home');
+
+        return $this->render('trainings/parameters.html.twig', [
+            'training' => $training,
+            'menuTrainings' => 'active'
+        ]);
     }
 }
