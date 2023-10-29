@@ -25,11 +25,20 @@ class TopicsTrainingsType extends AbstractType
         $builder
             ->add('topics', EntityType::class,
                     [
-                        'class' => Topics::class,
+                    'class' => Topics::class,
                        'query_builder' => function (EntityRepository $er): QueryBuilder {
                             return $er->createQueryBuilder('u')
                                 ->orderBy('u.name', 'ASC');
                         },
+                        'autocomplete' => true,
+                        'required' => true,
+                        'tom_select_options' => [
+                            'plugins' => [
+                                    'clear_button' => [
+                                        'className' => 'd-none',
+                                    ]
+                                ]
+                        ]
                     ]
                 )
             ->add('topicsTrainingsLabels', EntityType::class,
@@ -42,17 +51,25 @@ class TopicsTrainingsType extends AbstractType
                         return $er->createQueryBuilder('u')
                             ->orderBy('u.name', 'ASC');
                     },
+                    'autocomplete' => true
                 ]
             )
             ->add('topicsGroups', EntityType::class,
                     [
                         'class' => TopicsGroups::class,
-                        'required' => false,
                         'placeholder' => 'Aucune',
                         'query_builder' => function (EntityRepository $er): QueryBuilder {
                             return $er->createQueryBuilder('u')
                                 ->orderBy('u.name', 'ASC');
                         },
+                        'autocomplete' => true,
+                        'tom_select_options' => [
+                            'plugins' => [
+                                    'clear_button' => [
+                                        'className' => 'd-none',
+                                    ]
+                                ]
+                        ]
                     ]
                 )
             ->add('teacher', EntityType::class,
@@ -64,6 +81,14 @@ class TopicsTrainingsType extends AbstractType
                         return $er->createQueryBuilder('u')
                             ->orderBy('u.lastname', 'ASC');
                     },
+                    'autocomplete' => true,
+                    'tom_select_options' => [
+                        'plugins' => [
+                                'clear_button' => [
+                                    'className' => 'clear-button icon',
+                                ]
+                            ]
+                    ]
                 ]
             )   
             ->add('cm', IntegerType::class)

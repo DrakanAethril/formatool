@@ -26,62 +26,62 @@
                     {{ form_start(topicForm, { 'attr' : { 'class': 'card' } } ) }}
                         <div class="card-body">
                             <div class="row row-cards">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         {{ form_label(topicForm.topics, 'Matière', {'label_attr': {'class': 'form-label required'}}) }}
-                                        <div>
-                                            {{ form_widget(topicForm.topics, {'attr': {'class': 'form-select'}}) }}
-                                        </div>
+                                       
+                                            {{ form_widget(topicForm.topics, {'attr': {'class': '', 'required': true}}) }}
+                                       
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="mb-3">
                                         {{ form_label(topicForm.topics, 'Unité d\'enseignements', {'label_attr': {'class': 'form-label'}, 'required': false}) }}
-                                        <div>
-                                            {{ form_widget(topicForm.topicsGroups, {'attr': {'class': 'form-select'}}) }}
-                                        </div>
+                                        
+                                            {{ form_widget(topicForm.topicsGroups, {'attr': {'class': ''}}) }}
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        {{ form_label(topicForm.topicsTrainingsLabels, 'Label', {'label_attr': {'class': 'form-label', 'required': false}}) }}
+                                        
+                                            {{ form_widget(topicForm.topicsTrainingsLabels, {
+                                                    'attr' : {'class' : ''}
+                                                }) }}
+                                        
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         {{ form_label(topicForm.teacher, 'Enseignant', {'label_attr': {'class': 'form-label'}}) }}
-                                        <div>
-                                            {{ form_widget(topicForm.teacher, {'attr': {'class': 'form-select'}}) }}
-                                        </div>
+                                       
+                                            {{ form_widget(topicForm.teacher, {'attr': {'class': ''}}) }}
+                                        
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="mb-3">
                                         {{ form_label(topicForm.cm, 'CM', {'label_attr': {'class': 'form-label required'}}) }}
-                                        <div>
+                                        
                                             {{ form_widget(topicForm.cm, {'attr': {'class': 'form-control'}}) }}
-                                        </div>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="mb-3">
                                         {{ form_label(topicForm.td, 'TD', {'label_attr': {'class': 'form-label required'}}) }}
-                                        <div>
+                                        
                                             {{ form_widget(topicForm.td, {'attr': {'class': 'form-control'}}) }}
-                                        </div>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="mb-3">
                                         {{ form_label(topicForm.tp, 'TP', {'label_attr': {'class': 'form-label required'}}) }}
-                                        <div>
+                                        
                                             {{ form_widget(topicForm.tp, {'attr': {'class': 'form-control'}}) }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="mb-3">
-                                        {{ form_label(topicForm.topicsTrainingsLabels, 'Label', {'label_attr': {'class': 'form-label', 'required': false}}) }}
-                                        <div>
-                                            {{ form_widget(topicForm.topicsTrainingsLabels, {
-                                                    'attr' : {'class' : 'form-select tomselected'}
-                                                }) }}
-                                        </div>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-md-12"> 

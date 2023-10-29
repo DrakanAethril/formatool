@@ -29,26 +29,45 @@
                             <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
                         </div>
                         <div class="mb-2">
-                            <label class="form-label" for="inputPassword">
-                                Password
-                                <span class="form-label-description">
-                                <a href="./forgot-password.html">I forgot password</a>
-                                </span>
-                            </label>
-                            <div class="input-group input-group-flat">
-                                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-                                <span class="input-group-text">
-                                    <a href="#" class="link-secondary" title="Show password" data-bs-toggle="tooltip"><!-- Download SVG icon from http://tabler-icons.io/i/eye -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
-                                    </a>
-                                </span>
+                          <div class="toggle-password-container">
+                              <label class="form-label" for="inputPassword">
+                                  Password
+                              </label>
+                              <div class="input-group has-validation">
+                                  <input 
+                                    type="password"
+                                    name="password" 
+                                    id="inputPassword" 
+                                    class="form-control" 
+                                    autocomplete="current-password" 
+                                    required
+                                    {{ stimulus_controller('symfony/ux-toggle-password/toggle-password', {
+                                        visibleLabel: 'Afficher',
+                                        hiddenLabel: 'Masquer',
+                                        buttonClasses: ['toggle-password-button', 'link-secondary', 'pr-0'],
+                                      }) 
+                                    }}
+                                  >
+                              </div>
                             </div>
+                            
                         </div>
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                         <div class="form-footer">
                         <button type="submit" class="btn btn-primary w-100">Sign in</button>
                         </div>
                     </form>
+                    <div class="hr-text"> OU </div>
+                    <div class="card-body p-0">
+                  <div class="row">
+                    <div class="col"><a href="#" class="btn w-100">
+                         Mot de passe oublié
+                      </a></div>
+                    <div class="col"><a href="#" class="btn w-100">
+                        Créer un compte
+                      </a></div>
+                  </div>
+                </div>
                 </div>
               </div>
             {# 
