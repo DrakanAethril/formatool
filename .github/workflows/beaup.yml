@@ -42,10 +42,6 @@ jobs:
           script: |
               cd /home/aethril/formatool
               sudo git pull
-              cd .docker
-              docker compose build
-              docker compose up -d
-              sleep 2
               docker exec -t formatool2-php-1 composer update
               docker exec -t formatool2-php-1 yarn install --force
               docker exec -t formatool2-php-1 php bin/console d:m:m --no-interaction
