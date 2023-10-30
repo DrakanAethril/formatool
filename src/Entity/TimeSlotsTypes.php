@@ -27,6 +27,9 @@ class TimeSlotsTypes
     #[ORM\OneToMany(mappedBy: 'timeSlotsTypes', targetEntity: TimeSlots::class)]
     private Collection $timeSlots;
 
+    #[ORM\Column(length: 20)]
+    private ?string $color = null;
+
     public function __construct()
     {
         $this->timeSlots = new ArrayCollection();
@@ -93,5 +96,17 @@ class TimeSlotsTypes
 
     public function __toString(): string {
         return $this->name;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(string $color): static
+    {
+        $this->color = $color;
+
+        return $this;
     }
 }

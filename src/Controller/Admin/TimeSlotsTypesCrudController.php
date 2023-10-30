@@ -3,8 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\TimeSlotsTypes;
+use DateTime;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class TimeSlotsTypesCrudController extends AbstractCrudController
 {
@@ -22,14 +26,13 @@ class TimeSlotsTypesCrudController extends AbstractCrudController
         ;
     }
 
-    /*
+    
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
+            TextField::new('name'),
+            DateTimeField::new('inactive'),
+            ColorField::new('color'),
         ];
     }
-    */
 }
