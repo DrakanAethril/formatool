@@ -11,7 +11,7 @@
                         {{training.title}}
                     </div>
                     <h2 class="page-title">
-                        Planning
+                        Planning de la formation
                     </h2>
                 </div>
             </div>
@@ -22,7 +22,7 @@
             <div class="row row-deck row-cards">
                 <div class="col-12">
                     
-                    <div id='calendar-holder' class="w-100"></div>
+                    <div id='calendar-holder' data-feed="{{ path('ajax_training_timeslots', {'id': training.id} ) }}" class="w-100"></div>
                     
                 </div>
             </div>
