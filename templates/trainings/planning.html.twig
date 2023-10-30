@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formation : {{training.title}}{% endblock %}
+
+{% block body %}
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                        {{training.title}}
+                    </div>
+                    <h2 class="page-title">
+                        Planning
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-deck row-cards">
+                <div class="col-12">
+                    
+                    <div id='calendar-holder' class="w-100"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

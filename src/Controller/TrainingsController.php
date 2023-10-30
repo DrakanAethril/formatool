@@ -130,4 +130,17 @@ class TrainingsController extends AbstractController
             'menuTrainings' => 'active'
         ]);
     }
+
+    #[Route('/training/{id<\d+>}/planning', name: 'training_planning')]
+    public function planning(Trainings $training): Response
+    {
+
+        if(empty($training))
+        return $this->redirectToRoute('home');
+
+        return $this->render('trainings/planning.html.twig', [
+            'training' => $training,
+            'menuTrainings' => 'active'
+        ]);
+    }
 }
