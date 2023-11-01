@@ -22,6 +22,7 @@ Encore
      */
     .addEntry('formatool', './assets/app.js')
     .addEntry('calendar', './assets/js/calendar/index.js')
+    .addEntry('flatpickr', './assets/js/flatpickr/index.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()

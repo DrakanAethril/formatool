@@ -4,15 +4,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>{% block title %}Welcome!{% endblock %}</title>
-
+    
+    {{ encore_entry_link_tags('formatool') }}
     {% block stylesheets %}
-        {{ encore_entry_link_tags('formatool') }}
-         {{ encore_entry_link_tags('calendar') }}
     {% endblock %}
+
+    {{ encore_entry_script_tags('formatool') }}
     {% block javascripts %}
-        {{ encore_entry_script_tags('formatool') }}
-        {{ encore_entry_script_tags('calendar') }}
     {% endblock %}
+    
   </head>
   <body >
      <div class="page">

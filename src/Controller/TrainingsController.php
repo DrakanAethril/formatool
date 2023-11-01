@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\TimeSlots;
 use App\Entity\TopicsTrainings;
 use App\Entity\TopicsTrainingsLabel;
 use App\Entity\Trainings;
+use App\Form\TimeSlotType;
 use App\Form\TopicsTrainingsType;
+use App\Repository\TimeSlotsRepository;
 use App\Repository\TopicsTrainingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -142,5 +145,53 @@ class TrainingsController extends AbstractController
             'training' => $training,
             'menuTrainings' => 'active'
         ]);
+    }
+
+    #[Route('/training/{id<\d+>}/timeslot/add/{tt<\d+>?0}', name: 'training_add_timeslot')]
+    public function addTimeSlot(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, TimeSlotsRepository $timeSlotsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $create = false;
+        if(empty($tt)) {
+            $timeSlot = new TimeSlots();
+            $timeSlot->setTraining($training);
+            $create = true;
+        } else {
+            $timeSlot = $timeSlotsRepository->findOneBy(['id'=> $tt]);
+            if(empty($timeSlot) || $timeSlot->getTraining()->getId() !== $training->getId()) {
+                return $this->redirectToRoute('home');
+            }
+        }
+        
+        
+        $form = $this->createForm(TimeSlotType::class, $timeSlot);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($timeSlot);
+            $entityManager->flush();
+            //redirect on training page
+            return $this->redirectToRoute('training_parameters', ['id' => $training->getId()]);
+        }
+
+
+        return $this->render('trainings/add_timeslot.html.twig', [
+            'training' => $training,
+            'timeSlotForm' => $form->createView(),
+            'menuTrainings' => 'active'
+        ]);
+    }
+
+    #[Route('/training/timeslot/remove/{id}', name: 'training_remove_timeslot')]
+    public function removeTimeSlot($id, TimeSlotsRepository $timeSlotsRepository, EntityManagerInterface $entityManager) : Response
+    {   
+        $timeSlot = $timeSlotsRepository->findOneBy(['id' => intval($id)]);
+        if(!empty($timeSlot)) {
+            $idTraining = $timeSlot->getTraining()->getId();
+            $entityManager->remove($timeSlot);
+            $entityManager->flush();
+            return $this->redirectToRoute('training_parameters', ['id' => $idTraining]);
+        } else {
+            return $this->redirectToRoute('home');
+        }
     }
 }

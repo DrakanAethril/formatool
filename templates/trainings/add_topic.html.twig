@@ -36,7 +36,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        {{ form_label(topicForm.topics, 'Unité d\'enseignements', {'label_attr': {'class': 'form-label'}, 'required': false}) }}
+                                        {{ form_label(topicForm.topicsGroups, 'Unité d\'enseignements', {'label_attr': {'class': 'form-label'}, 'required': false}) }}
                                         
                                             {{ form_widget(topicForm.topicsGroups, {'attr': {'class': ''}}) }}
                                         
@@ -97,7 +97,7 @@
                             </div>                               
                         </div>
                         <div class="card-footer text-end">
-                            <button type="submit" class="btn btn-primary ms-auto">Ajouter</button>
+                            <button type="submit" class="btn btn-primary ms-auto">Enregistrer</button>
                         </div>
                         
                     {{ form_end(topicForm) }}

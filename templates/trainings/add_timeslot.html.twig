@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formation : {{training.title}} - Ajouter une période{% endblock %}
+
+{% block body %}
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                        {{ training.title}}
+                    </div>
+                    <h2 class="page-title">
+                        Ajout de période
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    {{ form_errors(timeSlotForm) }}
+
+                    {{ form_start(timeSlotForm, { 'attr' : { 'class': 'card' } } ) }}
+                        <div class="card-body">
+                            <div class="row row-cards">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        {{ form_label(timeSlotForm.name, 'Nom de la période', {'label_attr': {'class': 'form-label required'}}) }}
+                                       
+                                            {{ form_widget(timeSlotForm.name, {'attr': {'class': 'form-control', 'required': true}}) }}
+                                       
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="mb-3">
+                                        {{ form_label(timeSlotForm.start_date, 'Date de début', {'label_attr': {'class': 'form-label'}, 'required': true}) }}
+                                        <div class="input-icon mb-2">
+                                            {{ form_widget(timeSlotForm.start_date, {'attr': {'class': 'form-control timeslot-flatpickr'}}) }}
+                                            <span class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"></path><path d="M16 3v4"></path><path d="M8 3v4"></path><path d="M4 11h16"></path><path d="M11 15h1"></path><path d="M12 15v3"></path></svg>
+                                            </span>
+                                        </div>
+                                            
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="mb-3">
+                                        {{ form_label(timeSlotForm.end_date, 'Date de fin', {'label_attr': {'class': 'form-label'}, 'required': true}) }}
+                                        <div class="input-icon mb-2">
+                                            {{ form_widget(timeSlotForm.end_date, {'attr': {'class': 'form-control timeslot-flatpickr'}}) }}
+                                            <span class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"></path><path d="M16 3v4"></path><path d="M8 3v4"></path><path d="M4 11h16"></path><path d="M11 15h1"></path><path d="M12 15v3"></path></svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        {{ form_label(timeSlotForm.timeSlotsTypes, 'Type de période', {'label_attr': {'class': 'form-label'}}) }}
+                                       
+                                            {{ form_widget(timeSlotForm.timeSlotsTypes, {'attr': {'class': ''}}) }}
+                                        
+                                    </div>
+                                </div>
+                            </div>                               
+                        </div>
+                        <div class="card-footer text-end">
+                            <button type="submit" class="btn btn-primary ms-auto">Enregistrer</button>
+                        </div>
+                        
+                    {{ form_end(timeSlotForm) }}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('flatpickr') }}
+{% endblock %}
+{% block javascripts_bottom %}
+    {{ encore_entry_script_tags('flatpickr') }}
+{% endblock %}

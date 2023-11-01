@@ -35,6 +35,7 @@
         "@fullcalendar/timegrid": "^6.1.9",
         "datatables.net-dt": "^1.13.6",
         "datatables.net-rowgroup-dt": "^1.4.1",
+        "flatpickr": "^4.6.13",
         "jquery": "^3.7.1"
     }
 }
