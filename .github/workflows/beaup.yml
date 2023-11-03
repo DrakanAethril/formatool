@@ -41,6 +41,7 @@ jobs:
           key: ${{ secrets.BEAUP_SSH_KEY }}
           script: |
               cd /home/aethril/formatool
+              sudo git reset --hard
               sudo git pull
               docker exec -t formatool2-php-1 composer update
               docker exec -t formatool2-php-1 yarn install
