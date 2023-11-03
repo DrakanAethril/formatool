@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\TimeSlots;
 use App\Entity\Topics;
 use App\Entity\TopicsGroups;
 use App\Entity\TopicsTrainings;
@@ -49,6 +50,21 @@ class TopicsTrainingsType extends AbstractType
                     'required' => false,
                     'query_builder' => function (EntityRepository $er): QueryBuilder {
                         return $er->createQueryBuilder('u')
+                            ->orderBy('u.name', 'ASC');
+                    },
+                    'autocomplete' => true
+                ]
+            )
+            ->add('timeslots', EntityType::class,
+                [
+                    'class' => TimeSlots::class,
+                    'multiple' => true,
+                    'by_reference' => false,
+                    'required' => false,
+                    'query_builder' => function (EntityRepository $er): QueryBuilder {
+                        return $er->createQueryBuilder('u')
+                            ->join('u.timeSlotsTypes', 't')
+                            ->where('t.id = 2')
                             ->orderBy('u.name', 'ASC');
                     },
                     'autocomplete' => true

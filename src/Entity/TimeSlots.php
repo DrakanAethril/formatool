@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\TimeSlotsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -35,6 +37,14 @@ class TimeSlots
     #[ORM\ManyToOne(inversedBy: 'timeSlots')]
     #[ORM\JoinColumn(nullable: false)]
     private ?TimeSlotsTypes $timeSlotsTypes = null;
+
+    #[ORM\ManyToMany(targetEntity: TopicsTrainings::class, mappedBy: 'timeslots')]
+    private Collection $topicsTrainings;
+
+    public function __construct()
+    {
+        $this->topicsTrainings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -111,5 +121,36 @@ class TimeSlots
         $this->timeSlotsTypes = $timeSlotsTypes;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, TopicsTrainings>
+     */
+    public function getTopicsTrainings(): Collection
+    {
+        return $this->topicsTrainings;
+    }
+
+    public function addTopicsTraining(TopicsTrainings $topicsTraining): static
+    {
+        if (!$this->topicsTrainings->contains($topicsTraining)) {
+            $this->topicsTrainings->add($topicsTraining);
+            $topicsTraining->addTimeslot($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTopicsTraining(TopicsTrainings $topicsTraining): static
+    {
+        if ($this->topicsTrainings->removeElement($topicsTraining)) {
+            $topicsTraining->removeTimeslot($this);
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string {
+        return $this->getName();
     }
 }

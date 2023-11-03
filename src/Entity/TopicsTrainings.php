@@ -47,9 +47,13 @@ class TopicsTrainings
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\ManyToMany(targetEntity: TimeSlots::class, inversedBy: 'topicsTrainings')]
+    private Collection $timeslots;
+
     public function __construct()
     {
         $this->topicsTrainingsLabels = new ArrayCollection();
+        $this->timeslots = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -180,6 +184,30 @@ class TopicsTrainings
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TimeSlots>
+     */
+    public function getTimeslots(): Collection
+    {
+        return $this->timeslots;
+    }
+
+    public function addTimeslot(TimeSlots $timeslot): static
+    {
+        if (!$this->timeslots->contains($timeslot)) {
+            $this->timeslots->add($timeslot);
+        }
+
+        return $this;
+    }
+
+    public function removeTimeslot(TimeSlots $timeslot): static
+    {
+        $this->timeslots->removeElement($timeslot);
 
         return $this;
     }
