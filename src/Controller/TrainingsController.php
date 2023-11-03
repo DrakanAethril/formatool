@@ -66,6 +66,8 @@ class TrainingsController extends AbstractController
         ]);
     }
 
+    // TOPICS
+
     #[Route('/training/{id<\d+>}/topic/add/{tt<\d+>?0}', name: 'training_add_topic')]
     public function addTopic(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, TopicsTrainingsRepository $topicsTrainingsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -121,6 +123,8 @@ class TrainingsController extends AbstractController
         }
     }
 
+    // PARAMETERS
+
     #[Route('/training/{id<\d+>}/parameters', name: 'training_parameters')]
     public function parameters(Trainings $training): Response
     {
@@ -134,6 +138,8 @@ class TrainingsController extends AbstractController
         ]);
     }
 
+    // PLANNING PAGE
+
     #[Route('/training/{id<\d+>}/planning', name: 'training_planning')]
     public function planning(Trainings $training): Response
     {
@@ -146,6 +152,8 @@ class TrainingsController extends AbstractController
             'menuTrainings' => 'active'
         ]);
     }
+
+    // TIMESLOTS
 
     #[Route('/training/{id<\d+>}/timeslot/add/{tt<\d+>?0}', name: 'training_add_timeslot')]
     public function addTimeSlot(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, TimeSlotsRepository $timeSlotsRepository, Request $request, EntityManagerInterface $entityManager): Response
@@ -193,5 +201,66 @@ class TrainingsController extends AbstractController
         } else {
             return $this->redirectToRoute('home');
         }
+    }
+
+    //TEACHERS
+    #[Route('/training/{id<\d+>}/teachers', name: 'training_teachers')]
+    public function teachers(Trainings $training): Response
+    {
+        if(empty($training))
+        return $this->redirectToRoute('home');
+
+        $teachers = [];
+        foreach($training->getTrainings() as $topic) {
+            if(!empty($topic->getTeacher())) {
+                $teachers[$topic->getTeacher()->getId()] = $topic->getTeacher();
+            }
+        }
+        return $this->render('teachers/index.html.twig', [
+            'teachers' => $teachers,
+            'menuTrainings' => 'active'
+        ]);
+
+        
+    }
+
+    // Timetable Generation
+    #[Route('/training/{id<\d+>}/timetable/generation', name: 'training_timetable_generation')]
+    public function timetable_generate(Trainings $training): Response
+    {
+        if(empty($training))
+        return $this->redirectToRoute('home');
+
+        $data = [];
+        $totalDays = 0;
+        foreach($training->getTimeslots() as $timeslot) {
+            if(empty($timeslot->getTimeSlotsTypes()) || $timeslot->getTimeSlotsTypes()->getId() == 2) { // TODO: const to replase "2"
+                $firstDay = $timeslot->getStartDate()->format('U');
+                $lastDay = $timeslot->getEndDate()->format('U');
+                while ($lastDay > $firstDay) {
+                    $weekDay = date("w", $firstDay);
+                    if($weekDay > 0 && $weekDay <=5) $totalDays++;
+                    $firstDay += 24*60*60;
+                }
+                $data[] = $totalDays.' jours sur la période '.$timeslot->getName();
+            }
+        }
+        $numberOfWeeks = floor($totalDays /7);
+        $totalHours = 0;
+        $topicPerTypeAndWeek = [];
+        foreach($training->getTrainings() as $topic) {
+            $totalHours += $topic->getTotalVolume();
+            if(!empty($topic->getCm())) {
+                $topicPerTypeAndWeek[$topic->getId().'-CM-Regular'] = ['name' => $topic->getTopics()->getName(), 'volume' => floor($topic->getCm() / $numberOfWeeks)];
+                $topicPerTypeAndWeek[$topic->getId().'-CM-Remaining'] = ['name' => $topic->getTopics()->getName(), 'volume' => $topic->getCm() % $numberOfWeeks];
+            }
+        }
+        $data[] = 'Heures totales : '.$totalHours;
+
+        $isItPossible = ($totalDays <= $totalDays*7) ? 'OK possible' : 'Houston pas possible';
+        $data[] = 'Check possibilité : '.$isItPossible;
+        $data[] = $topicPerTypeAndWeek;
+        dd($data);
+    
     }
 }

@@ -28,5 +28,82 @@
             </div>
         </div>
     </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-deck row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table card-table table-vcenter text-nowrap datatable" id="topics-table" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Date de début</th>
+                                        <th>Date de fin</th>
+                                        <th>Type</th>
+                                        <th class="w-1"></th>   
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for timeslot in training.timeslots %}
+                                        <tr>
+                                            <td>
+                                                {{timeslot.name}}
+                                            </td>
+                                             <td>
+                                                {{timeslot.startDate|format_datetime('short', 'short', locale='fr')}}
+                                            </td>
+                                            <td class="">
+                                                {{timeslot.endDate|format_datetime('short', 'short', locale='fr')}}
+                                            </td>
+                                            <td class="">
+                                                {{timeslot.timeSlotsTypes.name}}
+                                            </td>
+                                            <td class="text-end">
+                                                <div class="btn-list flex-nowrap justify-content-end">
+                                                    <a href="{{path('training_add_timeslot', {'id':training.id, 'tt':timeslot.id})}}" class="btn btn-ghost-warning">
+                                                        Modifier
+                                                    </a>
+                                                    <a href="{{path('training_remove_timeslot', {'id':timeslot.id})}}" class="btn btn-ghost-danger">
+                                                        Supprimer
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {%endfor%}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+{% endblock %}
+
+{% block javascripts_bottom %}
+    <script>
+            $('#topics-table').dataTable( {
+                "pageLength": 50,
+                "order": [[3, 'asc'],[1, 'asc']],
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                },
+                'columnDefs': [ 
+                    {
+                        'targets': [4], /* column index */
+                        'orderable': false, /* true or false */
+                    },
+                ],
+                "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
+                rowGroup: {
+                    dataSrc: 3,
+                    startRender: function ( rows, group ) {
+                        return $('<tr/>')
+                            .append( '<td class="text-center fw-bold" colspan="5">'+group +' ('+rows.count()+' matière(s))'+'</td>' );
+                    }
+                }
+            } );
+    </script>
 {% endblock %}
