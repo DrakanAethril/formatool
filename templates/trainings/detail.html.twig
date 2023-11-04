@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Formation : {{training.title}}{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('datatable') }}
+{% endblock %}
+
 
 {% block body %}
     <div class="page-header d-print-none">
@@ -165,71 +169,5 @@
 
 {% endblock %}
 {% block javascripts_bottom %}
-    <script>
-            function addCell(tr, content, colSpan = 1) {
-                let td = document.createElement('td');
-            
-                td.colSpan = colSpan;
-                td.textContent = content;
-            
-                tr.appendChild(td);
-            }
-            $('#topics-table').dataTable( {
-                "pageLength": 50,
-                "order": [[6, 'asc'],[0, 'asc']],
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-                },
-                'columnDefs': [ 
-                    {
-                        'targets': [8], /* column index */
-                        'orderable': false, /* true or false */
-                    },
-                    {
-                        'targets': [6],
-                        'visible': false
-                    }
-                ],
-                "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
-                rowGroup: {
-                    dataSrc: 6,
-                    startRender: function ( rows, group ) {
-                        return $('<tr/>')
-                            .append( '<td class="text-center fw-bold" colspan="8">'+group +' ('+rows.count()+' matière(s))'+'</td>' );
-                    },
-                    endRender: function (rows, group) {
-                        let sumCm =
-                            rows
-                                .data()
-                                .pluck(2)
-                                .reduce((a, b) => a*1 + b*1);
-                        let sumTd =
-                            rows
-                                .data()
-                                .pluck(3)
-                                .reduce((a, b) => a*1 + b*1);
-                        let sumTp =
-                            rows
-                                .data()
-                                .pluck(4)
-                                .reduce((a, b) => a*1 + b*1);
-                        let sumTotal =
-                            rows
-                                .data()
-                                .pluck(5)
-                                .reduce((a, b) => a*1 + b*1);
-
-                        let tr = document.createElement('tr');
-                        tr.classList.add("text-muted")
-                        addCell(tr, 'Totaux pour ' + group, 2);
-                        addCell(tr, sumCm+' H');
-                        addCell(tr, sumTd+' H');
-                        addCell(tr, sumTp+' H');
-                        addCell(tr, sumTotal+' H');
-                        addCell(tr, '', 2);
-                        return tr;
-                    }
-                }
-            } );
-    </script>
+    {{ encore_entry_script_tags('datatable') }}
 {% endblock %}

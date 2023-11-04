@@ -2,6 +2,10 @@
 
 {% block title %}Formation : {{training.title}}{% endblock %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('datatable') }}
+{% endblock %}
+
 {% block body %}
     <div class="page-header d-print-none">
         <div class="container-xl">
@@ -11,19 +15,8 @@
                         {{training.title}}
                     </div>
                     <h2 class="page-title">
-                        Gestion des périodes
+                        Paramétrage
                     </h2>
-                </div>
-                <div class="col-auto ms-auto d-print-none">
-                    <div class="btn-list">
-                        <a href="{{path('training_add_timeslot', {'id': training.id, 'tt': 0})}}" class="btn btn-primary d-none d-sm-inline-block">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                            Nouvelle Période
-                        </a>
-                        <a href="{{path('training_add_timeslot', {'id': training.id, 'tt': 0})}}" class="btn btn-primary d-sm-none btn-icon" aria-label="Ajouter une matière">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -33,47 +26,57 @@
             <div class="row row-deck row-cards">
                 <div class="col-12">
                     <div class="card">
-                        <div class="table-responsive">
-                            <table class="table card-table table-vcenter text-nowrap datatable" id="topics-table" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>Nom</th>
-                                        <th>Date de début</th>
-                                        <th>Date de fin</th>
-                                        <th>Type</th>
-                                        <th class="w-1"></th>   
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for timeslot in training.timeslots %}
-                                        <tr>
-                                            <td>
-                                                {{timeslot.name}}
-                                            </td>
-                                             <td>
-                                                {{timeslot.startDate|format_datetime('short', 'short', locale='fr')}}
-                                            </td>
-                                            <td class="">
-                                                {{timeslot.endDate|format_datetime('short', 'short', locale='fr')}}
-                                            </td>
-                                            <td class="">
-                                                {{timeslot.timeSlotsTypes.name}}
-                                            </td>
-                                            <td class="text-end">
-                                                <div class="btn-list flex-nowrap justify-content-end">
-                                                    <a href="{{path('training_add_timeslot', {'id':training.id, 'tt':timeslot.id})}}" class="btn btn-ghost-warning">
-                                                        Modifier
-                                                    </a>
-                                                    <a href="{{path('training_remove_timeslot', {'id':timeslot.id})}}" class="btn btn-ghost-danger">
-                                                        Supprimer
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    {%endfor%}
-                                </tbody>
-                            </table>
+                        <div class="card-header">
+                            {% include('trainings/parameters/tabs_menu.html.twig') %}
                         </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active show">
+                                    <div class="table-responsive">
+                                        <table class="table card-table table-vcenter text-nowrap datatable" id="timeslots-table" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nom</th>
+                                                    <th>Date de début</th>
+                                                    <th>Date de fin</th>
+                                                    <th>Type</th>
+                                                    <th class="w-1"></th>   
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for timeslot in training.timeslots %}
+                                                    <tr>
+                                                        <td>
+                                                            {{timeslot.name}}
+                                                        </td>
+                                                        <td>
+                                                            {{timeslot.startDate|format_datetime('short', 'short', locale='fr')}}
+                                                        </td>
+                                                        <td class="">
+                                                            {{timeslot.endDate|format_datetime('short', 'short', locale='fr')}}
+                                                        </td>
+                                                        <td class="">
+                                                            {{timeslot.timeSlotsTypes.name}}
+                                                        </td>
+                                                        <td class="text-end">
+                                                            <div class="btn-list flex-nowrap justify-content-end">
+                                                                <a href="{{path('training_add_timeslot', {'id':training.id, 'tt':timeslot.id})}}" class="btn btn-ghost-warning">
+                                                                    Modifier
+                                                                </a>
+                                                                <a href="{{path('training_remove_timeslot', {'id':timeslot.id})}}" class="btn btn-ghost-danger">
+                                                                    Supprimer
+                                                                </a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {%endfor%}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -83,27 +86,5 @@
 {% endblock %}
 
 {% block javascripts_bottom %}
-    <script>
-            $('#topics-table').dataTable( {
-                "pageLength": 50,
-                "order": [[3, 'asc'],[1, 'asc']],
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-                },
-                'columnDefs': [ 
-                    {
-                        'targets': [4], /* column index */
-                        'orderable': false, /* true or false */
-                    },
-                ],
-                "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
-                rowGroup: {
-                    dataSrc: 3,
-                    startRender: function ( rows, group ) {
-                        return $('<tr/>')
-                            .append( '<td class="text-center fw-bold" colspan="5">'+group +' ('+rows.count()+' matière(s))'+'</td>' );
-                    }
-                }
-            } );
-    </script>
+     {{ encore_entry_script_tags('datatable') }}
 {% endblock %}

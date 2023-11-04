@@ -1,0 +1,35 @@
+<ul class="nav nav-pills card-header-pills" data-bs-toggle="tabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a href="{{path('training_parameters', {'id': training.id, 'tt': 0})}}" class="nav-link {{ (currentTab == 'timeSlots') ? 'active' : '' }}" ">
+            Gestion des périodes
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a href="{{path('training_parameters_topics', {'id': training.id, 'tt': 0})}}" class="nav-link {{ (currentTab == 'topics') ? 'active' : '' }}">
+                Gestion des matières
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a href="{{path('training_parameters_topics_groups', {'id': training.id, 'tt': 0})}}" class="nav-link {{ (currentTab == 'topicsGroups') ? 'active' : '' }}">
+                Gestion des U.E.
+        </a>
+    </li>
+    {% if currentTab == 'timeSlots' %}
+           {% set addTxt = 'Nouvelles période' %}
+           {% set addLink = path('training_add_timeslot', {'id': training.id, 'tt': 0}) %}
+    {% endif %}
+    {% if currentTab == 'topics' %}
+           {% set addTxt = 'Nouvelles matière' %}
+           {% set addLink = path('training_add_topic', {'id': training.id, 'tt': 0}) %}
+    {% endif %}
+    {% if currentTab == 'topicsGroups' %}
+           {% set addTxt = 'Nouvelles UE' %}
+           {% set addLink = path('training_add_topics_group', {'id': training.id, 'tt': 0}) %}
+    {% endif %} 
+    <li class="nav-item ms-auto" role="presentation">
+        <a href="{{addLink}}" class="nav-link d-sm-inline-block text-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+            {{addTxt}}
+        </a>
+    </li>
+</ul>

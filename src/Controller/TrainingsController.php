@@ -123,10 +123,10 @@ class TrainingsController extends AbstractController
         }
     }
 
-    // PARAMETERS
+    // PARAMETERS - DEFAULT TO TIMESLOTS TABS
 
     #[Route('/training/{id<\d+>}/parameters', name: 'training_parameters')]
-    public function parameters(Trainings $training): Response
+    public function parameterstimeSlots(Trainings $training): Response
     {
 
         if(empty($training))
@@ -134,7 +134,36 @@ class TrainingsController extends AbstractController
 
         return $this->render('trainings/parameters.html.twig', [
             'training' => $training,
-            'menuTrainings' => 'active'
+            'menuTrainings' => 'active',
+            'currentTab' => 'timeSlots' 
+        ]);
+    }
+
+    #[Route('/training/{id<\d+>}/parameters/topics', name: 'training_parameters_topics')]
+    public function parametersTopics(Trainings $training): Response
+    {
+
+        if(empty($training))
+        return $this->redirectToRoute('home');
+
+        return $this->render('trainings/parameters.html.twig', [
+            'training' => $training,
+            'menuTrainings' => 'active',
+            'currentTab' => 'topics' 
+        ]);
+    }
+
+    #[Route('/training/{id<\d+>}/parameters/topics/groups', name: 'training_parameters_topics_groups')]
+    public function parametersTopicsGroups(Trainings $training): Response
+    {
+
+        if(empty($training))
+        return $this->redirectToRoute('home');
+
+        return $this->render('trainings/parameters.html.twig', [
+            'training' => $training,
+            'menuTrainings' => 'active',
+            'currentTab' => 'topicsGroups' 
         ]);
     }
 
@@ -230,30 +259,46 @@ class TrainingsController extends AbstractController
     {
         if(empty($training))
         return $this->redirectToRoute('home');
-
-        $data = [];
         $totalDays = 0;
+        $data = [];
+        $periodsInfos = [];
         foreach($training->getTimeslots() as $timeslot) {
+            $totalDaysPeriod = 0;
             if(empty($timeslot->getTimeSlotsTypes()) || $timeslot->getTimeSlotsTypes()->getId() == 2) { // TODO: const to replase "2"
                 $firstDay = $timeslot->getStartDate()->format('U');
                 $lastDay = $timeslot->getEndDate()->format('U');
                 while ($lastDay > $firstDay) {
                     $weekDay = date("w", $firstDay);
-                    if($weekDay > 0 && $weekDay <=5) $totalDays++;
+                    if($weekDay > 0 && $weekDay <=5) {
+                        $totalDaysPeriod++;
+                        $totalDays++;
+                    }
                     $firstDay += 24*60*60;
                 }
-                $data[] = $totalDays.' jours sur la période '.$timeslot->getName();
+                $periodsInfos[$timeslot->getId()] = ['totalDays' => $totalDaysPeriod];
+                $data[] = $totalDaysPeriod.' jours sur la période '.$timeslot->getName();
             }
         }
-        $numberOfWeeks = floor($totalDays /7);
+        $numberOfWeeks = max(floor($totalDays /7), 1);
         $totalHours = 0;
         $topicPerTypeAndWeek = [];
+        $lessonsTypes = ['Cm', 'Td', 'Tp'];
         foreach($training->getTrainings() as $topic) {
             $totalHours += $topic->getTotalVolume();
-            if(!empty($topic->getCm())) {
-                $topicPerTypeAndWeek[$topic->getId().'-CM-Regular'] = ['name' => $topic->getTopics()->getName(), 'volume' => floor($topic->getCm() / $numberOfWeeks)];
-                $topicPerTypeAndWeek[$topic->getId().'-CM-Remaining'] = ['name' => $topic->getTopics()->getName(), 'volume' => $topic->getCm() % $numberOfWeeks];
+            if(!empty($topic->getTotalVolume())){
+                $topicPerTypeAndWeek[$topic->getId()] = ['name' => $topic->getTopics()->getName()];
+                foreach($lessonsTypes as $lessonType) {
+                    $getter = 'get'.$lessonType;
+                    $typeVolume = $topic->$getter();
+                    if(!empty($typeVolume)) {
+                        $topicPerTypeAndWeek[$topic->getId()][$lessonType] = [
+                            'volume-regular' => floor($typeVolume / $numberOfWeeks),
+                            'volume-remaining' => $typeVolume % $numberOfWeeks
+                        ];
+                    }
+                }
             }
+            
         }
         $data[] = 'Heures totales : '.$totalHours;
 
