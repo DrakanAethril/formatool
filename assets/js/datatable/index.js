@@ -1,4 +1,6 @@
 import DataTable from 'datatables.net-dt';
+import languageFr from 'datatables.net-plugins/i18n/fr-FR.mjs';
+
 import 'datatables.net-rowgroup-dt';
 import 'datatables.net-dt/css/jquery.dataTables.min.css';
 
@@ -20,9 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
         $('#timeslots-table').dataTable( {
             "pageLength": 50,
             "order": [[3, 'asc'],[1, 'asc']],
-            /*"language": {
-                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-            },*/
+            "language": languageFr,
             'columnDefs': [ 
                 {
                     'targets': [4], /* column index */
@@ -46,9 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
         $('#topics-table').dataTable( {
             "pageLength": 50,
             "order": [[6, 'asc'],[0, 'asc']],
-            /*"language": {
-                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-            },*/
+            "language": languageFr,
             'columnDefs': [ 
                 {
                     'targets': [8], /* column index */
@@ -108,9 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
         $('#topics-groups-table').dataTable( {
             "pageLength": 50,
             "order": [0, 'asc'],
-            /*"language": {
-                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-            },*/
+            "language": languageFr,
             'columnDefs': [ 
                 {
                     'targets': [2], /* column index */
