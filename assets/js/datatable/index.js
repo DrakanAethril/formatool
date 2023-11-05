@@ -20,9 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
         $('#timeslots-table').dataTable( {
             "pageLength": 50,
             "order": [[3, 'asc'],[1, 'asc']],
-            "language": {
+            /*"language": {
                 "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-            },
+            },*/
             'columnDefs': [ 
                 {
                     'targets': [4], /* column index */
@@ -46,9 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
         $('#topics-table').dataTable( {
             "pageLength": 50,
             "order": [[6, 'asc'],[0, 'asc']],
-            "language": {
+            /*"language": {
                 "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
-            },
+            },*/
             'columnDefs': [ 
                 {
                     'targets': [8], /* column index */
@@ -99,6 +99,25 @@ document.addEventListener("DOMContentLoaded", () => {
                     return tr;
                 }
             }
+        } );
+    }
+
+    let dataTableTopicsGroupsSlots = document.getElementById("topics-groups-table");
+    if(dataTableTopicsGroupsSlots) {
+        let colNum = $("#topics-groups-table > tbody > tr:first > td").length;
+        $('#topics-groups-table').dataTable( {
+            "pageLength": 50,
+            "order": [0, 'asc'],
+            /*"language": {
+                "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+            },*/
+            'columnDefs': [ 
+                {
+                    'targets': [2], /* column index */
+                    'orderable': false, /* true or false */
+                },
+            ],
+            "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
         } );
     }
 });

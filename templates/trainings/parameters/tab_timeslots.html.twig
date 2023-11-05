@@ -1,0 +1,41 @@
+<div class="table-responsive">
+    <table class="table card-table table-vcenter text-nowrap datatable" id="timeslots-table" style="width:100%">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Type</th>
+                <th class="w-1"></th>   
+            </tr>
+        </thead>
+        <tbody>
+            {% for timeslot in training.timeslots %}
+                <tr>
+                    <td>
+                        {{timeslot.name}}
+                    </td>
+                    <td>
+                        {{timeslot.startDate|format_datetime('short', 'short', locale='fr')}}
+                    </td>
+                    <td class="">
+                        {{timeslot.endDate|format_datetime('short', 'short', locale='fr')}}
+                    </td>
+                    <td class="">
+                        {{timeslot.timeSlotsTypes.name}}
+                    </td>
+                    <td class="text-end">
+                        <div class="btn-list flex-nowrap justify-content-end">
+                            <a href="{{path('training_add_timeslot', {'id':training.id, 'tt':timeslot.id})}}" class="btn btn-ghost-warning">
+                                Modifier
+                            </a>
+                            <a href="{{path('training_remove_timeslot', {'id':timeslot.id})}}" class="btn btn-ghost-danger">
+                                Supprimer
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>

@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\TimeSlots;
+use App\Entity\TopicsGroups;
 use App\Entity\TopicsTrainings;
 use App\Entity\TopicsTrainingsLabel;
 use App\Entity\Trainings;
 use App\Form\TimeSlotType;
+use App\Form\TopicsGroupType;
 use App\Form\TopicsTrainingsType;
 use App\Repository\TimeSlotsRepository;
+use App\Repository\TopicsGroupsRepository;
 use App\Repository\TopicsTrainingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -123,6 +126,56 @@ class TrainingsController extends AbstractController
         }
     }
 
+    // TRAININGS GROUPS
+
+
+    #[Route('/training/{id<\d+>}/topics/group/add/{tt<\d+>?0}', name: 'training_add_topics_group')]
+    public function addTopicsGroup(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, TopicsGroupsRepository $topicsGroupsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $create = false;
+        if(empty($tt)) {
+            $topicsGroup = new TopicsGroups();
+            $topicsGroup->setTraining($training);
+            $create = true;
+        } else {
+            $topicsGroup = $topicsGroupsRepository->findOneBy(['id'=> $tt]);
+            if(empty($topicsGroup) || $topicsGroup->getTraining()->getId() !== $training->getId()) {
+                return $this->redirectToRoute('home');
+            }
+        }
+        
+        
+        $form = $this->createForm(TopicsGroupType::class, $topicsGroup);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($topicsGroup);
+            $entityManager->flush();
+            //redirect on training page
+            return $this->redirectToRoute('training_parameters_topics_groups', ['id' => $training->getId()]);
+        }
+
+
+        return $this->render('trainings/add_topics_group.html.twig', [
+            'training' => $training,
+            'topicsGroupForm' => $form->createView(),
+            'menuTrainings' => 'active'
+        ]);
+    }
+
+    #[Route('/training/topics/group/remove/{id}', name: 'training_remove_topics_group')]
+    public function removeTopicsGroup($id, TopicsGroupsRepository $topicsGroupsRepository, EntityManagerInterface $entityManager) : Response
+    {   
+        $topicsTrainings = $topicsGroupsRepository->findOneBy(['id' => intval($id)]);
+        if(!empty($topicsTrainings)) {
+            $idTraining = $topicsTrainings->getTraining()->getId();
+            $entityManager->remove($topicsTrainings);
+            $entityManager->flush();
+            return $this->redirectToRoute('training_parameters_topics_groups', ['id' => $idTraining]);
+        } else {
+            return $this->redirectToRoute('home');
+        }
+    }
     // PARAMETERS - DEFAULT TO TIMESLOTS TABS
 
     #[Route('/training/{id<\d+>}/parameters', name: 'training_parameters')]
