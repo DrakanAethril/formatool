@@ -110,6 +110,7 @@ class TopicsTrainingsType extends AbstractType
             ->add('cm', IntegerType::class)
             ->add('td', IntegerType::class)
             ->add('tp', IntegerType::class)
+            ->add('maxSessionLength', IntegerType::class)
             ->add('description', TextareaType::class, [
                 'required'=> false,
             ])

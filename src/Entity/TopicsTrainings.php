@@ -53,6 +53,9 @@ class TopicsTrainings
     #[ORM\OneToMany(mappedBy: 'topic', targetEntity: LessonSessions::class)]
     private Collection $lessonSessions;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $maxSessionLength = null;
+
     public function __construct()
     {
         $this->topicsTrainingsLabels = new ArrayCollection();
@@ -247,6 +250,18 @@ class TopicsTrainings
                 $lessonSession->setTopic(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMaxSessionLength(): ?int
+    {
+        return $this->maxSessionLength;
+    }
+
+    public function setMaxSessionLength(?int $maxSessionLength): static
+    {
+        $this->maxSessionLength = $maxSessionLength;
 
         return $this;
     }

@@ -74,6 +74,14 @@
                                         
                                     </div>
                                 </div>
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        {{ form_label(topicForm.maxSessionLength, 'Durée max par créneau', {'label_attr': {'class': 'form-label'}}) }}
+                                        
+                                            {{ form_widget(topicForm.maxSessionLength, {'attr': {'class': 'form-control'}}) }}
+                                        
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         {{ form_label(topicForm.topicsTrainingsLabels, 'Label', {'label_attr': {'class': 'form-label', 'required': false}}) }}
