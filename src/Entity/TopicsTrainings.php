@@ -50,10 +50,14 @@ class TopicsTrainings
     #[ORM\ManyToMany(targetEntity: TimeSlots::class, inversedBy: 'topicsTrainings')]
     private Collection $timeslots;
 
+    #[ORM\OneToMany(mappedBy: 'topic', targetEntity: LessonSessions::class)]
+    private Collection $lessonSessions;
+
     public function __construct()
     {
         $this->topicsTrainingsLabels = new ArrayCollection();
         $this->timeslots = new ArrayCollection();
+        $this->lessonSessions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -215,5 +219,35 @@ class TopicsTrainings
     public function __toString(): string
     {
         return (string) $this->getTopics()->getName();
+    }
+
+    /**
+     * @return Collection<int, LessonSessions>
+     */
+    public function getLessonSessions(): Collection
+    {
+        return $this->lessonSessions;
+    }
+
+    public function addLessonSession(LessonSessions $lessonSession): static
+    {
+        if (!$this->lessonSessions->contains($lessonSession)) {
+            $this->lessonSessions->add($lessonSession);
+            $lessonSession->setTopic($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLessonSession(LessonSessions $lessonSession): static
+    {
+        if ($this->lessonSessions->removeElement($lessonSession)) {
+            // set the owning side to null (unless already changed)
+            if ($lessonSession->getTopic() === $this) {
+                $lessonSession->setTopic(null);
+            }
+        }
+
+        return $this;
     }
 }

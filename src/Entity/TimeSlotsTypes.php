@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiResource]
 class TimeSlotsTypes
 {
+    public const LESSONS_TYPE = 2;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -108,5 +110,9 @@ class TimeSlotsTypes
         $this->color = $color;
 
         return $this;
+    }
+
+    public static function getSupportedLessonsType(): array {
+        return  ['Cm', 'Td', 'Tp'];
     }
 }

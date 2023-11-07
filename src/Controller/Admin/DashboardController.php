@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\LessonSessions;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -55,6 +56,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Matières', 'fas fa-chalkboard-user', Topics::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', Users::class);
         yield MenuItem::linkToCrud('Matières par formation', 'fas fa-chalkboard-user', TopicsTrainings::class);
+        yield MenuItem::linkToCrud('Cours', 'fas fa-calendar-xmark', LessonSessions::class);
         yield MenuItem::linkToCrud('Labels', 'fas fa-tag', TopicsTrainingsLabel::class);
         yield MenuItem::linkToCrud('Périodes', 'fas fa-calendar', TimeSlots::class);
         yield MenuItem::linkToCrud('Types de périodes', 'fas fa-calendar-xmark', TimeSlotsTypes::class);

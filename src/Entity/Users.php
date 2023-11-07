@@ -68,10 +68,14 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'teacher', targetEntity: TopicsTrainings::class)]
     private Collection $teachingTopics;
 
+    #[ORM\OneToMany(mappedBy: 'teacher', targetEntity: LessonSessions::class)]
+    private Collection $lessonSessions;
+
     public function __construct()
     {
         $this->ownedTrainings = new ArrayCollection();
         $this->teachingTopics = new ArrayCollection();
+        $this->lessonSessions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -324,6 +328,36 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($teachingTopic->getTeacher() === $this) {
                 $teachingTopic->setTeacher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LessonSessions>
+     */
+    public function getLessonSessions(): Collection
+    {
+        return $this->lessonSessions;
+    }
+
+    public function addLessonSession(LessonSessions $lessonSession): static
+    {
+        if (!$this->lessonSessions->contains($lessonSession)) {
+            $this->lessonSessions->add($lessonSession);
+            $lessonSession->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLessonSession(LessonSessions $lessonSession): static
+    {
+        if ($this->lessonSessions->removeElement($lessonSession)) {
+            // set the owning side to null (unless already changed)
+            if ($lessonSession->getTeacher() === $this) {
+                $lessonSession->setTeacher(null);
             }
         }
 

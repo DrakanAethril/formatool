@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\TimeSlots;
+use App\Entity\TimeTableGenerator;
 use App\Entity\TopicsGroups;
 use App\Entity\TopicsTrainings;
 use App\Entity\TopicsTrainingsLabel;
@@ -101,7 +102,7 @@ class TrainingsController extends AbstractController
             $entityManager->persist($topicTraining);
             $entityManager->flush();
             //redirect on training page
-            return $this->redirectToRoute('training_detail', ['id' => $training->getId()]);
+            return $this->redirectToRoute('training_parameters_topics', ['id' => $training->getId()]);
         }
 
 
@@ -120,7 +121,7 @@ class TrainingsController extends AbstractController
             $idTraining = $topicsTrainings->getTrainings()->getId();
             $entityManager->remove($topicsTrainings);
             $entityManager->flush();
-            return $this->redirectToRoute('training_detail', ['id' => $idTraining]);
+            return $this->redirectToRoute('training_parameters_topics', ['id' => $idTraining]);
         } else {
             return $this->redirectToRoute('home');
         }
@@ -312,53 +313,10 @@ class TrainingsController extends AbstractController
     {
         if(empty($training))
         return $this->redirectToRoute('home');
-        $totalDays = 0;
-        $data = [];
-        $periodsInfos = [];
-        foreach($training->getTimeslots() as $timeslot) {
-            $totalDaysPeriod = 0;
-            if(empty($timeslot->getTimeSlotsTypes()) || $timeslot->getTimeSlotsTypes()->getId() == 2) { // TODO: const to replase "2"
-                $firstDay = $timeslot->getStartDate()->format('U');
-                $lastDay = $timeslot->getEndDate()->format('U');
-                while ($lastDay > $firstDay) {
-                    $weekDay = date("w", $firstDay);
-                    if($weekDay > 0 && $weekDay <=5) {
-                        $totalDaysPeriod++;
-                        $totalDays++;
-                    }
-                    $firstDay += 24*60*60;
-                }
-                $periodsInfos[$timeslot->getId()] = ['totalDays' => $totalDaysPeriod];
-                $data[] = $totalDaysPeriod.' jours sur la période '.$timeslot->getName();
-            }
-        }
-        $numberOfWeeks = max(floor($totalDays /7), 1);
-        $totalHours = 0;
-        $topicPerTypeAndWeek = [];
-        $lessonsTypes = ['Cm', 'Td', 'Tp'];
-        foreach($training->getTrainings() as $topic) {
-            $totalHours += $topic->getTotalVolume();
-            if(!empty($topic->getTotalVolume())){
-                $topicPerTypeAndWeek[$topic->getId()] = ['name' => $topic->getTopics()->getName()];
-                foreach($lessonsTypes as $lessonType) {
-                    $getter = 'get'.$lessonType;
-                    $typeVolume = $topic->$getter();
-                    if(!empty($typeVolume)) {
-                        $topicPerTypeAndWeek[$topic->getId()][$lessonType] = [
-                            'volume-regular' => floor($typeVolume / $numberOfWeeks),
-                            'volume-remaining' => $typeVolume % $numberOfWeeks
-                        ];
-                    }
-                }
-            }
-            
-        }
-        $data[] = 'Heures totales : '.$totalHours;
+        
+        $timeTableGenerator = new TimeTableGenerator($training);
+        $timeTableGenerator->generateTimeTable();
 
-        $isItPossible = ($totalDays <= $totalDays*7) ? 'OK possible' : 'Houston pas possible';
-        $data[] = 'Check possibilité : '.$isItPossible;
-        $data[] = $topicPerTypeAndWeek;
-        dd($data);
-    
+        dd('ended');
     }
 }
