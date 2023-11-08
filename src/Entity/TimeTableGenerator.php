@@ -294,9 +294,36 @@ class TimeTableGenerator {
                     while ($lastDay > $firstDay) {
                         $weekDay = date("w", $firstDay);
                         if($weekDay > 0 && $weekDay <=5) {
+                            $dateKey = $weekDay.'-am';
                             // Save the morning
+                            $startHour = 8;
+                            $minutesSecondPeriods = "00:00";
+                            if(!empty($planning[$dateKey])) {
+                                foreach($planning[$dateKey] as $keyP => $valueP) {
+                                    if(!empty($valueP['sessions'])) {
+                                        foreach($valueP['sessions'] as $keySession => $valueSession) {
+                                            $lessonSession = new LessonSessions();
+                                            $lessonSession->setTraining($this->training);
+                                            $lessonSession->setDay(new \DateTime($firstDay));
+                                            $lessonSession->setStartHour(new \DateTime($startHour.':'.$minutesSecondPeriods));
+                                            $endHour = $startHour + $valueP['duration'];
+                                            $lessonSession->setStartHour(new \DateTime($endHour.':'.$minutesSecondPeriods));
+                                            $lessonSession->setLength($valueP['duration']);
+                                            $lessonSession->setTopic($this->getTopic($valueP['topic']));
+                                            
+                                            // Save to DB.
 
+                                            $startHour+= $valueP['duration'];
+                                        }
+                                    }
+                                   
+                                }
+                            } 
+
+                            $dateKey = $weekDay.'-pm';
                             // Save the afternoon
+                            $startHour = 13;
+                            $minutesSecondPeriods = "30:00";
                         }
                         $firstDay += 24*60*60;
                     }
