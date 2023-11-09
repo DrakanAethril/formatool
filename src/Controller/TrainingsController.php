@@ -309,12 +309,12 @@ class TrainingsController extends AbstractController
 
     // Timetable Generation
     #[Route('/training/{id<\d+>}/timetable/generation', name: 'training_timetable_generation')]
-    public function timetable_generate(Trainings $training): Response
+    public function timetable_generate(Trainings $training, EntityManagerInterface $entityManager): Response
     {
         if(empty($training))
         return $this->redirectToRoute('home');
         
-        $timeTableGenerator = new TimeTableGenerator($training);
+        $timeTableGenerator = new TimeTableGenerator($training, $entityManager);
         $timeTableGenerator->generateTimeTable();
 
         dd('ended');

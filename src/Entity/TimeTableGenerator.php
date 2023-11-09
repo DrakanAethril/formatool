@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-
 class TimeTableGenerator {
+
+    private $entityManager;
 
     private ?Trainings $training = null;
 
@@ -21,7 +23,8 @@ class TimeTableGenerator {
 
     private ?array $weeklyVolumePerTimeSlots = null;
 
-    public function __construct(Trainings $training = null) {
+    public function __construct(Trainings $training = null, EntityManagerInterface $entityManager) {
+        $this->entityManager = $entityManager;
         $this->training = $training;
         if(!empty($training)) {
             foreach($this->training->getTimeSlots() as $timeSlot) {
@@ -293,37 +296,62 @@ class TimeTableGenerator {
                     $lastDay = $timeSlot->getEndDate()->format('U');
                     while ($lastDay > $firstDay) {
                         $weekDay = date("w", $firstDay);
+                        $newDay = new \DateTime();
+                        $newDay->setTimestamp($firstDay);
                         if($weekDay > 0 && $weekDay <=5) {
                             $dateKey = $weekDay.'-am';
                             // Save the morning
                             $startHour = 8;
                             $minutesSecondPeriods = "00:00";
-                            if(!empty($planning[$dateKey])) {
-                                foreach($planning[$dateKey] as $keyP => $valueP) {
-                                    if(!empty($valueP['sessions'])) {
-                                        foreach($valueP['sessions'] as $keySession => $valueSession) {
+                            if(!empty($planning[$timeSlotId][$dateKey])) {
+                                /*foreach($planning[$timeSlotId][$dateKey] as $keyP => $valueP) {*/
+                                    if(!empty($planning[$timeSlotId][$dateKey]['sessions'])) {
+                                        foreach($planning[$timeSlotId][$dateKey]['sessions'] as $keySession => $valueSession) {
                                             $lessonSession = new LessonSessions();
                                             $lessonSession->setTraining($this->training);
-                                            $lessonSession->setDay(new \DateTime($firstDay));
+                                            $lessonSession->setDay($newDay);
                                             $lessonSession->setStartHour(new \DateTime($startHour.':'.$minutesSecondPeriods));
-                                            $endHour = $startHour + $valueP['duration'];
-                                            $lessonSession->setStartHour(new \DateTime($endHour.':'.$minutesSecondPeriods));
-                                            $lessonSession->setLength($valueP['duration']);
-                                            $lessonSession->setTopic($this->getTopic($valueP['topic']));
-                                            
-                                            // Save to DB.
+                                            $endHour = $startHour + $valueSession['duration'];
+                                            $lessonSession->setEndHour(new \DateTime($endHour.':'.$minutesSecondPeriods));
+                                            $lessonSession->setLength($valueSession['duration']);
+                                            $lessonSession->setTopic($this->getTopic($valueSession['topic']));
 
-                                            $startHour+= $valueP['duration'];
+                                            // Save to DB.
+                                            $this->entityManager->persist($lessonSession);
+                                            $this->entityManager->flush();
+                                            $startHour+= $valueSession['duration'];
                                         }
                                     }
                                    
-                                }
+                                /*}*/
                             } 
 
                             $dateKey = $weekDay.'-pm';
                             // Save the afternoon
                             $startHour = 13;
                             $minutesSecondPeriods = "30:00";
+                            if(!empty($planning[$timeSlotId][$dateKey])) {
+                                /*foreach($planning[$timeSlotId][$dateKey] as $keyP => $valueP) {*/
+                                    if(!empty($planning[$timeSlotId][$dateKey]['sessions'])) {
+                                        foreach($planning[$timeSlotId][$dateKey]['sessions'] as $keySession => $valueSession) {
+                                            $lessonSession = new LessonSessions();
+                                            $lessonSession->setTraining($this->training);
+                                            $lessonSession->setDay($newDay);
+                                            $lessonSession->setStartHour(new \DateTime($startHour.':'.$minutesSecondPeriods));
+                                            $endHour = $startHour + $valueSession['duration'];
+                                            $lessonSession->setEndHour(new \DateTime($endHour.':'.$minutesSecondPeriods));
+                                            $lessonSession->setLength($valueSession['duration']);
+                                            $lessonSession->setTopic($this->getTopic($valueSession['topic']));
+
+                                            // Save to DB.
+                                            $this->entityManager->persist($lessonSession);
+                                            $this->entityManager->flush();
+                                            $startHour+= $valueSession['duration'];
+                                        }
+                                    }
+                                   
+                                /*}*/
+                            } 
                         }
                         $firstDay += 24*60*60;
                     }
