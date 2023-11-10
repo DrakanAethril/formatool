@@ -221,7 +221,7 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    // PLANNING PAGE
+    // PLANNING DISSPLAY PAGES
 
     #[Route('/training/{id<\d+>}/planning', name: 'training_planning')]
     public function planning(Trainings $training): Response
@@ -231,6 +231,19 @@ class TrainingsController extends AbstractController
         return $this->redirectToRoute('home');
 
         return $this->render('trainings/planning.html.twig', [
+            'training' => $training,
+            'menuTrainings' => 'active'
+        ]);
+    }
+
+    #[Route('/training/{id<\d+>}/timetable/weekly', name: 'training_timetable_weekly')]
+    public function timetableWeekly(Trainings $training): Response
+    {
+
+        if(empty($training))
+        return $this->redirectToRoute('home');
+
+        return $this->render('trainings/timetable_weekly.html.twig', [
             'training' => $training,
             'menuTrainings' => 'active'
         ]);
@@ -307,7 +320,8 @@ class TrainingsController extends AbstractController
         
     }
 
-    // Timetable Generation
+    // TIMETABLE MANAGEMENT
+
     #[Route('/training/{id<\d+>}/timetable/generation', name: 'training_timetable_generation')]
     public function timetable_generate(Trainings $training, EntityManagerInterface $entityManager): Response
     {

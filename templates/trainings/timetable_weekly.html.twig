@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formation : {{training.title}}{% endblock %}
+
+{% block body %}
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                        {{training.title}}
+                    </div>
+                    <h2 class="page-title">
+                        Agenda par semaine
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-deck row-cards">
+                <div class="col-12">
+                    
+                    <div id='calendar-timetable-weekly' data-feed="{{ path('ajax_training_timetable_sessions', {'id': training.id} ) }}" class="w-100"></div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('calendar') }}
+{% endblock %}
+{% block javascripts_bottom %}
+    {{ encore_entry_script_tags('calendar') }}
+{% endblock %}
