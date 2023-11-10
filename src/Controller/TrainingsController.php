@@ -11,6 +11,7 @@ use App\Entity\Trainings;
 use App\Form\TimeSlotType;
 use App\Form\TopicsGroupType;
 use App\Form\TopicsTrainingsType;
+use App\Repository\LessonSessionsRepository;
 use App\Repository\TimeSlotsRepository;
 use App\Repository\TopicsGroupsRepository;
 use App\Repository\TopicsTrainingsRepository;
@@ -194,14 +195,19 @@ class TrainingsController extends AbstractController
     }
 
     #[Route('/training/{id<\d+>}/parameters/topics', name: 'training_parameters_topics')]
-    public function parametersTopics(Trainings $training): Response
+    public function parametersTopics(Trainings $training, LessonSessionsRepository $lessonSessionsRepository): Response
     {
 
         if(empty($training))
         return $this->redirectToRoute('home');
 
+        // Get Volumes
+        $volumesByTopics = $lessonSessionsRepository->getAssignedVolumesByTopic($training);
+
+
         return $this->render('trainings/parameters.html.twig', [
             'training' => $training,
+            'volumesByTopics' => $volumesByTopics,
             'menuTrainings' => 'active',
             'currentTab' => 'topics' 
         ]);
@@ -218,6 +224,20 @@ class TrainingsController extends AbstractController
             'training' => $training,
             'menuTrainings' => 'active',
             'currentTab' => 'topicsGroups' 
+        ]);
+    }
+
+    #[Route('/training/{id<\d+>}/parameters/timetable', name: 'training_parameters_timetable')]
+    public function parametersTimetable(Trainings $training): Response
+    {
+
+        if(empty($training))
+        return $this->redirectToRoute('home');
+
+        return $this->render('trainings/parameters.html.twig', [
+            'training' => $training,
+            'menuTrainings' => 'active',
+            'currentTab' => 'timetable' 
         ]);
     }
 
@@ -331,6 +351,6 @@ class TrainingsController extends AbstractController
         $timeTableGenerator = new TimeTableGenerator($training, $entityManager);
         $timeTableGenerator->generateTimeTable();
 
-        dd('ended');
+        return $this->redirectToRoute('training_parameters_timetable', ['id' => $training->getId()]);
     }
 }

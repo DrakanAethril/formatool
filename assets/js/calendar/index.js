@@ -63,6 +63,43 @@ document.addEventListener("DOMContentLoaded", () => {
       slotMaxTime: "19:00",
       editable: false,
       locale: frLocale,
+      nowIndicator: true,
+      eventSources: [
+        {
+          url: eventFeed,
+          method: 'POST',
+        }
+      ],
+      headerToolbar: {
+        left : "prev,next today",//left: "prev,next today",
+        center: "title",
+        right: ""//right: "dayGridMonth,timeGridWeek,timeGridDay,Formation"
+      },
+      initialView: 'timeGridWeek',
+      navLinks: true, // can click day/week names to navigate views
+      plugins: [ interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin, multiMonthPlugin, scrollGridPlugin, bootstrapPlugin ],
+      height: 'auto',
+      weekends: false,
+      weekNumbers: true,
+      allDaySlot: false
+    });
+  
+    calendar.render();
+  }
+
+  let calendarTtWeeklyParams = document.getElementById("calendar-timetable-weekly-params");
+  if(calendarTtWeeklyParams) {
+    let eventFeed = $(calendarTtWeeklyParams).attr("data-feed");
+
+    let calendar = new Calendar(calendarTtWeeklyParams, {
+      //initialDate: '2023-09-01',
+      schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+      timeZone: 'Europe/Paris',
+      slotMinTime: "08:00",
+      slotMaxTime: "19:00",
+      editable: true,
+      locale: frLocale,
+      nowIndicator: true,
       eventSources: [
         {
           url: eventFeed,

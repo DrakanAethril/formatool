@@ -23,6 +23,11 @@
             {% set addLink = path('training_add_topics_group', {'id': training.id, 'tt': 0}) %}
             {% set tabContent = 'trainings/parameters/tab_topics_groups.html.twig' %}
     {% endif %}
+    {% if currentTab == 'timetable' %}
+            {% set addTxt = 'Générer l\'agenda' %}
+            {% set addLink = path('training_timetable_generation', {'id': training.id, 'tt': 0}) %}
+            {% set tabContent = 'trainings/parameters/tab_timetable.html.twig' %}
+    {% endif %}
     <div class="page-header d-print-none">
         <div class="container-xl">
             <div class="row g-2 align-items-center">
@@ -63,4 +68,5 @@
 
 {% block javascripts_bottom %}
      {{ encore_entry_script_tags('datatable') }}
+     {{ encore_entry_script_tags('calendar') }}
 {% endblock %}

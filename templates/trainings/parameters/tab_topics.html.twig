@@ -7,7 +7,8 @@
                 <th>CM</th>
                 <th>TD</th>
                 <th>TP</th>
-                <th>Volume Total</th>
+                <th>Vol. Total</th>
+                <th>Vol. Planifié</th>
                 <th>U.E.</th>
                 <th>Label</th>
                 <th class="w-1"></th>
@@ -33,6 +34,15 @@
                     </td>
                     <td class="">
                         {{topic.totalVolume}}
+                    </td>
+                    <td 
+                        class="
+                            {% if(volumesByTopics[topic.id]|default(0) != topic.totalVolume) %}
+                                 text-warning fw-bold
+                            {% endif %}
+                        ">
+                        
+                        {{volumesByTopics[topic.id]|default(0)}} 
                     </td>
                     <td>
                         {{topic.topicsGroups.name|default('NA')}}
