@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\LessonSessions;
 use App\Entity\TimeSlots;
 use App\Entity\TimeTableGenerator;
 use App\Entity\TopicsGroups;
 use App\Entity\TopicsTrainings;
 use App\Entity\TopicsTrainingsLabel;
 use App\Entity\Trainings;
+use App\Form\LessonSessionType;
 use App\Form\TimeSlotType;
 use App\Form\TopicsGroupType;
 use App\Form\TopicsTrainingsType;
@@ -130,7 +132,6 @@ class TrainingsController extends AbstractController
 
     // TRAININGS GROUPS
 
-
     #[Route('/training/{id<\d+>}/topics/group/add/{tt<\d+>?0}', name: 'training_add_topics_group')]
     public function addTopicsGroup(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, TopicsGroupsRepository $topicsGroupsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -178,6 +179,59 @@ class TrainingsController extends AbstractController
             return $this->redirectToRoute('home');
         }
     }
+
+    // Lesson Sessions
+
+    #[Route('/training/{id<\d+>}/lessonsession/add/{tt<\d+>?0}', name: 'training_add_lessonsession')]
+    public function addLessonSession(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, LessonSessionsRepository $lessonSessionsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $create = false;
+        if(empty($tt)) {
+            $lessonSession = new LessonSessions();
+            $lessonSession->setTraining($training);
+            $create = true;
+        } else {
+            $lessonSession = $lessonSessionsRepository->findOneBy(['id'=> $tt]);
+            if(empty($lessonSession) || $lessonSession->getTraining()->getId() !== $training->getId()) {
+                return $this->redirectToRoute('home');
+            }
+        }
+        
+        
+        $form = $this->createForm(LessonSessionType::class, $lessonSession);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager->persist($lessonSession);
+            $entityManager->flush();
+            //redirect on training page
+            return $this->redirectToRoute('training_parameters_timetable', ['id' => $training->getId()]);
+        }
+
+
+        return $this->render('trainings/add_lesson_session.html.twig', [
+            'training' => $training,
+            'lessonSessionForm' => $form->createView(),
+            'menuTrainings' => 'active'
+        ]);
+    }
+
+    #[Route('/training/lessonsessions/remove/{id}', name: 'training_remove_lessonsession')]
+    public function removeLessonSession($id, LessonSessionsRepository $lessonSessionsRepository, EntityManagerInterface $entityManager) : Response
+    {   
+        $lessonSession = $$lessonSessionsRepository->findOneBy(['id' => intval($id)]);
+        if(!empty($lessonSession)) {
+            $idTraining = $lessonSession->getTraining()->getId();
+            $entityManager->remove($lessonSession);
+            $entityManager->flush();
+            return $this->redirectToRoute('training_parameters_timetable', ['id' => $idTraining]);
+        } else {
+            return $this->redirectToRoute('home');
+        }
+    }
+
+
     // PARAMETERS - DEFAULT TO TIMESLOTS TABS
 
     #[Route('/training/{id<\d+>}/parameters', name: 'training_parameters')]

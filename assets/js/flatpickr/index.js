@@ -13,4 +13,23 @@ document.addEventListener("DOMContentLoaded", () => {
         dateFormat: "d-m-Y H:i",
         time_24hr : true
     });
+
+    flatpickr(".lessonsession-day-flatpickr", {
+        enableTime: true,
+        dateFormat: "d-m-Y",
+        time_24hr : true,
+        enableTime: false 
+    });
+
+    flatpickr(".lessonsession-hour-flatpickr", {
+        enableTime: true,
+        dateFormat: "H:i",
+        time_24hr : true,
+        minuteIncrement: 30,
+        defaultHour: 8,
+        defaultMinute: 30,
+        //minTime: 8,
+        //maxTime: 16,
+        noCalendar: true
+    });
 });
