@@ -187,6 +187,7 @@ class TrainingsController extends AbstractController
     {
         $create = false;
         if(empty($tt)) {
+            $tt = 0;
             $lessonSession = new LessonSessions();
             $lessonSession->setTraining($training);
             $create = true;
@@ -213,14 +214,15 @@ class TrainingsController extends AbstractController
         return $this->render('trainings/add_lesson_session.html.twig', [
             'training' => $training,
             'lessonSessionForm' => $form->createView(),
-            'menuTrainings' => 'active'
+            'menuTrainings' => 'active',
+            'tt' => $tt
         ]);
     }
 
     #[Route('/training/lessonsessions/remove/{id}', name: 'training_remove_lessonsession')]
     public function removeLessonSession($id, LessonSessionsRepository $lessonSessionsRepository, EntityManagerInterface $entityManager) : Response
     {   
-        $lessonSession = $$lessonSessionsRepository->findOneBy(['id' => intval($id)]);
+        $lessonSession = $lessonSessionsRepository->findOneBy(['id' => intval($id)]);
         if(!empty($lessonSession)) {
             $idTraining = $lessonSession->getTraining()->getId();
             $entityManager->remove($lessonSession);
@@ -295,7 +297,7 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    // PLANNING DISSPLAY PAGES
+    // PLANNING DISPLAY PAGES
 
     #[Route('/training/{id<\d+>}/planning', name: 'training_planning')]
     public function planning(Trainings $training): Response

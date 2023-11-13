@@ -21,13 +21,17 @@ document.addEventListener("DOMContentLoaded", () => {
         let colNum = $("#timeslots-table > tbody > tr:first > td").length;
         $('#timeslots-table').dataTable( {
             "pageLength": 50,
-            "order": [[3, 'asc'],[1, 'asc']],
+            "order": [[3, 'asc'],[0, 'asc']],
             "language": languageFr,
             'columnDefs': [ 
                 {
                     'targets': [4], /* column index */
                     'orderable': false, /* true or false */
                 },
+                {
+                    'targets': [3],
+                    'visible': false
+                }
             ],
             "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
             rowGroup: {
@@ -55,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 {
                     'targets': [7],
                     'visible': false
-                }
+                },
             ],
             "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
             rowGroup: {

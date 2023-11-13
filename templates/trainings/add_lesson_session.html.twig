@@ -89,7 +89,12 @@
                             </div>                               
                         </div>
                         <div class="card-footer text-end">
-                            <button type="submit" class="btn btn-primary ms-auto">Enregistrer</button>
+                            <div class="d-flex">
+                                {% if(tt > 0) %}
+                                    <a href="{{ path('training_remove_lessonsession', {'id' : tt} ) }}" class="btn btn-danger">Supprimer</a>
+                                {% endif %}
+                                <button type="submit" class="btn btn-primary ms-auto">Enregistrer</button>
+                            </div>
                         </div>
                         
                     {{ form_end(lessonSessionForm) }}
