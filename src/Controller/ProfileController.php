@@ -60,4 +60,12 @@ class ProfileController extends AbstractController
         ]);
         
     }
+
+    #[Route('/profile/timetable', name: 'profile_teacher_timetable')]
+    public function timetable() {
+        return $this->render('profile/index.html.twig', [
+            'subTemplate' => 'profile/timetable_teacher.html.twig',
+            'subMenuTimeTableTeacher' => 'active'
+        ]);
+    }
 }

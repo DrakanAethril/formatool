@@ -3,5 +3,8 @@
     <div class="list-group list-group-transparent">
         <a href="{{path('profile')}}" class="list-group-item list-group-item-action d-flex align-items-center {{subMenuInfos|default('')}}">Informations générales</a>
         <a href="{{path('change_pwd')}}" class="list-group-item list-group-item-action d-flex align-items-center {{subMenuChangePwd|default('')}}">Gestion du mot de passe</a>
+        {% if is_granted('ROLE_TEACHER') %}
+            <a href="{{path('profile_teacher_timetable')}}" class="list-group-item list-group-item-action d-flex align-items-center {{subMenuTimeTableTeacher|default('')}}">Mon planning</a>
+        {% endif %}
     </div>
 </div>

@@ -314,7 +314,12 @@ class TimeTableGenerator {
                                             $endHour = $startHour + $valueSession['duration'];
                                             $lessonSession->setEndHour(new \DateTime($endHour.':'.$minutesSecondPeriods));
                                             $lessonSession->setLength($valueSession['duration']);
-                                            $lessonSession->setTopic($this->getTopic($valueSession['topic']));
+                                            $topic = $this->getTopic($valueSession['topic']);
+                                            $lessonSession->setTopic($topic);
+                                            if(!empty($topic->getTeacher()) > 0 && !empty($topic->getTeacher()->getId())) {
+                                                $lessonSession->setTeacher($topic->getTeacher());
+                                            }
+
 
                                             // Save to DB.
                                             $this->entityManager->persist($lessonSession);

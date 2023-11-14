@@ -10,6 +10,15 @@
                 }
             }
         },
+        "@symfony/ux-dropzone": {
+            "dropzone": {
+                "enabled": true,
+                "fetch": "eager",
+                "autoimport": {
+                    "@symfony/ux-dropzone/dist/style.min.css": true
+                }
+            }
+        },
         "@symfony/ux-toggle-password": {
             "toggle-password": {
                 "enabled": true,
