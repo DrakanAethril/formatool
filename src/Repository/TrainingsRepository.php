@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Places;
 use App\Entity\Trainings;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,6 +20,24 @@ class TrainingsRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Trainings::class);
+    }
+
+    public function findTrainingsByPlaceAndState(Places $place, bool $active): array {
+        if($active) {
+            return $this->createQueryBuilder('t')
+                ->andWhere('t.place = :place')
+                ->setParameter('place', $place)
+                ->andWhere('t.inactive IS NULL')
+                ->getQuery()
+                ->getResult();
+        } else {
+            return $this->createQueryBuilder('t')
+                ->andWhere("t.place = :place")
+                ->setParameter('place', $place)
+                ->andWhere("t.inactive IS NOT NULL")
+                ->getQuery()
+                ->getResult();
+        }
     }
 
 //    /**

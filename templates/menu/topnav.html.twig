@@ -36,6 +36,61 @@
                             </span>
                         </a>
                     </li>
+                    {% if menu_places is not empty %}
+                    <li class="nav-item dropdown {{menuPlaces|default('')}}">
+                        <a class="nav-link dropdown-toggle" href="#menu-trainings" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-building-community" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M8 9l5 5v7h-5v-4m0 4h-5v-7l5 -5m1 1v-6a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v17h-8" />
+                                <path d="M13 7l0 .01" />
+                                <path d="M17 7l0 .01" />
+                                <path d="M17 11l0 .01" />
+                                <path d="M17 15l0 .01" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-title">
+                            Etablissements
+                            </span>
+                        </a>
+                        
+                        <div class="dropdown-menu" data-bs-popper="static">
+                            <div class="dropdown-menu-columns">
+                                <div class="dropdown-menu-column">
+                                    {% for place in menu_places %}
+                                        <div class="dropend">
+                                            <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                                {{place.name}}
+                                            </a>
+                                            <div class="dropdown-menu">
+                                                <a href="{{ path('places_trainings', {'id': place.id} ) }}" class="dropdown-item">
+                                                    Liste des formations
+                                                </a>
+                                                <a href="{{ path('training_parameters', {'id': place.id} ) }}" class="dropdown-item">
+                                                    Paramétrage
+                                                </a>
+                                            
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    <!--
+                                     <a class="dropdown-item text-pink" href="#">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M12 5l0 14"/>
+                                            <path d="M5 12l14 0"/>
+                                        </svg>
+                                        Nouvelle formation
+                                    </a>
+                                    -->
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </li>
+
+                    {% endif %}
+
                     {% if menu_trainings is not empty %}
                     <li class="nav-item dropdown {{menuTrainings|default('')}}">
                         <a class="nav-link dropdown-toggle" href="#menu-trainings" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
@@ -100,22 +155,7 @@
                         </div>
                        
                     </li>
-
                     {% endif %}
-                    <li class="nav-item {{menuTeachers|default('')}}">
-                        <a class="nav-link" href="{{ path('teachers') }}">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6"></path>
-                                <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4"></path>
-                            </svg>
-                            </span>
-                            <span class="nav-link-title">
-                                Enseignants
-                            </span>
-                        </a>
-                    </li>
                     {% if is_granted('ROLE_ADMIN') %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('admin') }}" >

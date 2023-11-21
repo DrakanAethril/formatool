@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formation : {{place.name}} - Ajouter une formation{% endblock %}
+
+{% block body %}
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                        {{ place.name}}
+                    </div>
+                    <h2 class="page-title">
+                        Ajout de formation
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    {{ form_errors(trainingForm) }}
+
+                    {{ form_start(trainingForm, { 'attr' : { 'class': 'card' } } ) }}
+                        <div class="card-body">
+                            <div class="row row-cards">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        {{ form_label(trainingForm.title, 'Intitulé', {'label_attr': {'class': 'form-label required'}}) }}
+                                       
+                                            {{ form_widget(trainingForm.title, {'attr': {'class': 'form-control', 'required': true}}) }}
+                                       
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        {{ form_label(trainingForm.level, 'Niveau', {'label_attr': {'class': 'form-label'}, 'required': false}) }}
+                                        
+                                            {{ form_widget(trainingForm.level, {'attr': {'class': 'form-control'}}) }}
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        {{ form_label(trainingForm.owner, 'Responsable', {'label_attr': {'class': 'form-label'}}) }}
+                                       
+                                            {{ form_widget(trainingForm.owner, {'attr': {'class': ''}}) }}
+                                        
+                                    </div>
+                                </div>
+                            </div>                               
+                        </div>
+                        <div class="card-footer text-end">
+                            <button type="submit" class="btn btn-primary ms-auto">Enregistrer</button>
+                        </div>
+                        
+                    {{ form_end(trainingForm) }}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+{% endblock %}

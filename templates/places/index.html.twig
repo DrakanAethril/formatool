@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formations au sein de {{ place.name }} {% endblock %}
+
+{% block body %}
+
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        {{ place.name }} > Formations actives
+                    </h2>
+                </div>
+                <div class="col-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        <a href="{{path('place_add_training', {'id': place.id, 'tt': 0})}}" class="btn btn-primary d-none d-sm-inline-block">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                            Nouvelle Formation
+                        </a>
+                        <a href="{{path('place_add_training', {'id': place.id, 'tt': 0})}}" class="btn btn-primary d-sm-none btn-icon" aria-label="Ajouter une matière">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-deck row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table card-table table-vcenter text-nowrap datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Niveau</th>
+                                        <th>Responsable</th>
+                                        <th>Nb étudiants</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for training in activeTrainings %}
+                                        <tr>
+                                            <td>
+                                                {{training.title}}
+                                            </td>
+                                            <td>
+                                                {{training.level}}
+                                            </td>
+                                            <td>
+                                                {{training.owner.displayName}}
+                                            </td>
+                                            <td>
+                                                
+                                            </td>
+                                            <td class="text-end">
+                                                <a href="{{path('place_add_training', {'id':place.id, 'tt':training.id})}}" class="btn btn-ghost-warning">
+                                                    Modifier
+                                                </a>
+                                                <a href="{{path('place_archive_training', {'id':training.id})}}" class="btn btn-ghost-danger">
+                                                    Archiver
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {%endfor%}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
