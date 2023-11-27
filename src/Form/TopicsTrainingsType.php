@@ -14,7 +14,7 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -111,7 +111,7 @@ class TopicsTrainingsType extends AbstractType
             ->add('td', IntegerType::class)
             ->add('tp', IntegerType::class)
             ->add('maxSessionLength', IntegerType::class)
-            ->add('description', TextareaType::class, [
+            ->add('description', CKEditorType::class, [
                 'required'=> false,
             ])
         ;

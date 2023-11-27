@@ -39,12 +39,14 @@ class TrainingsController extends AbstractController
         $volGen = 0;
         $volProjet = 0;
         $volTech = 0;
-        $nbStudents = 0;
+        $volTotal = 0;
+        //$nbStudents = 0;
 
         if(!empty($training->getTrainings())) {
             foreach($training->getTrainings() as $topics) {
                 if(!empty($topics->getTopicsTrainingsLabels())) {
                     foreach($topics->getTopicsTrainingsLabels() as $label) {
+                        $volTotal += $topics->getTotalVolume();
                         switch($label->getId()) {
                             case TopicsTrainingsLabel::GENERAL:
                                 $volGen += $topics->getTotalVolume();
@@ -68,7 +70,7 @@ class TrainingsController extends AbstractController
             'volGen' => $volGen,
             'volTech' => $volTech,
             'volProjet' => $volProjet,
-            'nbStudents' => $nbStudents,
+            'volTotal' => $volTotal,
             'menuTrainings' => 'active'
         ]);
     }
