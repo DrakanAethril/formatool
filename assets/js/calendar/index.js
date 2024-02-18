@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let eventFeed = $(calendarEl).attr("data-feed");
 
     let calendar = new Calendar(calendarEl, {
-      initialDate: '2023-09-01',
+      initialDate: '2024-09-01',
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       timeZone: 'Europe/Paris',
       locale: frLocale,
