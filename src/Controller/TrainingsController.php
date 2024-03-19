@@ -35,41 +35,28 @@ class TrainingsController extends AbstractController
 
         if(empty($training))
         return $this->redirectToRoute('home');
-
-        $volGen = 0;
-        $volProjet = 0;
-        $volTech = 0;
         $volTotal = 0;
+
+        $volCm = 0;
+        $volTd = 0;
+        $volTp = 0;
         //$nbStudents = 0;
 
         if(!empty($training->getTrainings())) {
             foreach($training->getTrainings() as $topics) {
-                if(!empty($topics->getTopicsTrainingsLabels())) {
-                    foreach($topics->getTopicsTrainingsLabels() as $label) {
-                        $volTotal += $topics->getTotalVolume();
-                        switch($label->getId()) {
-                            case TopicsTrainingsLabel::GENERAL:
-                                $volGen += $topics->getTotalVolume();
-                            break;
-                            case TopicsTrainingsLabel::TECHNIQUE:
-                                $volTech += $topics->getTotalVolume();
-                            break;
-                            case TopicsTrainingsLabel::PROJET:
-                                $volProjet += $topics->getTotalVolume();
-                            break;
-                            default:
-                        }
-                    }
-                }
+                $volCm += $topics->getCm();
+                $volTd += $topics->getTd();
+                $volTp += $topics->getTp();
+                $volTotal += $topics->getTotalVolume();
             }
         }
         
 
         return $this->render('trainings/detail.html.twig', [
             'training' => $training,
-            'volGen' => $volGen,
-            'volTech' => $volTech,
-            'volProjet' => $volProjet,
+            'volCm' => $volCm,
+            'volTd' => $volTd,
+            'volTp' => $volTp,
             'volTotal' => $volTotal,
             'menuTrainings' => 'active'
         ]);
