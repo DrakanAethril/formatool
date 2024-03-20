@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
                     let tr = document.createElement('tr');
                     tr.classList.add("text-muted")
-                    dataTable_addCell(tr, 'Totaux pour ' + group, 2);
+                    dataTable_addCell(tr, group, 2);
                     dataTable_addCell(tr, sumCm+' H');
                     dataTable_addCell(tr, sumTd+' H');
                     dataTable_addCell(tr, sumTp+' H');

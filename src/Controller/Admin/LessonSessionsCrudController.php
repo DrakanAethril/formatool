@@ -26,7 +26,6 @@ class LessonSessionsCrudController extends AbstractCrudController
             AssociationField::new('training')
                 ->autocomplete(),
             AssociationField::new('topic')
-                ->autocomplete()
         ];
     }
     

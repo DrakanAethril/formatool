@@ -132,6 +132,9 @@ document.addEventListener("DOMContentLoaded", () => {
       selectable: true,
       select: function(info) {
         alert('selected ' + info.startStr + ' to ' + info.endStr);
+        let newEvent = $(calendarTtWeeklyParams).attr("data-new-event");
+        alert(newEvent);
+        window.location.href= ''+newEvent+'?start='+info.startStr+'&end='+info.endStr;
       },
 
       eventDrop: function(info) {

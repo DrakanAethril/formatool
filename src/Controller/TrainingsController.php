@@ -179,6 +179,21 @@ class TrainingsController extends AbstractController
             $tt = 0;
             $lessonSession = new LessonSessions();
             $lessonSession->setTraining($training);
+            if(!empty($request->query->get('start'))) {
+                $startDate = \DateTime::createFromFormat('Y-m-d h:i:s',str_replace('T', ' ', $request->query->get('start')));
+            }
+            if(!empty($request->query->get('end'))) {
+                $endDate = \DateTime::createFromFormat('Y-m-d h:i:s',str_replace('T', ' ', $request->query->get('end')));
+            }
+            if(!empty($startDate)) {
+                $lessonSession->setDay($startDate);
+                $lessonSession->setStartHour($startDate);
+                if(!empty($endDate)) {
+                    $lessonSession->setEndHour($endDate);
+                    $lessonSession->setLength(ceil( ($endDate->format('U')-$startDate->format('U')) / 3600 ));
+                }    
+            }
+            
             $create = true;
         } else {
             $lessonSession = $lessonSessionsRepository->findOneBy(['id'=> $tt]);
