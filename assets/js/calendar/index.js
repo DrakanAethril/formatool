@@ -131,9 +131,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       selectable: true,
       select: function(info) {
-        alert('selected ' + info.startStr + ' to ' + info.endStr);
+        //alert('selected ' + info.startStr + ' to ' + info.endStr);
         let newEvent = $(calendarTtWeeklyParams).attr("data-new-event");
-        alert(newEvent);
+        //alert(newEvent);
         window.location.href= ''+newEvent+'?start='+info.startStr+'&end='+info.endStr;
       },
 
@@ -149,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
               alert('ok');
           },
           error: function (xhr, status, error) {
-              alert("nol");
+              alert("nok");
           }
         });
         //alert(info.event.title + " was dropped on " + info.event.start.toISOString());
