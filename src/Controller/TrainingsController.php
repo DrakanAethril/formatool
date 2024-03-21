@@ -180,10 +180,10 @@ class TrainingsController extends AbstractController
             $lessonSession = new LessonSessions();
             $lessonSession->setTraining($training);
             if(!empty($request->query->get('start'))) {
-                $startDate = \DateTime::createFromFormat('Y-m-d h:i:s',str_replace('T', ' ', $request->query->get('start')));
+                $startDate = \DateTime::createFromFormat('Y-m-d H:i:s',str_replace('T', ' ', $request->query->get('start')));
             }
             if(!empty($request->query->get('end'))) {
-                $endDate = \DateTime::createFromFormat('Y-m-d h:i:s',str_replace('T', ' ', $request->query->get('end')));
+                $endDate = \DateTime::createFromFormat('Y-m-d H:i:s',str_replace('T', ' ', $request->query->get('end')));
             }
             if(!empty($startDate)) {
                 $lessonSession->setDay($startDate);
@@ -211,7 +211,8 @@ class TrainingsController extends AbstractController
             $entityManager->persist($lessonSession);
             $entityManager->flush();
             //redirect on training page
-            return $this->redirectToRoute('training_parameters_timetable', ['id' => $training->getId()]);
+            $redirect = $this->generateUrl('training_parameters_timetable', ['id' => $training->getId()]).'?focus='.$lessonSession->getDay()->format('Y-m-d');
+            return $this->redirect($redirect);
         }
 
 
@@ -288,16 +289,25 @@ class TrainingsController extends AbstractController
     }
 
     #[Route('/training/{id<\d+>}/parameters/timetable', name: 'training_parameters_timetable')]
-    public function parametersTimetable(Trainings $training): Response
+    public function parametersTimetable(Trainings $training, Request $request): Response
     {
 
         if(empty($training))
         return $this->redirectToRoute('home');
 
+        $focus = date("Y-m-d");
+        if(!empty($request->get('focus'))) {
+            $dateFocus = \DateTime::createFromFormat('Y-m-d', $request->get('focus'));
+            if(!empty($dateFocus)){
+                $focus = $dateFocus->format('Y-m-d');
+            }
+        }
+
         return $this->render('trainings/parameters.html.twig', [
             'training' => $training,
             'menuTrainings' => 'active',
-            'currentTab' => 'timetable' 
+            'currentTab' => 'timetable',
+            'focus' => $focus 
         ]);
     }
 

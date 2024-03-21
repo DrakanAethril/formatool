@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let eventFeed = $(calendarTtWeeklyParams).attr("data-feed");
 
     let calendar = new Calendar(calendarTtWeeklyParams, {
-      //initialDate: '2023-09-01',
+      initialDate: $(calendarTtWeeklyParams).attr("data-focus"),
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       timeZone: 'Europe/Paris',
       slotMinTime: "08:00",
