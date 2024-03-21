@@ -6,10 +6,13 @@ use App\Entity\LessonSessions;
 use App\Entity\Topics;
 use App\Entity\TopicsTrainings;
 use App\Entity\Users;
+use Doctrine\DBAL\Types\BooleanType;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -78,7 +81,21 @@ class LessonSessionType extends AbstractType
                     ]
                 ]
             )
-        ;
+            ->add('title', TextType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add('unsupervised', ChoiceType::class,
+                [
+                    'required' => true,
+                    'label' => 'En autonomie',
+                    'choices'  => [
+                        'Non' => 0,
+                        'Oui' => 1
+                    ],
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

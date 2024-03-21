@@ -67,10 +67,10 @@ class TrainingsAjaxController extends AbstractController
 
             $sessions[] = [
                 'id' => $sessionDb->getId(),
-                'title'=> $sessionDb->getTopic()->getTopics()->getName(),
+                'title'=> $sessionDb->getDisplayName(),
                 'start'=> $dateStartTime,
                 'end' => $dateEndTime,
-                //'backgroundColor' => $timeSlot->getTimeSlotsTypes()->getColor(),
+                'backgroundColor' => empty($sessionDb->isUnsupervised()) ? '#0054A6' : '#667382',
                 'allDay' => false,
                 'url' => $this->generateUrl('training_add_lessonsession', ['id' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]),
                 'extendedProps' => [

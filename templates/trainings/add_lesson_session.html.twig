@@ -28,6 +28,14 @@
                             <div class="row row-cards">
                                 <div class="col-md-4">
                                     <div class="mb-3">
+                                        {{ form_label(lessonSessionForm.title, 'Dénomination EDT', {'label_attr': {'class': 'form-label'}}) }}
+                                       
+                                            {{ form_widget(lessonSessionForm.title, {'attr': {'class': 'form-control', 'required': false}}) }}
+                                       
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
                                         {{ form_label(lessonSessionForm.topic, 'Matière', {'label_attr': {'class': 'form-label required'}}) }}
                                        
                                             {{ form_widget(lessonSessionForm.topic, {'attr': {'class': '', 'required': true}}) }}
@@ -41,8 +49,6 @@
                                             {{ form_widget(lessonSessionForm.teacher, {'attr': {'class': ''}}) }}
                                         
                                     </div>
-                                </div>
-                                <div class="col-md-4">
                                 </div>
                                 <div class="col-md-2">
                                     <div class="mb-3">
@@ -82,6 +88,14 @@
                                         {{ form_label(lessonSessionForm.length, 'Durée', {'label_attr': {'class': 'form-label required'}}) }}
                                         
                                             {{ form_widget(lessonSessionForm.length, {'attr': {'class': 'form-control'}}) }}
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        {{ form_label(lessonSessionForm.unsupervised, 'En autonomie', {'label_attr': {'class': 'form-label '}}) }}
+                                        
+                                            {{ form_widget(lessonSessionForm.unsupervised, {'attr': {'class': 'form-select'}}) }}
                                         
                                     </div>
                                 </div>

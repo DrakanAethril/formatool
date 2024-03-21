@@ -39,6 +39,16 @@ class LessonSessions
     #[ORM\ManyToOne(inversedBy: 'lessonSessions')]
     private ?Users $teacher = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $title = null;
+
+    #[ORM\Column(
+        type: "boolean",
+        nullable: false,
+        options: ["default" => 0]
+    )]
+    private ?bool $unsupervised = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -126,5 +136,33 @@ class LessonSessions
         $this->teacher = $teacher;
 
         return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): static
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function isUnsupervised(): ?bool
+    {
+        return $this->unsupervised;
+    }
+
+    public function setUnsupervised(bool $unsupervised): static
+    {
+        $this->unsupervised = $unsupervised;
+
+        return $this;
+    }
+
+    public function getDisplayName() {
+        return empty($this->getTitle()) ? $this->getTopic()->getTopics()->getName() : $this->getTitle();
     }
 }
