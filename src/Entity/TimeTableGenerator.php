@@ -319,6 +319,7 @@ class TimeTableGenerator {
                                             if(!empty($topic->getTeacher()) > 0 && !empty($topic->getTeacher()->getId())) {
                                                 $lessonSession->setTeacher($topic->getTeacher());
                                             }
+                                            $lessonSession->setUnsupervised(false);
 
 
                                             // Save to DB.
@@ -347,6 +348,7 @@ class TimeTableGenerator {
                                             $lessonSession->setEndHour(new \DateTime($endHour.':'.$minutesSecondPeriods));
                                             $lessonSession->setLength($valueSession['duration']);
                                             $lessonSession->setTopic($this->getTopic($valueSession['topic']));
+                                            $lessonSession->setUnsupervised(false);
 
                                             // Save to DB.
                                             $this->entityManager->persist($lessonSession);
