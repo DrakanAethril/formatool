@@ -106,6 +106,9 @@ document.addEventListener("DOMContentLoaded", () => {
           method: 'POST',
         }
       ],
+      eventContent: function(arg) {
+        return { html: '<b>'+arg.event.title+'</b><br/><i>('+arg.event.extendedProps.topic+')</i>' };
+      },
       headerToolbar: {
         left : "prev,next today",//left: "prev,next today",
         center: "title",

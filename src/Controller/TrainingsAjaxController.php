@@ -74,6 +74,7 @@ class TrainingsAjaxController extends AbstractController
                 'allDay' => false,
                 'url' => $this->generateUrl('training_add_lessonsession', ['id' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]),
                 'extendedProps' => [
+                    'topic' => $sessionDb->getTopic()->getTopics()->getName(),
                     'training' => $sessionDb->getTraining()->getId(),
                     'updateUrl' => $this->generateUrl('training_update_lessonsession', ['id' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]),
                 ]
