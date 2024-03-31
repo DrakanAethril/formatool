@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Etablissement : {{place.name}}{% endblock %}
+
+{% block body %}
+    {% if currentTab == 'rooms' %}
+            {% set addTxt = 'Nouvelle salle' %}
+            {% set addLink = path('training_add_timeslot', {'id': place.id, 'tt': 0}) %}
+            {% set tabContent = 'places/parameters/tab_rooms.html.twig' %}
+    {% endif %}
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                        {{place.name}}
+                    </div>
+                    <h2 class="page-title">
+                        Paramétrage
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-deck row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            {% include('places/parameters/tabs_menu.html.twig') %}
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active show">
+                                    {% include(tabContent) %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

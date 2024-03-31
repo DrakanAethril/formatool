@@ -89,4 +89,20 @@ class PlacesController extends AbstractController
             return $this->redirectToRoute('home');
         }
     }
+
+    // PARAMETERS - DEFAULT TO ROOMS TABS
+
+    #[Route('/{id<\d+>}/parameters', name: 'places_parameters')]
+    public function parametersRooms(Places $place): Response
+    {
+
+        if(empty($place))
+        return $this->redirectToRoute('home');
+
+        return $this->render('places/parameters.html.twig', [
+            'place' => $place,
+            'menuPlaces' => 'active',
+            'currentTab' => 'rooms' 
+        ]);
+    }
 }
