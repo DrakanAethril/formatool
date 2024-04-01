@@ -24,12 +24,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-//#[Route('/manager')]
+#[Route('/trainings')]
 
 class TrainingsController extends AbstractController
 {
 
-    #[Route('/training/{id}', name: 'training_detail')]
+    #[Route('/{id}', name: 'training_detail')]
     public function detail(Trainings $training): Response
     {
 
@@ -64,7 +64,7 @@ class TrainingsController extends AbstractController
 
     // TOPICS
 
-    #[Route('/training/{id<\d+>}/topic/add/{tt<\d+>?0}', name: 'training_add_topic')]
+    #[Route('/{id<\d+>}/topic/add/{tt<\d+>?0}', name: 'training_add_topic')]
     public function addTopic(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, TopicsTrainingsRepository $topicsTrainingsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
@@ -105,7 +105,7 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/training/topic/remove/{id}', name: 'training_remove_topic')]
+    #[Route('/topic/remove/{id}', name: 'training_remove_topic')]
     public function removeTopic($id, TopicsTrainingsRepository $topicsTrainingsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $topicsTrainings = $topicsTrainingsRepository->findOneBy(['id' => intval($id)]);
@@ -121,7 +121,7 @@ class TrainingsController extends AbstractController
 
     // TRAININGS GROUPS
 
-    #[Route('/training/{id<\d+>}/topics/group/add/{tt<\d+>?0}', name: 'training_add_topics_group')]
+    #[Route('/{id<\d+>}/topics/group/add/{tt<\d+>?0}', name: 'training_add_topics_group')]
     public function addTopicsGroup(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, TopicsGroupsRepository $topicsGroupsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
@@ -155,7 +155,7 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/training/topics/group/remove/{id}', name: 'training_remove_topics_group')]
+    #[Route('/topics/group/remove/{id}', name: 'training_remove_topics_group')]
     public function removeTopicsGroup($id, TopicsGroupsRepository $topicsGroupsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $topicsTrainings = $topicsGroupsRepository->findOneBy(['id' => intval($id)]);
@@ -171,7 +171,7 @@ class TrainingsController extends AbstractController
 
     // Lesson Sessions
 
-    #[Route('/training/{id<\d+>}/lessonsession/add/{tt<\d+>?0}', name: 'training_add_lessonsession')]
+    #[Route('/{id<\d+>}/lessonsession/add/{tt<\d+>?0}', name: 'training_add_lessonsession')]
     public function addLessonSession(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, LessonSessionsRepository $lessonSessionsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
@@ -224,7 +224,7 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/training/lessonsessions/remove/{id}', name: 'training_remove_lessonsession')]
+    #[Route('/lessonsessions/remove/{id}', name: 'training_remove_lessonsession')]
     public function removeLessonSession($id, LessonSessionsRepository $lessonSessionsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $lessonSession = $lessonSessionsRepository->findOneBy(['id' => intval($id)]);
@@ -241,7 +241,7 @@ class TrainingsController extends AbstractController
 
     // PARAMETERS - DEFAULT TO TIMESLOTS TABS
 
-    #[Route('/training/{id<\d+>}/parameters', name: 'training_parameters')]
+    #[Route('/{id<\d+>}/parameters', name: 'training_parameters')]
     public function parameterstimeSlots(Trainings $training): Response
     {
 
@@ -255,7 +255,7 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/training/{id<\d+>}/parameters/topics', name: 'training_parameters_topics')]
+    #[Route('/{id<\d+>}/parameters/topics', name: 'training_parameters_topics')]
     public function parametersTopics(Trainings $training, LessonSessionsRepository $lessonSessionsRepository): Response
     {
 
@@ -274,7 +274,7 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/training/{id<\d+>}/parameters/topics/groups', name: 'training_parameters_topics_groups')]
+    #[Route('/{id<\d+>}/parameters/topics/groups', name: 'training_parameters_topics_groups')]
     public function parametersTopicsGroups(Trainings $training): Response
     {
 
@@ -288,7 +288,7 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/training/{id<\d+>}/parameters/timetable', name: 'training_parameters_timetable')]
+    #[Route('/{id<\d+>}/parameters/timetable', name: 'training_parameters_timetable')]
     public function parametersTimetable(Trainings $training, Request $request): Response
     {
 
@@ -313,7 +313,7 @@ class TrainingsController extends AbstractController
 
     // PLANNING DISPLAY PAGES
 
-    #[Route('/training/{id<\d+>}/planning', name: 'training_planning')]
+    #[Route('/{id<\d+>}/planning', name: 'training_planning')]
     public function planning(Trainings $training): Response
     {
 
@@ -326,7 +326,7 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/training/{id<\d+>}/timetable/weekly', name: 'training_timetable_weekly')]
+    #[Route('/{id<\d+>}/timetable/weekly', name: 'training_timetable_weekly')]
     public function timetableWeekly(Trainings $training): Response
     {
 
@@ -341,7 +341,7 @@ class TrainingsController extends AbstractController
 
     // TIMESLOTS
 
-    #[Route('/training/{id<\d+>}/timeslot/add/{tt<\d+>?0}', name: 'training_add_timeslot')]
+    #[Route('/{id<\d+>}/timeslot/add/{tt<\d+>?0}', name: 'training_add_timeslot')]
     public function addTimeSlot(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, TimeSlotsRepository $timeSlotsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
@@ -375,7 +375,7 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/training/timeslot/remove/{id}', name: 'training_remove_timeslot')]
+    #[Route('/timeslot/remove/{id}', name: 'training_remove_timeslot')]
     public function removeTimeSlot($id, TimeSlotsRepository $timeSlotsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $timeSlot = $timeSlotsRepository->findOneBy(['id' => intval($id)]);
@@ -390,7 +390,7 @@ class TrainingsController extends AbstractController
     }
 
     //TEACHERS
-    #[Route('/training/{id<\d+>}/teachers', name: 'training_teachers')]
+    #[Route('/{id<\d+>}/teachers', name: 'training_teachers')]
     public function teachers(Trainings $training): Response
     {
         if(empty($training))
@@ -412,7 +412,7 @@ class TrainingsController extends AbstractController
 
     // TIMETABLE MANAGEMENT
 
-    #[Route('/training/{id<\d+>}/timetable/generation', name: 'training_timetable_generation')]
+    #[Route('/{id<\d+>}/timetable/generation', name: 'training_timetable_generation')]
     public function timetable_generate(Trainings $training, EntityManagerInterface $entityManager): Response
     {
         if(empty($training))
