@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Etablissement : {{place.name}} - Ajouter une salle de classe{% endblock %}
+
+{% block body %}
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                        {{ place.name}}
+                    </div>
+                    <h2 class="page-title">
+                        Ajout d'une salle de classe
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    {{ form_errors(classRoomForm) }}
+
+                    {{ form_start(classRoomForm, { 'attr' : { 'class': 'card' } } ) }}
+                        <div class="card-body">
+                            <div class="row row-cards">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        {{ form_label(classRoomForm.name, 'Nom de la salle', {'label_attr': {'class': 'form-label required'}}) }}
+                                            {{ form_widget(classRoomForm.name, {'attr': {'class': 'form-control', 'required': true}}) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        {{ form_label(classRoomForm.trainings, 'Formations', {'label_attr': {'class': 'form-label', 'required': false}}) }}
+                                            {{ form_widget(classRoomForm.trainings, {
+                                                    'attr' : {'class' : ''}
+                                                }) }}
+                                    </div>
+                                </div>
+                            </div>                               
+                        </div>
+                        <div class="card-footer text-end">
+                            <button type="submit" class="btn btn-primary ms-auto">Enregistrer</button>
+                        </div>
+                        
+                    {{ form_end(classRoomForm) }}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+{% endblock %}

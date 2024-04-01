@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\ClassRooms;
 use App\Entity\Places;
 use App\Entity\Trainings;
+use App\Form\ClassRoomType;
 use App\Form\TrainingsType;
+use App\Repository\ClassRoomsRepository;
 use App\Repository\TrainingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -85,6 +88,57 @@ class PlacesController extends AbstractController
             $entityManager->persist($training);
             $entityManager->flush();
             return $this->redirectToRoute('places_trainings', ['id' => $training->getPlace()->getId()]);
+        } else {
+            return $this->redirectToRoute('home');
+        }
+    }
+
+    // CLASSROOMS
+
+    #[Route('/{id<\d+>}/classroom/add/{tt<\d+>?0}', name: 'place_add_class_room')]
+    public function addClassRoom(#[MapEntity(expr: 'repository.find(id)')] Places $place, int $tt, ClassRoomsRepository $classRoomsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $create = false;
+        if(empty($tt)) {
+            $classRoom = new ClassRooms();
+            $classRoom->setPlace($place);
+            $create = true;
+        } else {
+            $classRoom = $classRoomsRepository->findOneBy(['id'=> $tt]);
+            if(empty($classRoom) || $classRoom->getPlace()->getId() !== $place->getId()) {
+                return $this->redirectToRoute('home');
+            }
+        }
+        
+        
+        $form = $this->createForm(ClassRoomType::class, $classRoom);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($classRoom);
+            $entityManager->flush();
+            //redirect on training page
+            return $this->redirectToRoute('places_parameters', ['id' => $place->getId()]);
+        }
+
+
+        return $this->render('places/add_classroom.html.twig', [
+            'place' => $place,
+            'classRoomForm' => $form->createView(),
+            'menuPlaces' => 'active'
+        ]);
+    }
+
+    #[Route('/classroom/remove/{id}', name: 'place_remove_class_room')]
+    public function removeClassRoom($id, ClassRoomsRepository $classRoomsRepository, EntityManagerInterface $entityManager) : Response
+    {   
+        $classRoom = $classRoomsRepository->findOneBy(['id' => intval($id)]);
+        if(!empty($classRoom)) {
+            $idPlace = $classRoom->getPlace()->getId();
+            $classRoom->setInactive(new \DateTime());
+            $entityManager->persist($classRoom);
+            $entityManager->flush();
+            return $this->redirectToRoute('places_parameters', ['id' => $idPlace]);
         } else {
             return $this->redirectToRoute('home');
         }

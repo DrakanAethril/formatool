@@ -1,1 +1,32 @@
-hello.
+<div class="table-responsive">
+    <table class="table card-table table-vcenter text-nowrap datatable" id="topics-groups-table" style="width:100%">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th class="w-1"></th>   
+            </tr>
+        </thead>
+        <tbody>
+            {% for classRoom in place.classRooms %}
+                {% if classRoom.inactive is null %}
+                    <tr>
+                        <td>
+                            {{classRoom.name}}
+                        </td>
+                        
+                        <td class="text-end">
+                            <div class="btn-list flex-nowrap justify-content-end">
+                                <a href="{{path('place_add_class_room', {'id':place.id, 'tt':classRoom.id})}}" class="btn btn-ghost-warning">
+                                    Modifier
+                                </a>
+                                <a href="{{path('place_remove_class_room', {'id':classRoom.id})}}" class="btn btn-ghost-danger">
+                                    Désactiver
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
