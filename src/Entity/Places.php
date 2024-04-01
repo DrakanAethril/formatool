@@ -27,9 +27,13 @@ class Places
     #[ORM\OneToMany(mappedBy: 'place', targetEntity: Trainings::class)]
     private Collection $trainings;
 
+    #[ORM\OneToMany(targetEntity: ClassRooms::class, mappedBy: 'place')]
+    private Collection $classRooms;
+
     public function __construct()
     {
         $this->trainings = new ArrayCollection();
+        $this->classRooms = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,5 +97,35 @@ class Places
 
     public function __toString() : string {
         return $this->getName();
+    }
+
+    /**
+     * @return Collection<int, ClassRooms>
+     */
+    public function getClassRooms(): Collection
+    {
+        return $this->classRooms;
+    }
+
+    public function addClassRoom(ClassRooms $classRoom): static
+    {
+        if (!$this->classRooms->contains($classRoom)) {
+            $this->classRooms->add($classRoom);
+            $classRoom->setPlace($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClassRoom(ClassRooms $classRoom): static
+    {
+        if ($this->classRooms->removeElement($classRoom)) {
+            // set the owning side to null (unless already changed)
+            if ($classRoom->getPlace() === $this) {
+                $classRoom->setPlace(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\ClassRooms;
 use App\Entity\LessonSessions;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -51,14 +52,15 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToUrl('Website', 'fa fa-home', 'dashboard');
         yield MenuItem::linkToCrud('Etablissements', 'fas fa-school', Places::class);
+        yield MenuItem::linkToCrud('Salles', 'fas fa-person-chalkboard', ClassRooms::class);
         yield MenuItem::linkToCrud('Formations', 'fas fa-certificate', Trainings::class);
         yield MenuItem::linkToCrud('Unités d\'enseignements', 'fas fa-tag', TopicsGroups::class);
         yield MenuItem::linkToCrud('Matières', 'fas fa-chalkboard-user', Topics::class);
-        yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', Users::class);
         yield MenuItem::linkToCrud('Matières par formation', 'fas fa-chalkboard-user', TopicsTrainings::class);
         yield MenuItem::linkToCrud('Cours', 'fas fa-calendar-xmark', LessonSessions::class);
         yield MenuItem::linkToCrud('Labels', 'fas fa-tag', TopicsTrainingsLabel::class);
         yield MenuItem::linkToCrud('Périodes', 'fas fa-calendar', TimeSlots::class);
         yield MenuItem::linkToCrud('Types de périodes', 'fas fa-calendar-xmark', TimeSlotsTypes::class);
+        yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', Users::class);
     }
 }
