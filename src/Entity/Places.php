@@ -30,10 +30,14 @@ class Places
     #[ORM\OneToMany(targetEntity: ClassRooms::class, mappedBy: 'place')]
     private Collection $classRooms;
 
+    #[ORM\ManyToMany(targetEntity: Cursus::class, mappedBy: 'places')]
+    private Collection $cursuses;
+
     public function __construct()
     {
         $this->trainings = new ArrayCollection();
         $this->classRooms = new ArrayCollection();
+        $this->cursuses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -124,6 +128,33 @@ class Places
             if ($classRoom->getPlace() === $this) {
                 $classRoom->setPlace(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cursus>
+     */
+    public function getCursuses(): Collection
+    {
+        return $this->cursuses;
+    }
+
+    public function addCursus(Cursus $cursus): static
+    {
+        if (!$this->cursuses->contains($cursus)) {
+            $this->cursuses->add($cursus);
+            $cursus->addPlace($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCursus(Cursus $cursus): static
+    {
+        if ($this->cursuses->removeElement($cursus)) {
+            $cursus->removePlace($this);
         }
 
         return $this;

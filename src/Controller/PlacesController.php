@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\ClassRooms;
+use App\Entity\Cursus;
 use App\Entity\Places;
 use App\Entity\Trainings;
 use App\Form\ClassRoomType;
+use App\Form\CursusFormType;
 use App\Form\TrainingsType;
 use App\Repository\ClassRoomsRepository;
+use App\Repository\CursusRepository;
 use App\Repository\TrainingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,7 +36,7 @@ class PlacesController extends AbstractController
     // TRAININGS
 
     #[Route('/{id<\d+>}/training/add/{tt<\d+>?0}', name: 'place_add_training')]
-    public function addTopic(#[MapEntity(expr: 'repository.find(id)')] Places $place, int $tt, TrainingsRepository $trainingsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    public function addTraining(#[MapEntity(expr: 'repository.find(id)')] Places $place, int $tt, TrainingsRepository $trainingsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
         if(empty($tt)) {
@@ -144,6 +147,58 @@ class PlacesController extends AbstractController
         }
     }
 
+    // CURSUSES
+
+    #[Route('/{id<\d+>}/cursus/add/{tt<\d+>?0}', name: 'place_add_cursus')]
+    public function addCursus(#[MapEntity(expr: 'repository.find(id)')] Places $place, int $tt, CursusRepository $cursusRepository, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $create = false;
+        if(empty($tt)) {
+            $cursus = new Cursus();
+            $cursus->addPlace($place);
+            $create = true;
+        } else {
+            $cursus = $cursusRepository->findOneBy(['id'=> $tt]);
+            if(empty($cursus)) {
+                return $this->redirectToRoute('home');
+            }
+        }
+        
+        
+        $form = $this->createForm(CursusFormType::class, $cursus);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($cursus);
+            $entityManager->flush();
+            //redirect on training page
+            return $this->redirectToRoute('places_parameters_cursuses', ['id' => $place->getId()]);
+        }
+
+
+        return $this->render('places/add_cursus.html.twig', [
+            'place' => $place,
+            'cursusForm' => $form->createView(),
+            'menuPlaces' => 'active'
+        ]);
+    }
+
+    #[Route('/{place<\d+>}cursus/remove/{id}', name: 'place_remove_cursus')]
+    public function removeCursus(#[MapEntity(expr: 'repository.find(place)')] Places $place, $id, CursusRepository $cursusRepository, EntityManagerInterface $entityManager) : Response
+    {   
+        $cursus = $cursusRepository->findOneBy(['id' => intval($id)]);
+        if(!empty($cursus)) {
+            $idPlace = $place->getId();
+            $cursus->setInactive(new \DateTime());
+            $entityManager->persist($cursus);
+            $entityManager->flush();
+            return $this->redirectToRoute('places_parameters_cursuses', ['id' => $idPlace]);
+        } else {
+            return $this->redirectToRoute('home');
+        }
+    }
+
+
     // PARAMETERS - DEFAULT TO ROOMS TABS
 
     #[Route('/{id<\d+>}/parameters', name: 'places_parameters')]
@@ -157,6 +212,20 @@ class PlacesController extends AbstractController
             'place' => $place,
             'menuPlaces' => 'active',
             'currentTab' => 'rooms' 
+        ]);
+    }
+
+    #[Route('/{id<\d+>}/parameters/cursuses', name: 'places_parameters_cursuses')]
+    public function parametersCursuses(Places $place): Response
+    {
+
+        if(empty($place))
+        return $this->redirectToRoute('home');
+
+        return $this->render('places/parameters.html.twig', [
+            'place' => $place,
+            'menuPlaces' => 'active',
+            'currentTab' => 'cursuses' 
         ]);
     }
 }

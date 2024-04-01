@@ -21,9 +21,6 @@ class Trainings
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $level = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $inactive = null;
 
@@ -48,6 +45,9 @@ class Trainings
 
     #[ORM\ManyToMany(targetEntity: ClassRooms::class, mappedBy: 'trainings')]
     private Collection $classRooms;
+
+    #[ORM\ManyToOne(inversedBy: 'trainings')]
+    private ?Cursus $cursus = null;
 
     public function __construct()
     {
@@ -75,16 +75,12 @@ class Trainings
         return $this;
     }
 
-    public function getLevel(): ?string
+    public function getLevel(): string
     {
-        return $this->level;
-    }
-
-    public function setLevel(string $level): static
-    {
-        $this->level = $level;
-
-        return $this;
+        if(!empty($this->getCursus())) {
+            return $this->getCursus()->getType()->getLevel();
+        }
+        return '';
     }
 
     public function getInactive(): ?\DateTimeInterface
@@ -270,6 +266,18 @@ class Trainings
         if ($this->classRooms->removeElement($classRoom)) {
             $classRoom->removeTraining($this);
         }
+
+        return $this;
+    }
+
+    public function getCursus(): ?Cursus
+    {
+        return $this->cursus;
+    }
+
+    public function setCursus(?Cursus $cursus): static
+    {
+        $this->cursus = $cursus;
 
         return $this;
     }

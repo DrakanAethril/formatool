@@ -2,38 +2,39 @@
 
 namespace App\Form;
 
-use App\Entity\Trainings;
-use App\Entity\Users;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
+use App\Entity\Cursus;
+use App\Entity\CursusType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType as TextType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
-class TrainingsType extends AbstractType
+class CursusFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class, [
-                'required' => true,
+            ->add('name', TextType::class)
+            ->add('description', CKEditorType::class, [
+                'required'=> false,
             ])
-            ->add('owner', EntityType::class,
-            [
-                'class' => Users::class,
-                'required' => false,
-                'placeholder' => 'Aucun',
+            ->add('type', EntityType::class, [
+                'class' => CursusType::class,
                 'query_builder' => function (EntityRepository $er): QueryBuilder {
                     return $er->createQueryBuilder('u')
-                        ->orderBy('u.lastname', 'ASC');
+                        ->orderBy('u.level', 'ASC');
                 },
                 'autocomplete' => true,
+                'required' => true,
                 'tom_select_options' => [
                     'plugins' => [
                             'clear_button' => [
-                                'className' => 'clear-button icon',
+                                'className' => 'd-none',
                             ]
                         ]
                 ]
@@ -44,7 +45,7 @@ class TrainingsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Trainings::class,
+            'data_class' => Cursus::class,
         ]);
     }
 }

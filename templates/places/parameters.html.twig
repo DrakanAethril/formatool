@@ -2,11 +2,21 @@
 
 {% block title %}Etablissement : {{place.name}}{% endblock %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('datatable') }}
+{% endblock %}
+
+
 {% block body %}
     {% if currentTab == 'rooms' %}
             {% set addTxt = 'Nouvelle salle' %}
-            {% set addLink = path('training_add_timeslot', {'id': place.id, 'tt': 0}) %}
+            {% set addLink = path('place_add_class_room', {'id': place.id, 'tt': 0}) %}
             {% set tabContent = 'places/parameters/tab_rooms.html.twig' %}
+    {% endif %}
+    {% if currentTab == 'cursuses' %}
+            {% set addTxt = 'Nouveau cursus' %}
+            {% set addLink = path('place_add_cursus', {'id': place.id, 'tt': 0}) %}
+            {% set tabContent = 'places/parameters/tab_cursuses.html.twig' %}
     {% endif %}
     <div class="page-header d-print-none">
         <div class="container-xl">
@@ -45,3 +55,8 @@
     </div>
 
 {% endblock %}
+
+{% block javascripts_bottom %}
+     {{ encore_entry_script_tags('datatable') }}
+{% endblock %}
+

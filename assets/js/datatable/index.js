@@ -126,4 +126,41 @@ document.addEventListener("DOMContentLoaded", () => {
             "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
         } );
     }
+
+    let dataTablePlacesClassRooms = document.getElementById("place-classrooms-table");
+    if(dataTablePlacesClassRooms) {
+        let colNum = $("#place-classrooms-table > tbody > tr:first > td").length;
+        $('#place-classrooms-table').dataTable( {
+            "pageLength": 50,
+            "order": [0, 'asc'],
+            "language": languageFr,
+            'columnDefs': [ 
+                {
+                    'targets': [1], /* column index */
+                    'orderable': false, /* true or false */
+                },
+            ],
+            "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
+        } );
+    }
+
+    let dataTablePlacesCursuses = document.getElementById("place-cursuses-table");
+    if(dataTablePlacesCursuses) {
+        let colNum = $("#place-cursuses-table > tbody > tr:first > td").length;
+        $('#place-cursuses-table').dataTable( {
+            "pageLength": 50,
+            "order": [0, 'asc'],
+            "language": languageFr,
+            'columnDefs': [ 
+                {
+                    'targets': [2], /* column index */
+                    'orderable': false, /* true or false */
+                },
+            ],
+            "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
+        } );
+    }
+
+
+
 }); 
