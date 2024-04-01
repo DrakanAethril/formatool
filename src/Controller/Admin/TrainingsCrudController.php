@@ -34,6 +34,8 @@ class TrainingsCrudController extends AbstractCrudController
             DateTimeField::new('inactive'),
             AssociationField::new('place')
                 ->autocomplete(),
+            AssociationField::new('classRooms')
+                ->autocomplete(),
             AssociationField::new('owner')
                 ->autocomplete()
         ];

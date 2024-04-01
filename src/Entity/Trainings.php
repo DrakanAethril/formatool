@@ -46,12 +46,16 @@ class Trainings
     #[ORM\OneToMany(mappedBy: 'training', targetEntity: LessonSessions::class)]
     private Collection $lessonSessions;
 
+    #[ORM\ManyToMany(targetEntity: ClassRooms::class, mappedBy: 'trainings')]
+    private Collection $classRooms;
+
     public function __construct()
     {
         $this->trainings = new ArrayCollection();
         $this->topicsGroups = new ArrayCollection();
         $this->timeSlots = new ArrayCollection();
         $this->lessonSessions = new ArrayCollection();
+        $this->classRooms = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -238,6 +242,33 @@ class Trainings
             if ($lessonSession->getTraining() === $this) {
                 $lessonSession->setTraining(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ClassRooms>
+     */
+    public function getClassRooms(): Collection
+    {
+        return $this->classRooms;
+    }
+
+    public function addClassRoom(ClassRooms $classRoom): static
+    {
+        if (!$this->classRooms->contains($classRoom)) {
+            $this->classRooms->add($classRoom);
+            $classRoom->addTraining($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClassRoom(ClassRooms $classRoom): static
+    {
+        if ($this->classRooms->removeElement($classRoom)) {
+            $classRoom->removeTraining($this);
         }
 
         return $this;

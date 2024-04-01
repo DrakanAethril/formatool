@@ -4,9 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\ClassRooms;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 
 class ClassRoomsCrudController extends AbstractCrudController
 {
@@ -15,14 +16,26 @@ class ClassRoomsCrudController extends AbstractCrudController
         return ClassRooms::class;
     }
 
-    /*
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            // the labels used to refer to this entity in titles, buttons, etc.
+            ->setEntityLabelInSingular('Salle')
+            ->setEntityLabelInPlural('Salles')
+        ;
+    }
+    
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
+            TextField::new('name'),
+            AssociationField::new('place')
+                ->autocomplete(),
+            AssociationField::new('trainings')
+                ->autocomplete(),
+            DateTimeField::new('inactive'),
+            
         ];
     }
-    */
+    
 }

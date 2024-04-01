@@ -28,6 +28,8 @@ class LessonSessionsCrudController extends AbstractCrudController
             IntegerField::new('length'),
             AssociationField::new('training')
                 ->autocomplete(),
+            AssociationField::new('classRooms')
+                ->autocomplete(),
             AssociationField::new('topic'),
             BooleanField::new('unsupervised')
         ];

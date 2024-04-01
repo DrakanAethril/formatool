@@ -49,6 +49,9 @@ class LessonSessions
     )]
     private ?bool $unsupervised = null;
 
+    #[ORM\ManyToOne(inversedBy: 'lessonSessions')]
+    private ?ClassRooms $classRooms = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -164,5 +167,17 @@ class LessonSessions
 
     public function getDisplayName() {
         return empty($this->getTitle()) ? $this->getTopic()->getTopics()->getName() : $this->getTitle();
+    }
+
+    public function getClassRooms(): ?ClassRooms
+    {
+        return $this->classRooms;
+    }
+
+    public function setClassRooms(?ClassRooms $classRooms): static
+    {
+        $this->classRooms = $classRooms;
+
+        return $this;
     }
 }
