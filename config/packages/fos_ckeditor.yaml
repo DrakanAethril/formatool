@@ -4,7 +4,7 @@ fos_ck_editor:
     configs:
         my_config:
             licenseKey: "TEAVZF826.HGG363BJD076"
-            toolbar: full
+            toolbar: standard
             language: 'fr'
 twig:
     form_themes:

@@ -26,13 +26,13 @@
                     {{ form_start(cursusForm, { 'attr' : { 'class': 'card' } } ) }}
                         <div class="card-body">
                             <div class="row row-cards">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="mb-3">
                                         {{ form_label(cursusForm.name, 'Nom du cursus', {'label_attr': {'class': 'form-label required'}}) }}
                                             {{ form_widget(cursusForm.name, {'attr': {'class': 'form-control', 'required': true}}) }}
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <div class="mb-3">
                                         {{ form_label(cursusForm.type, 'Niveau', {'label_attr': {'class': 'form-label', 'required': false}}) }}
                                             {{ form_widget(cursusForm.type, {
@@ -40,11 +40,11 @@
                                                 }) }}
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="mb-3">
                                         {{ form_label(cursusForm.description, 'Description', {'label_attr': {'class': 'form-label', 'required': false}}) }}
                                             {{ form_widget(cursusForm.description, {
-                                                    'attr' : {'class' : ''}
+                                                    'attr' : {'class' : 'form-control', 'rows' : 6}
                                                 }) }}
                                     </div>
                                 </div>
