@@ -49,6 +49,9 @@ class Trainings
     #[ORM\ManyToOne(inversedBy: 'trainings')]
     private ?Cursus $cursus = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $shortTitle = null;
+
     public function __construct()
     {
         $this->trainings = new ArrayCollection();
@@ -280,5 +283,21 @@ class Trainings
         $this->cursus = $cursus;
 
         return $this;
+    }
+
+    public function getShortTitle(): ?string
+    {
+        return $this->shortTitle;
+    }
+
+    public function setShortTitle(?string $shortTitle): static
+    {
+        $this->shortTitle = $shortTitle;
+
+        return $this;
+    }
+
+    public function getShortDisplayName() : string {
+        return empty($this->getShortTitle()) ? $this->getTitle() : $this->getShortTitle();
     }
 }

@@ -35,6 +35,9 @@ class Cursus
     #[ORM\ManyToMany(targetEntity: Places::class, inversedBy: 'cursuses')]
     private Collection $places;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $shortName = null;
+
     public function __construct()
     {
         $this->trainings = new ArrayCollection();
@@ -146,5 +149,21 @@ class Cursus
         $this->places->removeElement($place);
 
         return $this;
+    }
+
+    public function getShortName(): ?string
+    {
+        return $this->shortName;
+    }
+
+    public function setShortName(?string $shortName): static
+    {
+        $this->shortName = $shortName;
+
+        return $this;
+    }
+
+    public function getShortDisplayName() : string {
+        return empty($this->getShortName()) ? $this->getName() : $this->getShortName();
     }
 }

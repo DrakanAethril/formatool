@@ -108,7 +108,7 @@
                                     {% for training in menu_trainings %}
                                         <div class="dropend">
                                             <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                                {{training.title}}
+                                                {{training.ShortDisplayName}}
                                             </a>
                                             <div class="dropdown-menu">
                                                 <a href="{{ path('training_detail', {'id': training.id} ) }}" class="dropdown-item">

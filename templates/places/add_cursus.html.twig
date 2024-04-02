@@ -32,6 +32,12 @@
                                             {{ form_widget(cursusForm.name, {'attr': {'class': 'form-control', 'required': true}}) }}
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        {{ form_label(cursusForm.shortName, 'Abbréviation du cursus', {'label_attr': {'class': 'form-label'}}) }}
+                                            {{ form_widget(cursusForm.shortName, {'attr': {'class': 'form-control', 'required': false}}) }}
+                                    </div>
+                                </div>
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         {{ form_label(cursusForm.type, 'Niveau', {'label_attr': {'class': 'form-label', 'required': false}}) }}

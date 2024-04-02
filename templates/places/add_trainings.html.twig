@@ -34,9 +34,17 @@
                                        
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="mb-3">
-                                        {{ form_label(trainingForm.owner, 'Responsable', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_label(trainingForm.shortTitle, 'Abbréviation', {'label_attr': {'class': 'form-label'}}) }}
+                                       
+                                            {{ form_widget(trainingForm.shortTitle, {'attr': {'class': 'form-control', 'required': false}}) }}
+                                       
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        {{ form_label(trainingForm.owner, 'Responsable Pédagogique', {'label_attr': {'class': 'form-label'}}) }}
                                        
                                             {{ form_widget(trainingForm.owner, {'attr': {'class': ''}}) }}
                                         

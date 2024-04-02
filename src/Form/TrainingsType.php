@@ -20,6 +20,9 @@ class TrainingsType extends AbstractType
             ->add('title', TextType::class, [
                 'required' => true,
             ])
+            ->add('shortTitle', TextType::class, [
+                'required' => false,
+            ])
             ->add('owner', EntityType::class,
             [
                 'class' => Users::class,
