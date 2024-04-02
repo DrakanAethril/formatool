@@ -21,6 +21,7 @@ use App\Entity\Topics;
 use App\Entity\TopicsGroups;
 use App\Entity\TopicsTrainings;
 use App\Entity\TopicsTrainingsLabel;
+use App\Entity\TrainingsModality;
 use App\Entity\Users;
 
 
@@ -66,5 +67,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', Users::class);
         yield MenuItem::linkToCrud('Cursus', 'fas fa-certificate', Cursus::class);
         yield MenuItem::linkToCrud('Types de cursus', 'fas fa-certificate', CursusType::class);
+        yield MenuItem::linkToCrud('Modalités de formation', 'fas fa-certificate', TrainingsModality::class);
     }
 }

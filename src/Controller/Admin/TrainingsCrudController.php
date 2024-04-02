@@ -30,14 +30,19 @@ class TrainingsCrudController extends AbstractCrudController
     {
         return [
             TextField::new('title'),
-            TextField::new('level'),
-            DateTimeField::new('inactive'),
+            DateTimeField::new('startTrainingDate'),
+            DateTimeField::new('endTrainingDate'),
             AssociationField::new('place')
                 ->autocomplete(),
             AssociationField::new('classRooms')
                 ->autocomplete(),
             AssociationField::new('owner')
-                ->autocomplete()
+                ->autocomplete(),
+            AssociationField::new('cursus')
+                ->autocomplete(),
+            AssociationField::new('trainingsModality')
+                ->autocomplete(),
+            DateTimeField::new('inactive'),
         ];
     }
     

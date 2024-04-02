@@ -52,6 +52,15 @@ class Trainings
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $shortTitle = null;
 
+    #[ORM\ManyToOne(inversedBy: 'trainings')]
+    private ?TrainingsModality $trainingsModality = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $startTrainingDate = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $endTrainingDate = null;
+
     public function __construct()
     {
         $this->trainings = new ArrayCollection();
@@ -299,5 +308,41 @@ class Trainings
 
     public function getShortDisplayName() : string {
         return empty($this->getShortTitle()) ? $this->getTitle() : $this->getShortTitle();
+    }
+
+    public function getTrainingsModality(): ?TrainingsModality
+    {
+        return $this->trainingsModality;
+    }
+
+    public function setTrainingsModality(?TrainingsModality $trainingsModality): static
+    {
+        $this->trainingsModality = $trainingsModality;
+
+        return $this;
+    }
+
+    public function getStartTrainingDate(): ?\DateTimeInterface
+    {
+        return $this->startTrainingDate;
+    }
+
+    public function setStartTrainingDate(?\DateTimeInterface $startTrainingDate): static
+    {
+        $this->startTrainingDate = $startTrainingDate;
+
+        return $this;
+    }
+
+    public function getEndTrainingDate(): ?\DateTimeInterface
+    {
+        return $this->endTrainingDate;
+    }
+
+    public function setEndTrainingDate(?\DateTimeInterface $endTrainingDate): static
+    {
+        $this->endTrainingDate = $endTrainingDate;
+
+        return $this;
     }
 }

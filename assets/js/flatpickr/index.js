@@ -14,6 +14,18 @@ document.addEventListener("DOMContentLoaded", () => {
         time_24hr : true
     });
 
+    flatpickr(".startTrainingDate-flatpickr", {
+        enableTime: true,
+        dateFormat: "d-m-Y H:i",
+        time_24hr : true
+    });
+
+    flatpickr(".endTrainingDate-flatpickr", {
+        enableTime: true,
+        dateFormat: "d-m-Y H:i",
+        time_24hr : true
+    });
+
     flatpickr(".lessonsession-day-flatpickr", {
         enableTime: true,
         dateFormat: "d-m-Y",
