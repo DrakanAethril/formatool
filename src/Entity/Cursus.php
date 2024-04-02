@@ -163,7 +163,12 @@ class Cursus
         return $this;
     }
 
-    public function getShortDisplayName() : string {
+    public function getShortDisplayName(): string {
         return empty($this->getShortName()) ? $this->getName() : $this->getShortName();
+    }
+
+    public function __toString(): string 
+    {
+        return $this->getShortDisplayName();
     }
 }

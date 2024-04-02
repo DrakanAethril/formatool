@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Cursus;
 use App\Entity\Trainings;
 use App\Entity\Users;
 use Doctrine\ORM\EntityRepository;
@@ -22,6 +23,24 @@ class TrainingsType extends AbstractType
             ])
             ->add('shortTitle', TextType::class, [
                 'required' => false,
+            ])
+            ->add('cursus', EntityType::class,
+            [
+                'class' => Cursus::class,
+                'required' => false,
+                //'placeholder' => 'Aucun',
+                'query_builder' => function (EntityRepository $er): QueryBuilder {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.name', 'ASC');
+                },
+                'autocomplete' => true,
+                'tom_select_options' => [
+                    'plugins' => [
+                            'clear_button' => [
+                                'className' => 'clear-button icon',
+                            ]
+                        ]
+                ]
             ])
             ->add('owner', EntityType::class,
             [
