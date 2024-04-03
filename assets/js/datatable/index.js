@@ -49,21 +49,21 @@ document.addEventListener("DOMContentLoaded", () => {
         let colNum = $("#topics-table > tbody > tr:first > td").length;
         $('#topics-table').dataTable( {
             "pageLength": 50,
-            "order": [[7, 'asc'],[0, 'asc']],
+            "order": [[6, 'asc'],[0, 'asc']],
             "language": languageFr,
             'columnDefs': [ 
                 {
-                    'targets': [8], /* column index */
+                    'targets': [7], /* column index */
                     'orderable': false, /* true or false */
                 },
                 {
-                    'targets': [7],
+                    'targets': [6],
                     'visible': false
                 },
             ],
             "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
             rowGroup: {
-                dataSrc: 7,
+                dataSrc: 6,
                 startRender: function ( rows, group ) {
                     return $('<tr/>')
                         .append( '<td class="text-center fw-bold" colspan="'+colNum+'">'+group +' ('+rows.count()+' matière(s))'+'</td>' );
@@ -72,32 +72,32 @@ document.addEventListener("DOMContentLoaded", () => {
                     let sumCm =
                         rows
                             .data()
-                            .pluck(2)
+                            .pluck(1)
                             .reduce((a, b) => a*1 + b*1);
                     let sumTd =
                         rows
                             .data()
-                            .pluck(3)
+                            .pluck(2)
                             .reduce((a, b) => a*1 + b*1);
                     let sumTp =
                         rows
                             .data()
-                            .pluck(4)
+                            .pluck(3)
                             .reduce((a, b) => a*1 + b*1);
                     let sumTotal =
                         rows
                             .data()
-                            .pluck(5)
+                            .pluck(4)
                             .reduce((a, b) => a*1 + b*1);
                     let sumPlanned =
                             rows
                                 .data()
-                                .pluck(6)
+                                .pluck(5)
                                 .reduce((a, b) => a*1 + b*1);
     
                     let tr = document.createElement('tr');
                     tr.classList.add("text-muted")
-                    dataTable_addCell(tr, group, 2);
+                    dataTable_addCell(tr, '');
                     dataTable_addCell(tr, sumCm+' H');
                     dataTable_addCell(tr, sumTd+' H');
                     dataTable_addCell(tr, sumTp+' H');

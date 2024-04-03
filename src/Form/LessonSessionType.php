@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\ClassRooms;
 use App\Entity\LessonSessions;
 use App\Entity\Topics;
 use App\Entity\TopicsTrainings;
@@ -94,6 +95,25 @@ class LessonSessionType extends AbstractType
                         'Non' => 0,
                         'Oui' => 1
                     ],
+                ]
+            )
+            ->add('classRooms', EntityType::class,
+                [
+                    'class' => ClassRooms::class,
+                    'required' => false,
+                    'placeholder' => 'Aucun',
+                    'query_builder' => function (EntityRepository $er): QueryBuilder {
+                        return $er->createQueryBuilder('u')
+                            ->orderBy('u.name', 'ASC');
+                    },
+                    'autocomplete' => true,
+                    'tom_select_options' => [
+                        'plugins' => [
+                                'clear_button' => [
+                                    'className' => 'clear-button icon',
+                                ]
+                            ]
+                    ]
                 ]
             );
     }

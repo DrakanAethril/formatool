@@ -3,14 +3,12 @@
         <thead>
             <tr>
                 <th>Nom</th>
-                <th>Enseignant</th>
                 <th>CM</th>
                 <th>TD</th>
                 <th>TP</th>
                 <th>Vol. Total</th>
                 <th>Vol. Planifié</th>
                 <th>U.E.</th>
-                <th>Label</th>
                 <th class="w-1"></th>
             </tr>
         </thead>
@@ -19,9 +17,6 @@
                 <tr>
                     <td>
                         {{topic.topics.name}}
-                    </td>
-                        <td>
-                        {{topic.teacher.displayName|default('')}}
                     </td>
                     <td class="">
                         {{topic.cm}}
@@ -39,6 +34,8 @@
                         class="
                             {% if(volumesByTopics[topic.id]|default(0) != topic.totalVolume) %}
                                  text-warning fw-bold
+                            {% else %}
+                                text-success
                             {% endif %}
                         ">
                         
@@ -46,9 +43,6 @@
                     </td>
                     <td>
                         {{topic.topicsGroups.name|default('NA')}}
-                    </td>
-                    <td>
-                            {{topic.topicsTrainingsLabels|join(', ')}}
                     </td>
                     <td class="text-end">
                         <div class="btn-list flex-nowrap justify-content-end">

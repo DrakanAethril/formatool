@@ -26,15 +26,11 @@ class ClassRooms
     #[ORM\JoinColumn(nullable: false)]
     private ?Places $place = null;
 
-    #[ORM\ManyToMany(targetEntity: Trainings::class, inversedBy: 'classRooms')]
-    private Collection $trainings;
-
     #[ORM\OneToMany(targetEntity: LessonSessions::class, mappedBy: 'classRooms')]
     private Collection $lessonSessions;
 
     public function __construct()
     {
-        $this->trainings = new ArrayCollection();
         $this->lessonSessions = new ArrayCollection();
     }
 
@@ -75,30 +71,6 @@ class ClassRooms
     public function setPlace(?Places $place): static
     {
         $this->place = $place;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Trainings>
-     */
-    public function getTrainings(): Collection
-    {
-        return $this->trainings;
-    }
-
-    public function addTraining(Trainings $training): static
-    {
-        if (!$this->trainings->contains($training)) {
-            $this->trainings->add($training);
-        }
-
-        return $this;
-    }
-
-    public function removeTraining(Trainings $training): static
-    {
-        $this->trainings->removeElement($training);
 
         return $this;
     }

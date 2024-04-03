@@ -99,8 +99,16 @@
                                         
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        {{ form_label(lessonSessionForm.classRooms, 'Salle de classe', {'label_attr': {'class': 'form-label'}}) }}
+                                       
+                                            {{ form_widget(lessonSessionForm.classRooms, {'attr': {'class': ''}}) }}
+                                        
+                                    </div>
+                                </div>
 
-                            </div>                               
+                            </div>
                         </div>
                         <div class="card-footer text-end">
                             <div class="d-flex">
