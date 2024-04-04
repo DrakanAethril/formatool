@@ -179,6 +179,7 @@ class TrainingsController extends AbstractController
             $tt = 0;
             $lessonSession = new LessonSessions();
             $lessonSession->setTraining($training);
+            if(!empty($training->getDefaultClassRoom())) $lessonSession->setClassRooms($training->getDefaultClassRoom());
             if(!empty($request->query->get('start'))) {
                 $startDate = \DateTime::createFromFormat('Y-m-d H:i:s',str_replace('T', ' ', $request->query->get('start')));
             }
@@ -300,6 +301,13 @@ class TrainingsController extends AbstractController
             $dateFocus = \DateTime::createFromFormat('Y-m-d', $request->get('focus'));
             if(!empty($dateFocus)){
                 $focus = $dateFocus->format('Y-m-d');
+            }
+        } else {
+            $now = new \DateTime();
+            if(!empty($training->getStartTrainingDate()) && $training->getStartTrainingDate() > $now) {
+                $focus = $training->getStartTrainingDate()->format('Y-m-d');
+            } else {
+                $focus = $now->format('Y-m-d');
             }
         }
 
