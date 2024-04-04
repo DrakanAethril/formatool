@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\LessonSessions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -18,6 +19,15 @@ class LessonSessionsCrudController extends AbstractCrudController
         return LessonSessions::class;
     }
 
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            // the labels used to refer to this entity in titles, buttons, etc.
+            ->setEntityLabelInSingular('Cours')
+            ->setEntityLabelInPlural('Cours')
+        ;
+    }
+
     public function configureFields(string $pageName): iterable
     {
         return [
@@ -30,8 +40,7 @@ class LessonSessionsCrudController extends AbstractCrudController
                 ->autocomplete(),
             AssociationField::new('classRooms')
                 ->autocomplete(),
-            AssociationField::new('topic'),
-            BooleanField::new('unsupervised')
+            AssociationField::new('topic')
         ];
     }
     

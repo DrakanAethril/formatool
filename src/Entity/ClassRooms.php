@@ -29,9 +29,13 @@ class ClassRooms
     #[ORM\OneToMany(targetEntity: LessonSessions::class, mappedBy: 'classRooms')]
     private Collection $lessonSessions;
 
+    #[ORM\OneToMany(targetEntity: Trainings::class, mappedBy: 'defaultClassRoom')]
+    private Collection $trainingsDefaultClassRoom;
+
     public function __construct()
     {
         $this->lessonSessions = new ArrayCollection();
+        $this->trainingsDefaultClassRoom = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -108,5 +112,35 @@ class ClassRooms
     public function __toString() : string
     {
         return $this->getName();
+    }
+
+    /**
+     * @return Collection<int, Trainings>
+     */
+    public function getTrainingsDefaultClassRoom(): Collection
+    {
+        return $this->trainingsDefaultClassRoom;
+    }
+
+    public function addTrainingsDefaultClassRoom(Trainings $trainingsDefaultClassRoom): static
+    {
+        if (!$this->trainingsDefaultClassRoom->contains($trainingsDefaultClassRoom)) {
+            $this->trainingsDefaultClassRoom->add($trainingsDefaultClassRoom);
+            $trainingsDefaultClassRoom->setDefaultClassRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrainingsDefaultClassRoom(Trainings $trainingsDefaultClassRoom): static
+    {
+        if ($this->trainingsDefaultClassRoom->removeElement($trainingsDefaultClassRoom)) {
+            // set the owning side to null (unless already changed)
+            if ($trainingsDefaultClassRoom->getDefaultClassRoom() === $this) {
+                $trainingsDefaultClassRoom->setDefaultClassRoom(null);
+            }
+        }
+
+        return $this;
     }
 }

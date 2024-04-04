@@ -46,9 +46,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $deleted = null;
 
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Trainings::class)]
-    private Collection $ownedTrainings;
-
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
@@ -71,11 +68,23 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'teacher', targetEntity: LessonSessions::class)]
     private Collection $lessonSessions;
 
+    #[ORM\OneToMany(targetEntity: Trainings::class, mappedBy: 'contentContact')]
+    private Collection $trainingsContentContact;
+
+    #[ORM\OneToMany(targetEntity: Trainings::class, mappedBy: 'scholarshipContact')]
+    private Collection $trainingsScholarshipContact;
+
+    #[ORM\OneToMany(targetEntity: Trainings::class, mappedBy: 'administrativeContact')]
+    private Collection $trainingsAdministrativeContact;
+
     public function __construct()
     {
         $this->ownedTrainings = new ArrayCollection();
         $this->teachingTopics = new ArrayCollection();
         $this->lessonSessions = new ArrayCollection();
+        $this->trainingsContentContact = new ArrayCollection();
+        $this->trainingsScholarshipContact = new ArrayCollection();
+        $this->trainingsAdministrativeContact = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -190,36 +199,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString() : string {
         return $this->getDisplayName();
-    }
-
-    /**
-     * @return Collection<int, Trainings>
-     */
-    public function getOwnedTrainings(): Collection
-    {
-        return $this->ownedTrainings;
-    }
-
-    public function addOwnedTraining(Trainings $ownedTraining): static
-    {
-        if (!$this->ownedTrainings->contains($ownedTraining)) {
-            $this->ownedTrainings->add($ownedTraining);
-            $ownedTraining->setOwner($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOwnedTraining(Trainings $ownedTraining): static
-    {
-        if ($this->ownedTrainings->removeElement($ownedTraining)) {
-            // set the owning side to null (unless already changed)
-            if ($ownedTraining->getOwner() === $this) {
-                $ownedTraining->setOwner(null);
-            }
-        }
-
-        return $this;
     }
 
     public function isVerified(): bool
@@ -358,6 +337,96 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($lessonSession->getTeacher() === $this) {
                 $lessonSession->setTeacher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Trainings>
+     */
+    public function getTrainingsContentContact(): Collection
+    {
+        return $this->trainingsContentContact;
+    }
+
+    public function addTrainingsContentContact(Trainings $trainingsContentContact): static
+    {
+        if (!$this->trainingsContentContact->contains($trainingsContentContact)) {
+            $this->trainingsContentContact->add($trainingsContentContact);
+            $trainingsContentContact->setContentContact($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrainingsContentContact(Trainings $trainingsContentContact): static
+    {
+        if ($this->trainingsContentContact->removeElement($trainingsContentContact)) {
+            // set the owning side to null (unless already changed)
+            if ($trainingsContentContact->getContentContact() === $this) {
+                $trainingsContentContact->setContentContact(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Trainings>
+     */
+    public function getTrainingsScholarshipContact(): Collection
+    {
+        return $this->trainingsScholarshipContact;
+    }
+
+    public function addTrainingsScholarshipContact(Trainings $trainingsScholarshipContact): static
+    {
+        if (!$this->trainingsScholarshipContact->contains($trainingsScholarshipContact)) {
+            $this->trainingsScholarshipContact->add($trainingsScholarshipContact);
+            $trainingsScholarshipContact->setScholarshipContact($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrainingsScholarshipContact(Trainings $trainingsScholarshipContact): static
+    {
+        if ($this->trainingsScholarshipContact->removeElement($trainingsScholarshipContact)) {
+            // set the owning side to null (unless already changed)
+            if ($trainingsScholarshipContact->getScholarshipContact() === $this) {
+                $trainingsScholarshipContact->setScholarshipContact(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Trainings>
+     */
+    public function getTrainingsAdministrativeContact(): Collection
+    {
+        return $this->trainingsAdministrativeContact;
+    }
+
+    public function addTrainingsAdministrativeContact(Trainings $trainingsAdministrativeContact): static
+    {
+        if (!$this->trainingsAdministrativeContact->contains($trainingsAdministrativeContact)) {
+            $this->trainingsAdministrativeContact->add($trainingsAdministrativeContact);
+            $trainingsAdministrativeContact->setAdministrativeContact($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrainingsAdministrativeContact(Trainings $trainingsAdministrativeContact): static
+    {
+        if ($this->trainingsAdministrativeContact->removeElement($trainingsAdministrativeContact)) {
+            // set the owning side to null (unless already changed)
+            if ($trainingsAdministrativeContact->getAdministrativeContact() === $this) {
+                $trainingsAdministrativeContact->setAdministrativeContact(null);
             }
         }
 

@@ -80,13 +80,37 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        {{ form_label(trainingForm.defaultClassRoom, 'Salle par défaut', {'label_attr': {'class': 'form-label'}}) }}
+                                       
+                                            {{ form_widget(trainingForm.defaultClassRoom, {'attr': {'class': ''}}) }}
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
                                 </div>
                                 <div class="col-md-4">
                                     <div class="mb-3">
-                                        {{ form_label(trainingForm.owner, 'Responsable Pédagogique', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_label(trainingForm.contentContact, 'Responsable Pédagogique', {'label_attr': {'class': 'form-label'}}) }}
                                        
-                                            {{ form_widget(trainingForm.owner, {'attr': {'class': ''}}) }}
+                                            {{ form_widget(trainingForm.contentContact, {'attr': {'class': ''}}) }}
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        {{ form_label(trainingForm.scholarshipContact, 'Responsable Vie Scolaire', {'label_attr': {'class': 'form-label'}}) }}
+                                       
+                                            {{ form_widget(trainingForm.scholarshipContact, {'attr': {'class': ''}}) }}
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        {{ form_label(trainingForm.administrativeContact, 'Responsable Admnistratif', {'label_attr': {'class': 'form-label'}}) }}
+                                       
+                                            {{ form_widget(trainingForm.administrativeContact, {'attr': {'class': ''}}) }}
                                         
                                     </div>
                                 </div>

@@ -31,9 +31,6 @@ class Trainings
     #[ORM\OneToMany(mappedBy: 'trainings', targetEntity: TopicsTrainings::class)]
     private Collection $trainings;
 
-    #[ORM\ManyToOne(inversedBy: 'ownedTrainings')]
-    private ?Users $owner = null;
-
     #[ORM\OneToMany(mappedBy: 'training', targetEntity: TopicsGroups::class)]
     private Collection $topicsGroups;
 
@@ -57,6 +54,21 @@ class Trainings
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $endTrainingDate = null;
+
+    #[ORM\ManyToOne(inversedBy: 'trainingsContentContact')]
+    private ?Users $contentContact = null;
+
+    #[ORM\ManyToOne(inversedBy: 'trainingsScholarshipContact')]
+    private ?Users $scholarshipContact = null;
+
+    #[ORM\ManyToOne(inversedBy: 'trainingsAdministrativeContact')]
+    private ?Users $administrativeContact = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $activateFinancialManagement = null;
+
+    #[ORM\ManyToOne(inversedBy: 'trainingsDefaultClassRoom')]
+    private ?ClassRooms $defaultClassRoom = null;
 
     public function __construct()
     {
@@ -145,18 +157,6 @@ class Trainings
                 $training->setTrainings(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getOwner(): ?Users
-    {
-        return $this->owner;
-    }
-
-    public function setOwner(?Users $owner): static
-    {
-        $this->owner = $owner;
 
         return $this;
     }
@@ -311,6 +311,66 @@ class Trainings
     public function setEndTrainingDate(?\DateTimeInterface $endTrainingDate): static
     {
         $this->endTrainingDate = $endTrainingDate;
+
+        return $this;
+    }
+
+    public function getContentContact(): ?Users
+    {
+        return $this->contentContact;
+    }
+
+    public function setContentContact(?Users $contentContact): static
+    {
+        $this->contentContact = $contentContact;
+
+        return $this;
+    }
+
+    public function getScholarshipContact(): ?Users
+    {
+        return $this->scholarshipContact;
+    }
+
+    public function setScholarshipContact(?Users $scholarshipContact): static
+    {
+        $this->scholarshipContact = $scholarshipContact;
+
+        return $this;
+    }
+
+    public function getAdministrativeContact(): ?Users
+    {
+        return $this->administrativeContact;
+    }
+
+    public function setAdministrativeContact(?Users $administrativeContact): static
+    {
+        $this->administrativeContact = $administrativeContact;
+
+        return $this;
+    }
+
+    public function isActivateFinancialManagement(): ?bool
+    {
+        return $this->activateFinancialManagement;
+    }
+
+    public function setActivateFinancialManagement(?bool $activateFinancialManagement): static
+    {
+        $this->activateFinancialManagement = $activateFinancialManagement;
+
+        return $this;
+    }
+
+    public function getDefaultClassRoom(): ?ClassRooms
+    {
+        return $this->defaultClassRoom;
+    }
+
+    public function setDefaultClassRoom(?ClassRooms $defaultClassRoom): static
+    {
+        $this->defaultClassRoom = $defaultClassRoom;
 
         return $this;
     }

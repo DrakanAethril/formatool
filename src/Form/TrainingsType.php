@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\ClassRooms;
 use App\Entity\Cursus;
 use App\Entity\Trainings;
 use App\Entity\TrainingsModality;
@@ -74,14 +75,14 @@ class TrainingsType extends AbstractType
                 'format' => 'dd-MM-yyyy HH:ii:ss',
                 'html5' => false
             ])
-            ->add('owner', EntityType::class,
+            ->add('defaultClassRoom', EntityType::class,
             [
-                'class' => Users::class,
+                'class' => ClassRooms::class,
                 'required' => false,
-                'placeholder' => 'Aucun',
+                //'placeholder' => 'Aucun',
                 'query_builder' => function (EntityRepository $er): QueryBuilder {
                     return $er->createQueryBuilder('u')
-                        ->orderBy('u.lastname', 'ASC');
+                        ->orderBy('u.name', 'ASC');
                 },
                 'autocomplete' => true,
                 'tom_select_options' => [
@@ -92,6 +93,63 @@ class TrainingsType extends AbstractType
                         ]
                 ]
             ])
+            ->add('contentContact', EntityType::class,
+                [
+                    'class' => Users::class,
+                    'required' => false,
+                    'placeholder' => 'Aucun',
+                    'query_builder' => function (EntityRepository $er): QueryBuilder {
+                        return $er->createQueryBuilder('u')
+                            ->orderBy('u.lastname', 'ASC');
+                    },
+                    'autocomplete' => true,
+                    'tom_select_options' => [
+                        'plugins' => [
+                                'clear_button' => [
+                                    'className' => 'clear-button icon',
+                                ]
+                            ]
+                    ]
+                ]
+            )
+            ->add('scholarshipContact', EntityType::class,
+                [
+                    'class' => Users::class,
+                    'required' => false,
+                    'placeholder' => 'Aucun',
+                    'query_builder' => function (EntityRepository $er): QueryBuilder {
+                        return $er->createQueryBuilder('u')
+                            ->orderBy('u.lastname', 'ASC');
+                    },
+                    'autocomplete' => true,
+                    'tom_select_options' => [
+                        'plugins' => [
+                                'clear_button' => [
+                                    'className' => 'clear-button icon',
+                                ]
+                            ]
+                    ]
+                ]
+            )
+            ->add('administrativeContact', EntityType::class,
+                [
+                    'class' => Users::class,
+                    'required' => false,
+                    'placeholder' => 'Aucun',
+                    'query_builder' => function (EntityRepository $er): QueryBuilder {
+                        return $er->createQueryBuilder('u')
+                            ->orderBy('u.lastname', 'ASC');
+                    },
+                    'autocomplete' => true,
+                    'tom_select_options' => [
+                        'plugins' => [
+                                'clear_button' => [
+                                    'className' => 'clear-button icon',
+                                ]
+                            ]
+                    ]
+                ]
+            )
         ;
     }
 

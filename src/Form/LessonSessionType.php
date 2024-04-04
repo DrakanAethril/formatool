@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\ClassRooms;
 use App\Entity\LessonSessions;
+use App\Entity\LessonTypes;
 use App\Entity\Topics;
 use App\Entity\TopicsTrainings;
 use App\Entity\Users;
@@ -87,14 +88,23 @@ class LessonSessionType extends AbstractType
                     'required' => false,
                 ]
             )
-            ->add('unsupervised', ChoiceType::class,
+            ->add('lessonType', EntityType::class,
                 [
-                    'required' => true,
-                    'label' => 'En autonomie',
-                    'choices'  => [
-                        'Non' => 0,
-                        'Oui' => 1
-                    ],
+                    'class' => LessonTypes::class,
+                    'required' => false,
+                    //'placeholder' => 'Aucun',
+                    'query_builder' => function (EntityRepository $er): QueryBuilder {
+                        return $er->createQueryBuilder('u')
+                            ->orderBy('u.name', 'ASC');
+                    },
+                    'autocomplete' => true,
+                    'tom_select_options' => [
+                        'plugins' => [
+                                'clear_button' => [
+                                    'className' => 'clear-button icon',
+                                ]
+                            ]
+                    ]
                 ]
             )
             ->add('classRooms', EntityType::class,

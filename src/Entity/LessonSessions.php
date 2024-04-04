@@ -42,15 +42,11 @@ class LessonSessions
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $title = null;
 
-    #[ORM\Column(
-        type: "boolean",
-        nullable: false,
-        options: ["default" => 0]
-    )]
-    private ?bool $unsupervised = null;
-
     #[ORM\ManyToOne(inversedBy: 'lessonSessions')]
     private ?ClassRooms $classRooms = null;
+
+    #[ORM\ManyToOne(inversedBy: 'lessonSessions')]
+    private ?LessonTypes $lessonType = null;
 
     public function getId(): ?int
     {
@@ -153,18 +149,6 @@ class LessonSessions
         return $this;
     }
 
-    public function isUnsupervised(): ?bool
-    {
-        return $this->unsupervised;
-    }
-
-    public function setUnsupervised(bool $unsupervised): static
-    {
-        $this->unsupervised = $unsupervised;
-
-        return $this;
-    }
-
     public function getDisplayName() {
         return empty($this->getTitle()) ? $this->getTopic()->getTopics()->getName() : $this->getTitle();
     }
@@ -177,6 +161,18 @@ class LessonSessions
     public function setClassRooms(?ClassRooms $classRooms): static
     {
         $this->classRooms = $classRooms;
+
+        return $this;
+    }
+
+    public function getLessonType(): ?LessonTypes
+    {
+        return $this->lessonType;
+    }
+
+    public function setLessonType(?LessonTypes $lessonType): static
+    {
+        $this->lessonType = $lessonType;
 
         return $this;
     }
