@@ -76,6 +76,7 @@ class TrainingsAjaxController extends AbstractController
                 'extendedProps' => [
                     'topic' => $sessionDb->getTopic()->getTopics()->getName(),
                     'training' => $sessionDb->getTraining()->getId(),
+                    'lessonType' => empty($sessionDb->getLessonType()) ? 'NA' : $sessionDb->getLessonType()->getName(),
                     'updateUrl' => $this->generateUrl('training_update_lessonsession', ['id' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]),
                     'classRoom' => (empty($sessionDb->getClassRooms())) ? 'NA' : $sessionDb->getClassRooms()->getName()
                 ]

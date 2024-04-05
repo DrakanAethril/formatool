@@ -107,7 +107,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       ],
       eventContent: function(arg) {
-        return { html: '<b>'+arg.event.title+'</b><br/><i>('+arg.event.extendedProps.topic+')</i><br/><i>('+arg.event.extendedProps.classRoom+')</i>' };
+        return { html: '<b>'+arg.event.title+'</b><br/>'+
+                        '<i>('+arg.event.extendedProps.topic+')</i><br/>'+
+                        '<i>('+arg.event.extendedProps.lessonType+
+                        ', salle '+arg.event.extendedProps.classRoom+')</i>' 
+                };
       },
       headerToolbar: {
         left : "prev,next today",//left: "prev,next today",
