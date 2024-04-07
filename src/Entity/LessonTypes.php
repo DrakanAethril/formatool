@@ -29,9 +29,13 @@ class LessonTypes
     #[ORM\Column(length: 255)]
     private ?string $agendaColor = null;
 
+    #[ORM\OneToMany(targetEntity: TrainingFinancialItems::class, mappedBy: 'lessonType')]
+    private Collection $trainingFinancialItems;
+
     public function __construct()
     {
         $this->lessonSessions = new ArrayCollection();
+        $this->trainingFinancialItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -108,5 +112,35 @@ class LessonTypes
     public function __toString(): string
     {
         return $this->getName();
+    }
+
+    /**
+     * @return Collection<int, TrainingFinancialItems>
+     */
+    public function getTrainingFinancialItems(): Collection
+    {
+        return $this->trainingFinancialItems;
+    }
+
+    public function addTrainingFinancialItem(TrainingFinancialItems $trainingFinancialItem): static
+    {
+        if (!$this->trainingFinancialItems->contains($trainingFinancialItem)) {
+            $this->trainingFinancialItems->add($trainingFinancialItem);
+            $trainingFinancialItem->setLessonType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrainingFinancialItem(TrainingFinancialItems $trainingFinancialItem): static
+    {
+        if ($this->trainingFinancialItems->removeElement($trainingFinancialItem)) {
+            // set the owning side to null (unless already changed)
+            if ($trainingFinancialItem->getLessonType() === $this) {
+                $trainingFinancialItem->setLessonType(null);
+            }
+        }
+
+        return $this;
     }
 }

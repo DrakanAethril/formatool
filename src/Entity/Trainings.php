@@ -70,12 +70,16 @@ class Trainings
     #[ORM\ManyToOne(inversedBy: 'trainingsDefaultClassRoom')]
     private ?ClassRooms $defaultClassRoom = null;
 
+    #[ORM\OneToMany(targetEntity: TrainingFinancialItems::class, mappedBy: 'training')]
+    private Collection $trainingFinancialItems;
+
     public function __construct()
     {
         $this->trainings = new ArrayCollection();
         $this->topicsGroups = new ArrayCollection();
         $this->timeSlots = new ArrayCollection();
         $this->lessonSessions = new ArrayCollection();
+        $this->trainingFinancialItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -371,6 +375,36 @@ class Trainings
     public function setDefaultClassRoom(?ClassRooms $defaultClassRoom): static
     {
         $this->defaultClassRoom = $defaultClassRoom;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TrainingFinancialItems>
+     */
+    public function getTrainingFinancialItems(): Collection
+    {
+        return $this->trainingFinancialItems;
+    }
+
+    public function addTrainingFinancialItem(TrainingFinancialItems $trainingFinancialItem): static
+    {
+        if (!$this->trainingFinancialItems->contains($trainingFinancialItem)) {
+            $this->trainingFinancialItems->add($trainingFinancialItem);
+            $trainingFinancialItem->setTraining($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrainingFinancialItem(TrainingFinancialItems $trainingFinancialItem): static
+    {
+        if ($this->trainingFinancialItems->removeElement($trainingFinancialItem)) {
+            // set the owning side to null (unless already changed)
+            if ($trainingFinancialItem->getTraining() === $this) {
+                $trainingFinancialItem->setTraining(null);
+            }
+        }
 
         return $this;
     }

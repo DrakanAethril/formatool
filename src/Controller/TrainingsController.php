@@ -239,6 +239,79 @@ class TrainingsController extends AbstractController
         }
     }
 
+    // Financial entries
+    #[Route('/{id<\d+>}/financial/add_per_session/{tt<\d+>?0}', name: 'training_add_financial_session')]
+    #[Route('/{id<\d+>}/financial/add_per_student/{tt<\d+>?0}', name: 'training_edit_financial_student')]
+    #[Route('/{id<\d+>}/financial/add_manual_item/{tt<\d+>?0}', name: 'training_edit_financial_manual')]
+    #[Route('/{id<\d+>}/financial/edit/{tt<\d+>?0}', name: 'training_edit_financial')]
+    public function addFinancialItem(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, LessonSessionsRepository $lessonSessionsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    {
+
+        $create = false;
+        if(empty($tt)) {
+            $routeName = $request->attributes->get('_route');
+            $tt = 0;
+            $lessonSession = new LessonSessions();
+            $lessonSession->setTraining($training);
+            if(!empty($training->getDefaultClassRoom())) $lessonSession->setClassRooms($training->getDefaultClassRoom());
+            if(!empty($request->query->get('start'))) {
+                $startDate = \DateTime::createFromFormat('Y-m-d H:i:s',str_replace('T', ' ', $request->query->get('start')));
+            }
+            if(!empty($request->query->get('end'))) {
+                $endDate = \DateTime::createFromFormat('Y-m-d H:i:s',str_replace('T', ' ', $request->query->get('end')));
+            }
+            if(!empty($startDate)) {
+                $lessonSession->setDay($startDate);
+                $lessonSession->setStartHour($startDate);
+                if(!empty($endDate)) {
+                    $lessonSession->setEndHour($endDate);
+                    $lessonSession->setLength(ceil( ($endDate->format('U')-$startDate->format('U')) / 3600 ));
+                }    
+            }
+            
+            $create = true;
+        } else {
+            $lessonSession = $lessonSessionsRepository->findOneBy(['id'=> $tt]);
+            if(empty($lessonSession) || $lessonSession->getTraining()->getId() !== $training->getId()) {
+                return $this->redirectToRoute('home');
+            }
+        }
+        
+        
+        $form = $this->createForm(LessonSessionType::class, $lessonSession);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager->persist($lessonSession);
+            $entityManager->flush();
+            //redirect on training page
+            $redirect = $this->generateUrl('training_parameters_timetable', ['id' => $training->getId()]).'?focus='.$lessonSession->getDay()->format('Y-m-d');
+            return $this->redirect($redirect);
+        }
+
+
+        return $this->render('trainings/add_lesson_session.html.twig', [
+            'training' => $training,
+            'lessonSessionForm' => $form->createView(),
+            'menuTrainings' => 'active',
+            'tt' => $tt
+        ]);
+    }
+
+    #[Route('/financial/remove/{id}', name: 'training_remove_financial')]
+    public function removeFinancialItem($id, LessonSessionsRepository $lessonSessionsRepository, EntityManagerInterface $entityManager) : Response
+    {   
+        $lessonSession = $lessonSessionsRepository->findOneBy(['id' => intval($id)]);
+        if(!empty($lessonSession)) {
+            $idTraining = $lessonSession->getTraining()->getId();
+            $entityManager->remove($lessonSession);
+            $entityManager->flush();
+            return $this->redirectToRoute('training_parameters_timetable', ['id' => $idTraining]);
+        } else {
+            return $this->redirectToRoute('home');
+        }
+    }
 
     // PARAMETERS - DEFAULT TO TIMESLOTS TABS
 
