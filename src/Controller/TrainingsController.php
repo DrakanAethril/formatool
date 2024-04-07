@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
+use App\Config\FinancialItemsTypeEnum;
+use App\Config\FinancialItemsSourceEnum;
 use App\Entity\LessonSessions;
 use App\Entity\TimeSlots;
 use App\Entity\TimeTableGenerator;
 use App\Entity\TopicsGroups;
 use App\Entity\TopicsTrainings;
 use App\Entity\TopicsTrainingsLabel;
+use App\Entity\TrainingFinancialItems;
 use App\Entity\Trainings;
+use App\Form\FinancialItemType;
 use App\Form\LessonSessionType;
 use App\Form\TimeSlotType;
 use App\Form\TopicsGroupType;
@@ -17,6 +21,7 @@ use App\Repository\LessonSessionsRepository;
 use App\Repository\TimeSlotsRepository;
 use App\Repository\TopicsGroupsRepository;
 use App\Repository\TopicsTrainingsRepository;
+use App\Repository\TrainingFinancialItemsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -243,63 +248,67 @@ class TrainingsController extends AbstractController
     #[Route('/{id<\d+>}/financial/add_per_session/{tt<\d+>?0}', name: 'training_add_financial_session')]
     #[Route('/{id<\d+>}/financial/add_per_student/{tt<\d+>?0}', name: 'training_edit_financial_student')]
     #[Route('/{id<\d+>}/financial/add_manual_item/{tt<\d+>?0}', name: 'training_edit_financial_manual')]
-    #[Route('/{id<\d+>}/financial/edit/{tt<\d+>?0}', name: 'training_edit_financial')]
-    public function addFinancialItem(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, LessonSessionsRepository $lessonSessionsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/{id<\d+>}/financial/edit/{tt<\d+>?0}', name: 'training_edit_financial_item')]
+    public function addFinancialItem(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, TrainingFinancialItemsRepository $financialItemsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
 
         $create = false;
         if(empty($tt)) {
             $routeName = $request->attributes->get('_route');
             $tt = 0;
-            $lessonSession = new LessonSessions();
-            $lessonSession->setTraining($training);
-            if(!empty($training->getDefaultClassRoom())) $lessonSession->setClassRooms($training->getDefaultClassRoom());
-            if(!empty($request->query->get('start'))) {
-                $startDate = \DateTime::createFromFormat('Y-m-d H:i:s',str_replace('T', ' ', $request->query->get('start')));
+            $financialItem = new TrainingFinancialItems();
+            $financialItem->setTraining($training);
+           
+            switch($routeName) {
+                case 'training_add_financial_session':
+                    $financialItem->setSource(FinancialItemsSourceEnum::SourceLesson->value);
+                    break;
+                case 'training_edit_financial_student':
+                    $financialItem->setSource(FinancialItemsSourceEnum::SourceStudent->value);
+                    break;
+                case 'training_edit_financial_manual':
+                    $financialItem->setSource(FinancialItemsSourceEnum::SourceManual->value);
+                    break;
+                default:
+                    return $this->redirectToRoute('home');
             }
-            if(!empty($request->query->get('end'))) {
-                $endDate = \DateTime::createFromFormat('Y-m-d H:i:s',str_replace('T', ' ', $request->query->get('end')));
-            }
-            if(!empty($startDate)) {
-                $lessonSession->setDay($startDate);
-                $lessonSession->setStartHour($startDate);
-                if(!empty($endDate)) {
-                    $lessonSession->setEndHour($endDate);
-                    $lessonSession->setLength(ceil( ($endDate->format('U')-$startDate->format('U')) / 3600 ));
-                }    
-            }
-            
             $create = true;
         } else {
-            $lessonSession = $lessonSessionsRepository->findOneBy(['id'=> $tt]);
-            if(empty($lessonSession) || $lessonSession->getTraining()->getId() !== $training->getId()) {
+            $financialItem = $financialItemsRepository->findOneBy(['id'=> $tt]);
+            if(empty($financialItem) || $financialItem->getTraining()->getId() !== $training->getId()) {
                 return $this->redirectToRoute('home');
             }
         }
+        $source = FinancialItemsSourceEnum::from($financialItem->getSource());
         
         
-        $form = $this->createForm(LessonSessionType::class, $lessonSession);
+        $form = $this->createForm(FinancialItemType::class, $financialItem,  [
+            'source' => $source
+        ]);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $entityManager->persist($lessonSession);
+            $financialItem->setType($form->get('typeEntry')->getData()->value);
+            $entityManager->persist($financialItem);
             $entityManager->flush();
             //redirect on training page
-            $redirect = $this->generateUrl('training_parameters_timetable', ['id' => $training->getId()]).'?focus='.$lessonSession->getDay()->format('Y-m-d');
+            $redirect = $this->generateUrl('training_parameters_financial', ['id' => $training->getId()]);
             return $this->redirect($redirect);
         }
 
 
-        return $this->render('trainings/add_lesson_session.html.twig', [
+        return $this->render('trainings/add_financial_item.html.twig', [
             'training' => $training,
-            'lessonSessionForm' => $form->createView(),
+            'financialItemForm' => $form->createView(),
             'menuTrainings' => 'active',
-            'tt' => $tt
+            'tt' => $tt,
+            'isSession' => $source == FinancialItemsSourceEnum::SourceLesson,
+            'isStudent' => $source == FinancialItemsSourceEnum::SourceStudent,
+            'isManual' => $source == FinancialItemsSourceEnum::SourceManual,
         ]);
     }
 
-    #[Route('/financial/remove/{id}', name: 'training_remove_financial')]
+    #[Route('/financial/remove/{id}', name: 'training_remaove_financial_item')]
     public function removeFinancialItem($id, LessonSessionsRepository $lessonSessionsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $lessonSession = $lessonSessionsRepository->findOneBy(['id' => intval($id)]);

@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formation : {{training.title}} - Ajouter une entrée financière{% endblock %}
+
+{% block body %}
+    {% set sourceTxt = '' %}
+    {% if isSession is not empty %} 
+        {% set sourceTxt = 'Par heure de cours' %}
+    {% endif %}
+     {% if isStudent is not empty %} 
+        {% set sourceTxt = 'Par étudiant' %}
+    {% endif %}
+     {% if isManual is not empty %} 
+        {% set sourceTxt = 'Manuelle' %}
+    {% endif %}
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                        {{ training.title}}
+                    </div>
+                    <h2 class="page-title">
+                        Ajout d'entrée financière - {{sourceTxt}}
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    {{ form_errors(financialItemForm) }}
+
+                    {{ form_start(financialItemForm, { 'attr' : { 'class': 'card' } } ) }}
+                        <div class="card-body">
+                            <div class="row row-cards">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        {{ form_label(financialItemForm.title, 'Intitulé', {'label_attr': {'class': 'form-label'}}) }}
+                                       
+                                            {{ form_widget(financialItemForm.title, {'attr': {'class': 'form-control', 'required': false}}) }}
+                                       
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        {{ form_label(financialItemForm.typeEntry, 'Type d\'entrée', {'label_attr': {'class': 'form-label  required'}}) }}
+                                       
+                                            {{ form_widget(financialItemForm.typeEntry, {'attr': {'class': ''}}) }}
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                </div>
+                                {% if isSession is not empty %}
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            {{ form_label(financialItemForm.lessonType, 'Type de cours', {'label_attr': {'class': 'form-label required'}}) }}
+                                                {{ form_widget(financialItemForm.lessonType, {'attr': {'class': '', 'required': true}}) }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                 {% if isManual is not empty %}
+                                    <div class="col-md-2">
+                                        <div class="mb-3">
+                                            {{ form_label(financialItemForm.quantity, 'Quantité', {'label_attr': {'class': 'form-label required'}}) }}
+                                                {{ form_widget(financialItemForm.quantity, {'attr': {'class': 'form-control', 'required': true}}) }}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                
+                                <div class="col-md-2">
+                                    <div class="mb-3">
+                                        {{ form_label(financialItemForm.value, 'Valeur Unitaire', {'label_attr': {'class': 'form-label required'}}) }}
+                                            {{ form_widget(financialItemForm.value, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        {{ form_label(financialItemForm.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+                                            {{ form_widget(financialItemForm.description, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end">
+                            <div class="d-flex">
+                                {% if(tt > 0) %}
+                                    <a href="{{ path('training_remaove_financial_item', {'id' : tt} ) }}" class="btn btn-danger">Supprimer</a>
+                                {% endif %}
+                                <button type="submit" class="btn btn-primary ms-auto">Enregistrer</button>
+                            </div>
+                        </div>
+                        
+                    {{ form_end(financialItemForm) }}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+{% endblock %}
