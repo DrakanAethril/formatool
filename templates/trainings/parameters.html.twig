@@ -28,6 +28,25 @@
             {% set addLink = path('training_timetable_generation', {'id': training.id, 'tt': 0}) %}
             {% set tabContent = 'trainings/parameters/tab_timetable.html.twig' %}
     {% endif %}
+    {% if currentTab == 'financial' %}
+            {% set addLink = '' %}
+            {% set dropdownLink = 'Nouvelle Entrée' %}
+            {% set dropdownContent = '
+                <div class="dropdown-menu dropdown-menu-arrow">
+                    <a class="dropdown-item" href="#">
+                        Entrée par heure de cours
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        Entrée par étudiant
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        Entrée fixe
+                    </a>
+                </div>
+            '%}
+            
+            {% set tabContent = 'trainings/parameters/tab_financial.html.twig' %}
+    {% endif %}
     <div class="page-header d-print-none">
         <div class="container-xl">
             <div class="row g-2 align-items-center">

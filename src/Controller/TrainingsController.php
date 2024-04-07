@@ -319,6 +319,20 @@ class TrainingsController extends AbstractController
         ]);
     }
 
+    #[Route('/{id<\d+>}/parameters/financial', name: 'training_parameters_financial')]
+    public function parametersFinancial(Trainings $training, Request $request): Response
+    {
+
+       // if(empty($training) || empty($training->isActivateFinancialManagement()) )
+       // return $this->redirectToRoute('home');
+
+        return $this->render('trainings/parameters.html.twig', [
+            'training' => $training,
+            'menuTrainings' => 'active',
+            'currentTab' => 'financial'
+        ]);
+    }
+
     // PLANNING DISPLAY PAGES
 
     #[Route('/{id<\d+>}/planning', name: 'training_planning')]
