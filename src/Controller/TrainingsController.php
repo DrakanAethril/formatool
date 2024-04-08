@@ -283,7 +283,9 @@ class TrainingsController extends AbstractController
         
         
         $form = $this->createForm(FinancialItemType::class, $financialItem,  [
-            'source' => $source
+            'source' => $source,
+            'typeEntry' => $financialItem->getType() ? FinancialItemsTypeEnum::from($financialItem->getType()) : null,
+            'sourceEntry' => $financialItem->getSource() ? FinancialItemsSourceEnum::from($financialItem->getSource()) : null,
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

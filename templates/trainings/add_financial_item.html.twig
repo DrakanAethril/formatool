@@ -54,8 +54,14 @@
                                 </div>
                                 <div class="col-md-5">
                                 </div>
+                                <div class="col-md-3">
+                                        <div class="mb-3">
+                                            {{ form_label(financialItemForm.sourceEntry, 'Calcul de quantité', {'label_attr': {'class': 'form-label required'}}) }}
+                                                {{ form_widget(financialItemForm.sourceEntry, {'attr': {'class': 'disabled', 'required': true}}) }}
+                                        </div>
+                                    </div>
                                 {% if isSession is not empty %}
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="mb-3">
                                             {{ form_label(financialItemForm.lessonType, 'Type de cours', {'label_attr': {'class': 'form-label required'}}) }}
                                                 {{ form_widget(financialItemForm.lessonType, {'attr': {'class': '', 'required': true}}) }}

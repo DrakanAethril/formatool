@@ -36,13 +36,35 @@ class FinancialItemType extends AbstractType
             ])
             ->add('typeEntry', EnumType::class, [
                 'class' => FinancialItemsTypeEnum::class,
+                'mapped' => false,
+                'data' => $options['typeEntry'],
+                'autocomplete' => true,
                 'required' => true,
-                'mapped' => false
-                
+                'tom_select_options' => [
+                    'plugins' => [
+                            'clear_button' => [
+                                'className' => 'd-none',
+                            ]
+                        ]
+                ]
             ])
             ->add('value', NumberType::class, [
                 'required' => true,
                 'html5' => false
+            ])
+            ->add('sourceEntry', EnumType::class, [
+                'class' => FinancialItemsSourceEnum::class,
+                'mapped' => false,
+                'disabled' => true,
+                'autocomplete' => true,
+                'data' => $options['sourceEntry'],
+                'tom_select_options' => [
+                    'plugins' => [
+                            'clear_button' => [
+                                'className' => 'd-none',
+                            ]
+                        ]
+                ]
             ]);
 
             switch($options['source']) {
@@ -87,6 +109,8 @@ class FinancialItemType extends AbstractType
         $resolver->setDefaults([
             'data_class' => TrainingFinancialItems::class,
             'source' => false,
+            'sourceEntry' => false,
+            'typeEntry' => false
         ]);
     }
 }

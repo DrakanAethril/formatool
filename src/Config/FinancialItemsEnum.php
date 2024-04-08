@@ -17,7 +17,7 @@ enum FinancialItemsSourceEnum:int implements TranslatableInterface {
         
         // Translate enum using custom labels
         return match ($this) {
-            self::SourceLesson  => 'Par type de cours', //$translator->trans('Par type de cours', locale: $locale),
+            self::SourceLesson  => 'Par heure de cours', //$translator->trans('Par heure de cours', locale: $locale),
             self::SourceStudent => 'Par étudiant',
             self::SourceManual  => 'Manuelle'
         };
