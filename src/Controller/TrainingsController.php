@@ -244,6 +244,56 @@ class TrainingsController extends AbstractController
         }
     }
 
+    // TIMESLOTS
+
+    #[Route('/{id<\d+>}/timeslot/add/{tt<\d+>?0}', name: 'training_add_timeslot')]
+    public function addTimeSlot(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, TimeSlotsRepository $timeSlotsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $create = false;
+        if(empty($tt)) {
+            $timeSlot = new TimeSlots();
+            $timeSlot->setTraining($training);
+            $create = true;
+        } else {
+            $timeSlot = $timeSlotsRepository->findOneBy(['id'=> $tt]);
+            if(empty($timeSlot) || $timeSlot->getTraining()->getId() !== $training->getId()) {
+                return $this->redirectToRoute('home');
+            }
+        }
+        
+        
+        $form = $this->createForm(TimeSlotType::class, $timeSlot);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($timeSlot);
+            $entityManager->flush();
+            //redirect on training page
+            return $this->redirectToRoute('training_parameters', ['id' => $training->getId()]);
+        }
+
+
+        return $this->render('trainings/add_timeslot.html.twig', [
+            'training' => $training,
+            'timeSlotForm' => $form->createView(),
+            'menuTrainings' => 'active'
+        ]);
+    }
+
+    #[Route('/timeslot/remove/{id}', name: 'training_remove_timeslot')]
+    public function removeTimeSlot($id, TimeSlotsRepository $timeSlotsRepository, EntityManagerInterface $entityManager) : Response
+    {   
+        $timeSlot = $timeSlotsRepository->findOneBy(['id' => intval($id)]);
+        if(!empty($timeSlot)) {
+            $idTraining = $timeSlot->getTraining()->getId();
+            $entityManager->remove($timeSlot);
+            $entityManager->flush();
+            return $this->redirectToRoute('training_parameters', ['id' => $idTraining]);
+        } else {
+            return $this->redirectToRoute('home');
+        }
+    }
+
     // Financial entries
     #[Route('/{id<\d+>}/financial/add_per_session/{tt<\d+>?0}', name: 'training_add_financial_session')]
     #[Route('/{id<\d+>}/financial/add_per_student/{tt<\d+>?0}', name: 'training_edit_financial_student')]
@@ -310,7 +360,7 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/financial/remove/{id}', name: 'training_remaove_financial_item')]
+    #[Route('/financial/remove/{id}', name: 'training_remove_financial_item')]
     public function removeFinancialItem($id, LessonSessionsRepository $lessonSessionsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $lessonSession = $lessonSessionsRepository->findOneBy(['id' => intval($id)]);
@@ -404,7 +454,7 @@ class TrainingsController extends AbstractController
     }
 
     #[Route('/{id<\d+>}/parameters/financial', name: 'training_parameters_financial')]
-    public function parametersFinancial(Trainings $training, Request $request): Response
+    public function parametersFinancial(Trainings $training, Request $request, LessonSessionsRepository $lessonSessionsRepository): Response
     {
 
        // if(empty($training) || empty($training->isActivateFinancialManagement()) )
@@ -413,7 +463,9 @@ class TrainingsController extends AbstractController
         return $this->render('trainings/parameters.html.twig', [
             'training' => $training,
             'menuTrainings' => 'active',
-            'currentTab' => 'financial'
+            'currentTab' => 'financial',
+            'volumePerLessonType' => $lessonSessionsRepository->getTotalLengthPerTypeForTraining($training),
+            'volumePerStudent' => 8
         ]);
     }
 
@@ -443,56 +495,6 @@ class TrainingsController extends AbstractController
             'training' => $training,
             'menuTrainings' => 'active'
         ]);
-    }
-
-    // TIMESLOTS
-
-    #[Route('/{id<\d+>}/timeslot/add/{tt<\d+>?0}', name: 'training_add_timeslot')]
-    public function addTimeSlot(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, TimeSlotsRepository $timeSlotsRepository, Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $create = false;
-        if(empty($tt)) {
-            $timeSlot = new TimeSlots();
-            $timeSlot->setTraining($training);
-            $create = true;
-        } else {
-            $timeSlot = $timeSlotsRepository->findOneBy(['id'=> $tt]);
-            if(empty($timeSlot) || $timeSlot->getTraining()->getId() !== $training->getId()) {
-                return $this->redirectToRoute('home');
-            }
-        }
-        
-        
-        $form = $this->createForm(TimeSlotType::class, $timeSlot);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($timeSlot);
-            $entityManager->flush();
-            //redirect on training page
-            return $this->redirectToRoute('training_parameters', ['id' => $training->getId()]);
-        }
-
-
-        return $this->render('trainings/add_timeslot.html.twig', [
-            'training' => $training,
-            'timeSlotForm' => $form->createView(),
-            'menuTrainings' => 'active'
-        ]);
-    }
-
-    #[Route('/timeslot/remove/{id}', name: 'training_remove_timeslot')]
-    public function removeTimeSlot($id, TimeSlotsRepository $timeSlotsRepository, EntityManagerInterface $entityManager) : Response
-    {   
-        $timeSlot = $timeSlotsRepository->findOneBy(['id' => intval($id)]);
-        if(!empty($timeSlot)) {
-            $idTraining = $timeSlot->getTraining()->getId();
-            $entityManager->remove($timeSlot);
-            $entityManager->flush();
-            return $this->redirectToRoute('training_parameters', ['id' => $idTraining]);
-        } else {
-            return $this->redirectToRoute('home');
-        }
     }
 
     //TEACHERS

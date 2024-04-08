@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\TrainingFinancialItemsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Config\FinancialItemsTypeEnum;
+use App\Config\FinancialItemsSourceEnum;
 
 #[ORM\Entity(repositoryClass: TrainingFinancialItemsRepository::class)]
 class TrainingFinancialItems
@@ -153,5 +155,21 @@ class TrainingFinancialItems
         $this->lessonType = $lessonType;
 
         return $this;
+    }
+
+    public function getEnumTypeObject() {
+        return FinancialItemsTypeEnum::tryFrom($this->getType());
+    }
+
+    public function getEnumSourceObject() {
+        return FinancialItemsSourceEnum::tryFrom($this->getSource());
+    }
+
+    public function getStudentsNumber():int {
+        return 8;
+    }
+
+    public function getLessonsHours():int {
+        return 10;
     }
 }

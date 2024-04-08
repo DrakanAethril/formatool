@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\LessonSessions;
+use App\Entity\LessonTypes;
 use App\Entity\Trainings;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -61,6 +62,25 @@ class LessonSessionsRepository extends ServiceEntityRepository
             ->getArrayResult();
         foreach ($allTopicsVolumes as $sid) {
             $res[$sid['topic']] = intval($sid['length']);
+        }
+        return $res;
+    }
+
+    public function getTotalLengthPerTypeForTraining(Trainings $training):array {
+        $res = [];
+
+        $data = $this->createQueryBuilder('l')
+            ->select('SUM(l.length) AS total')
+            ->addSelect('IDENTITY(l.lessonType) as lessonType')
+            ->andWhere('l.training = :training')
+            ->setParameter('training', $training)
+            ->groupBy('l.lessonType')
+            ->getQuery()
+            ->getArrayResult();
+
+        foreach($data as $row) {
+            if(empty($row['lessonType'])) $row['lessonType'] = 0;
+            $res['type_'.$row['lessonType']] = $row['total'];
         }
         return $res;
     }

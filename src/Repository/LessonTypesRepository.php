@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\LessonTypes;
+use App\Entity\Trainings;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

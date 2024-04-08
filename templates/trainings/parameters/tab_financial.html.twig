@@ -1,11 +1,60 @@
-<div class="page-body">
-    <div class="container-xl">
-        <div class="row row-deck row-cards">
-            <div class="col-12">
-                <div class="card">
-                    {# include 'trainings/parameters/tab_topics.html.twig' with {'allowEditTopics': false}  #}
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="table-responsive">
+    <table class="table card-table table-vcenter text-nowrap datatable" id="financial-items-params-table" style="width:100%">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Type</th>
+                <th>Source</th>
+                <th>Quantité</th>
+                <th>Valeur Unitaire</th>
+                <th>Total</th>
+                <th class="w-1"></th>   
+            </tr>
+        </thead>
+        <tbody>
+            {% for financialItem in training.trainingFinancialItems %}
+                {% if financialItem.enumSourceObject is constant('App\\Config\\FinancialItemsSourceEnum::SourceLesson')%}
+                    {% set keyname = 'type_'~financialItem.lessonType.id %}
+                    {% set volume = volumePerLessonType[keyname] | default(0) %}
+                {% endif %}
+                {% if financialItem.enumSourceObject is constant('App\\Config\\FinancialItemsSourceEnum::SourceStudent')%}
+                    {% set volume = volumePerStudent %}
+                {% endif %}
+                {% if financialItem.enumSourceObject is constant('App\\Config\\FinancialItemsSourceEnum::SourceManual')%}
+                    {% set volume = financialItem.quantity %}
+                {% endif %}
+                <tr>
+                    <td>
+                        {{financialItem.title}}
+                    </td>
+                    <td>
+                        {{financialItem.enumTypeObject|trans() }}
+                    </td>
+                    <td>
+                        {{financialItem.enumSourceObject|trans() }}
+                    </td>
+                    <td>
+                        {{volume|default(0) }}
+                    </td>
+                    <td>
+                         {{financialItem.value}}
+                    </td>
+                    <td>
+                        {{financialItem.type * volume|default(0) * financialItem.value }}
+                    </td>
+                    
+                    <td class="text-end">
+                        <div class="btn-list flex-nowrap justify-content-end">
+                            <a href="{{path('training_edit_financial_item', {'id':training.id, 'tt':financialItem.id})}}" class="btn btn-ghost-warning">
+                                Modifier
+                            </a>
+                            <a href="{{path('training_remove_financial_item', {'id':financialItem.id})}}" class="btn btn-ghost-danger">
+                                Supprimer
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {%endfor%}
+        </tbody>
+    </table>
 </div>
