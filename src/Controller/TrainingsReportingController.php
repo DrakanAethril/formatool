@@ -15,6 +15,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TrainingsReportingController extends AbstractController
 {
+
+    
+    #[Route('/scholarship', name: 'training_reporting_scholarship')]
+    public function scholarship(#[MapEntity(expr: 'repository.find(training)')] Trainings $training): Response
+    {
+        return $this->render('trainings_reporting/index.html.twig', [
+            'training' => $training,
+            'menuTrainings' => 'active',
+            'currentTab' => 'scholarship'
+        ]);
+    }
+
     #[Route('/', name: 'training_reporting')]
     #[Route('/pedagogic', name: 'training_reporting_pedagogic')]
     public function pedagogic(#[MapEntity(expr: 'repository.find(training)')] Trainings $training): Response

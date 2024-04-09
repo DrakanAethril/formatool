@@ -4,6 +4,9 @@
 
 {% block body %}
     {% set tabContent = '' %}
+    {% if currentTab == 'scholarship' %}
+            {% set tabContent = 'trainings_reporting/tabs/tab_scholarship.html.twig' %}
+    {% endif %}
     {% if currentTab == 'pedagogic' %}
             {% set tabContent = 'trainings_reporting/tabs/tab_pedagogic.html.twig' %}
     {% endif %}
@@ -18,7 +21,7 @@
                         {{training.title}}
                     </div>
                     <h2 class="page-title">
-                        Paramétrage
+                        Reporting
                     </h2>
                 </div>
             </div>
