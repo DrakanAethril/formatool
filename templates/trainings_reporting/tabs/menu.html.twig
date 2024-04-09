@@ -1,0 +1,12 @@
+<ul class="nav nav-pills card-header-pills" data-bs-toggle="tabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a href="{{path('training_reporting_pedagogic', {'training': training.id})}}" class="nav-link {{ (currentTab == 'pedagogic') ? 'active' : '' }}">
+            Reporting pédagogique
+        </a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a href="{{path('training_reporting_financial', {'training': training.id})}}" class="nav-link {{ (currentTab == 'financial') ? 'active' : '' }}">
+            Reporting financier
+        </a>
+    </li>
+</ul>
