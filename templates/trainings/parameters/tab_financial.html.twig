@@ -7,18 +7,20 @@
                 <th>Source</th>
                 <th>Quantité</th>
                 <th>Valeur Unitaire</th>
-                <th>Total</th>
                 <th class="w-1"></th>   
             </tr>
         </thead>
         <tbody>
             {% for financialItem in training.trainingFinancialItems %}
                 {% if financialItem.enumSourceObject is constant('App\\Config\\FinancialItemsSourceEnum::SourceLesson')%}
+                    {#
                     {% set keyname = 'type_'~financialItem.lessonType.id %}
                     {% set volume = volumePerLessonType[keyname] | default(0) %}
+                    #}
+                    {% set volume = 'NB_H_COURS - '~financialItem.lessonType %}
                 {% endif %}
                 {% if financialItem.enumSourceObject is constant('App\\Config\\FinancialItemsSourceEnum::SourceStudent')%}
-                    {% set volume = volumePerStudent %}
+                    {% set volume = 'NB_Etudiant' %}
                 {% endif %}
                 {% if financialItem.enumSourceObject is constant('App\\Config\\FinancialItemsSourceEnum::SourceManual')%}
                     {% set volume = financialItem.quantity %}
@@ -39,10 +41,6 @@
                     <td>
                          {{financialItem.value}}
                     </td>
-                    <td>
-                        {{financialItem.type * volume|default(0) * financialItem.value }}
-                    </td>
-                    
                     <td class="text-end">
                         <div class="btn-list flex-nowrap justify-content-end">
                             <a href="{{path('training_edit_financial_item', {'id':training.id, 'tt':financialItem.id})}}" class="btn btn-ghost-warning">
