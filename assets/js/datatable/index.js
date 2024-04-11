@@ -189,6 +189,51 @@ document.addEventListener("DOMContentLoaded", () => {
         } );
     }
 
+    let dataTableFinancialItemsReporting = document.getElementById("financial-items-reporting-table");
+    if(dataTableFinancialItemsReporting) {
+        let colNum = $("#financial-items-reporting-table > tbody > tr:first > td").length;
+        $('#financial-items-reporting-table').dataTable( {
+            "pageLength": 50,
+            "order": [[2, 'asc'],[0, 'asc']],
+            "language": languageFr,
+            'columnDefs': [ 
+                {
+                    'targets': [2],
+                    'visible': false
+                },
+                {
+                    'targets': [4,5],
+                    render: DataTable.render.number(' ', ',', 2, '', ' €')
+                }
+                
+            ],
+            "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
+            rowGroup: {
+                dataSrc: 2,
+                startRender: function ( rows, group ) {
+                    return $('<tr/>')
+                        .append( '<td class="text-center fw-bold" colspan="'+colNum+'">'+group +' ('+rows.count()+' item(s))'+'</td>' );
+                },
+                endRender: function (rows, group) {
+                    let sumTotal =
+                        rows
+                            .data()
+                            .pluck(5)
+                            .reduce((a, b) => a*1 + b*1);
+                            let tr = document.createElement('tr');
+
+                    tr.classList.add("text-muted")
+                    dataTable_addCell(tr, '');
+                    dataTable_addCell(tr, '');
+                    dataTable_addCell(tr, '');
+                    dataTable_addCell(tr, '');
+                    dataTable_addCell(tr, DataTable.render.number(' ', ',', 2, '', ' €').display(sumTotal));
+                    return tr;
+                }
+            }
+        } );
+    }
+
 
 
 }); 

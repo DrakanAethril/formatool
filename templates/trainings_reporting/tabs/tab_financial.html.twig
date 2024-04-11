@@ -4,7 +4,11 @@
             <div class="card">
                 <div class="card-body">
                     <div class="subheader">Résultat</div>
-                    <div class="h3 m-0">€</div>
+                    {% set totalTextClass = 'text-warning' %}
+                    {% if totalGlobal > 0 %}
+                        {% set totalTextClass = 'text-success' %}
+                    {% endif %}
+                    <div class="h3 m-0 {{totalTextClass}}">{{totalGlobal|number_format(2, '.', ' ')}}€</div>
                 </div>
             </div>
         </div>
@@ -32,7 +36,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="table-responsive">
-                        <table class="table card-table table-vcenter text-nowrap datatable" id="financial-items-params-table" style="width:100%">
+                        <table class="table card-table table-vcenter text-nowrap datatable" id="financial-items-reporting-table" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Nom</th>
@@ -75,10 +79,10 @@
                                             {{volume|default(0) }}
                                         </td>
                                         <td>
-                                            {{financialItem.value|number_format(2, '.', ' ')}}€
+                                            {{financialItem.value}}
                                         </td>
                                         <td class="{{totalTxtClass}}">
-                                            {{totalLineValue|number_format(2, '.', ' ')}}€
+                                            {{totalLineValue}}
                                         </td>
                                     </tr>
                                 {%endfor%}

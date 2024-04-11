@@ -34,7 +34,6 @@ class TrainingsReportingController extends AbstractController
         ]);
     }
 
-    #[Route('/', name: 'training_reporting')]
     #[Route('/pedagogic', name: 'training_reporting_pedagogic')]
     public function pedagogic(
         #[MapEntity(expr: 'repository.find(training)')] Trainings $training, 
@@ -91,6 +90,7 @@ class TrainingsReportingController extends AbstractController
         ]);
     }
 
+    #[Route('/', name: 'training_reporting')]
     #[Route('/financial', name: 'training_reporting_financial')]
     public function financial(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, LessonSessionsRepository $lessonSessionsRepository): Response
     {
@@ -136,7 +136,8 @@ class TrainingsReportingController extends AbstractController
             'volumePerLessonType' => $volumePerSessionType,
             'nbStudents' => $nbStudents,
             'totalGain' => $totalGain,
-            'totalCost' => $totalCost
+            'totalCost' => $totalCost,
+            'totalGlobal' => $totalGain - $totalCost
         ]);
     }
 }

@@ -2,6 +2,10 @@
 
 {% block title %}Reporting formation : {{training.title}}{% endblock %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('datatable') }}
+{% endblock %}
+
 {% block body %}
     {% set tabContent = '' %}
     {% if currentTab == 'scholarship' %}
@@ -50,3 +54,7 @@
     </div>
 
 {% endblock %}
+{% block javascripts_bottom %}
+     {{ encore_entry_script_tags('datatable') }}
+{% endblock %}
+
