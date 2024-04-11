@@ -70,7 +70,7 @@ class TrainingsAjaxController extends AbstractController
                 'title'=> $sessionDb->getDisplayName(),
                 'start'=> $dateStartTime,
                 'end' => $dateEndTime,
-                'backgroundColor' => empty($sessionDb->getLessonType()) ? '#0054A6' : $sessionDb->getLessonType()->getAgendaColor(),
+                'backgroundColor' => empty($sessionDb->getLessonType()) ? '#D3D3D3' : $sessionDb->getLessonType()->getAgendaColor(),
                 'allDay' => false,
                 'url' => $this->generateUrl('training_add_lessonsession', ['id' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]),
                 'extendedProps' => [

@@ -1,1 +1,92 @@
-Financial
+<div class="container-xl">
+    <div class="row row-cards">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">Résultat</div>
+                    <div class="h3 m-0">€</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">Gains totaux</div>
+                    <div class="h3 m-0 text-success">{{totalGain|number_format(2, '.', ' ')}}€</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="subheader">Coûts totaux</div>
+                    <div class="h3 m-0 text-warning">{{totalCost|number_format(2, '.', ' ')}}€</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-body">
+    <div class="container-xl">
+        <div class="row row-deck row-cards">
+            <div class="col-12">
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table card-table table-vcenter text-nowrap datatable" id="financial-items-params-table" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Type</th>
+                                    <th>Source</th>
+                                    <th>Quantité</th>
+                                    <th>Valeur Unitaire</th>
+                                    <th>Total</th>   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for financialItem in training.trainingFinancialItems %}
+                                    {% if financialItem.enumSourceObject is constant('App\\Config\\FinancialItemsSourceEnum::SourceLesson')%}
+                                        {% set keyname = 'type_'~financialItem.lessonType.id %}
+                                        {% set volume = volumePerLessonType[keyname] | default(0) %}
+                                    {% endif %}
+                                    {% if financialItem.enumSourceObject is constant('App\\Config\\FinancialItemsSourceEnum::SourceStudent')%}
+                                        {% set volume = nbStudents %}
+                                    {% endif %}
+                                    {% if financialItem.enumSourceObject is constant('App\\Config\\FinancialItemsSourceEnum::SourceManual')%}
+                                        {% set volume = financialItem.quantity %}
+                                    {% endif %}
+                                    {% set totalLineValue = financialItem.type * volume * financialItem.value %}
+                                    {% if totalLineValue < 0 %}
+                                        {% set totalTxtClass = "text-warning" %}
+                                    {% else %}
+                                        {% set totalTxtClass = "text-success" %}
+                                    {% endif %}
+                                    <tr>
+                                        <td>
+                                            {{financialItem.title}}
+                                        </td>
+                                        <td>
+                                            {{financialItem.enumTypeObject|trans() }}
+                                        </td>
+                                        <td>
+                                            {{financialItem.enumSourceObject|trans() }}
+                                        </td>
+                                        <td>
+                                            {{volume|default(0) }}
+                                        </td>
+                                        <td>
+                                            {{financialItem.value|number_format(2, '.', ' ')}}€
+                                        </td>
+                                        <td class="{{totalTxtClass}}">
+                                            {{totalLineValue|number_format(2, '.', ' ')}}€
+                                        </td>
+                                    </tr>
+                                {%endfor%}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

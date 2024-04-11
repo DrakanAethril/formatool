@@ -84,4 +84,15 @@ class LessonSessionsRepository extends ServiceEntityRepository
         }
         return $res;
     }
+
+    public function getGlobalSessionsVolumeForTraining(Trainings $training, array $lengthPerType = null):int {
+        $res = 0;
+        if($lengthPerType === null) $lengthPerType = $this->getTotalLengthPerTypeForTraining($training);
+        if(!empty($lengthPerType)) {
+            foreach($lengthPerType as $keyVPST => $valueVPST) {
+                $res += $valueVPST;
+            }
+        }
+        return $res;
+    }
 }
