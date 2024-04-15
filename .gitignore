@@ -23,6 +23,10 @@
 /public/uploads/
 .github/workflows/src.ovpn
 
+/.docker/
+package-lock.json
+yarn.lock
+
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public/build/
