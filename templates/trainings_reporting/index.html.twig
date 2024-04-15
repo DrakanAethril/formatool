@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reporting formation : {{training.title}}{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('datatable') }}
+{% endblock %}
+
+{% block body %}
+    {% set tabContent = '' %}
+    {% if currentTab == 'scholarship' %}
+            {% set tabContent = 'trainings_reporting/tabs/tab_scholarship.html.twig' %}
+    {% endif %}
+    {% if currentTab == 'pedagogic' %}
+            {% set tabContent = 'trainings_reporting/tabs/tab_pedagogic.html.twig' %}
+    {% endif %}
+    {% if currentTab == 'financial' %}
+            {% set tabContent = 'trainings_reporting/tabs/tab_financial.html.twig' %}
+    {% endif %}
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                        {{training.title}}
+                    </div>
+                    <h2 class="page-title">
+                        Reporting
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-deck row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            {% include('trainings_reporting/tabs/menu.html.twig') %}
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active show">
+                                    {% include(tabContent) %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts_bottom %}
+     {{ encore_entry_script_tags('datatable') }}
+{% endblock %}
+

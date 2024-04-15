@@ -22,6 +22,19 @@ class LessonTypesRepository extends ServiceEntityRepository
         parent::__construct($registry, LessonTypes::class);
     }
 
+    public function getAllTypesIndexedNamed():array {
+        $res= ['type_0' => 'NA'];
+        $all = $this->findBy([
+            //'inactive' => null
+        ]);
+        if(!empty($all)){
+            foreach($all as $lessonType) {
+                $res['type_'.$lessonType->getId()] = $lessonType;
+            }
+        }
+        return $res;
+    }
+
 //    /**
 //     * @return LessonTypes[] Returns an array of LessonTypes objects
 //     */

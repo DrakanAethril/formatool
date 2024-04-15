@@ -20,23 +20,6 @@ class ClassRoomType extends AbstractType
             ->add('name', TextType::class, [
                 'required' => true,
             ])
-            ->add('trainings', EntityType::class, [
-                'class' => Trainings::class,
-                'query_builder' => function (EntityRepository $er): QueryBuilder {
-                    return $er->createQueryBuilder('u')
-                        ->orderBy('u.title', 'ASC');
-                },
-                'autocomplete' => true,
-                'multiple' => true,
-                'required' => false,
-                'tom_select_options' => [
-                    'plugins' => [
-                            'clear_button' => [
-                                'className' => 'd-none',
-                            ]
-                        ]
-                ]
-            ])
         ;
     }
 
