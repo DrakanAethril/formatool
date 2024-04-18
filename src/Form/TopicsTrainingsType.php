@@ -22,7 +22,6 @@ class TopicsTrainingsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
         $builder
             ->add('topics', EntityType::class,
                     [
@@ -74,9 +73,12 @@ class TopicsTrainingsType extends AbstractType
                     [
                         'class' => TopicsGroups::class,
                         'placeholder' => 'Aucune',
-                        'query_builder' => function (EntityRepository $er): QueryBuilder {
+                        'query_builder' => function (EntityRepository $er) use($options) : QueryBuilder {
                             return $er->createQueryBuilder('u')
-                                ->orderBy('u.name', 'ASC');
+                            ->innerJoin('u.training', 't')
+                            ->where('t.id = :idTraining')
+                            ->setParameter('idTraining', $options['training']->getId())
+                            ->orderBy('u.name', 'ASC');
                         },
                         'autocomplete' => true,
                         'tom_select_options' => [
@@ -121,6 +123,7 @@ class TopicsTrainingsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => TopicsTrainings::class,
+            'training' => false
         ]);
     }
 }

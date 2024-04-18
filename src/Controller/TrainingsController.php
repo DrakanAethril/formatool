@@ -92,7 +92,7 @@ class TrainingsController extends AbstractController
         }
         
         
-        $form = $this->createForm(TopicsTrainingsType::class, $topicTraining);
+        $form = $this->createForm(TopicsTrainingsType::class, $topicTraining, ['training' => $training]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
