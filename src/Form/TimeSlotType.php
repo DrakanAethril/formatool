@@ -37,6 +37,11 @@ class TimeSlotType extends AbstractType
             [
                 'class' => TimeSlotsTypes::class,
                 'required' => true,
+                'query_builder' => function (EntityRepository $er) use ($options) : QueryBuilder {
+                    return $er->createQueryBuilder('u')
+                        ->where('u.inactive IS NULL')
+                        ->orderBy('u.name', 'ASC');
+                },
                 'tom_select_options' => [
                     'plugins' => [
                             'clear_button' => [

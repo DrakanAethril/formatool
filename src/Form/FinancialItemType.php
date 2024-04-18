@@ -74,6 +74,7 @@ class FinancialItemType extends AbstractType
                             'class' => LessonTypes::class,
                             'query_builder' => function (EntityRepository $er): QueryBuilder {
                                 return $er->createQueryBuilder('u')
+                                    ->where('u.inactive IS NULL')
                                     ->orderBy('u.name', 'ASC');
                             },
                             'autocomplete' => true,

@@ -50,7 +50,9 @@ class PlacesController extends AbstractController
             }
         }
         
-        $form = $this->createForm(TrainingsType::class, $training);
+        $form = $this->createForm(TrainingsType::class, $training, [
+            'place' => $place
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

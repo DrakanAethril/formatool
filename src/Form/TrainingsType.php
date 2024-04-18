@@ -32,8 +32,11 @@ class TrainingsType extends AbstractType
                 'class' => Cursus::class,
                 'required' => false,
                 //'placeholder' => 'Aucun',
-                'query_builder' => function (EntityRepository $er): QueryBuilder {
+                'query_builder' => function (EntityRepository $er) use ($options): QueryBuilder {
                     return $er->createQueryBuilder('u')
+                        ->innerJoin('u.places', 'p', 'WITH', 'p.id = :place')
+                        ->where('u.inactive IS NULL')
+                        ->setParameter('place', $options['place']->getId())
                         ->orderBy('u.name', 'ASC');
                 },
                 'autocomplete' => true,
@@ -52,6 +55,7 @@ class TrainingsType extends AbstractType
                 //'placeholder' => 'Aucun',
                 'query_builder' => function (EntityRepository $er): QueryBuilder {
                     return $er->createQueryBuilder('u')
+                        ->where('u.inactive IS NULL')
                         ->orderBy('u.name', 'ASC');
                 },
                 'autocomplete' => true,
@@ -80,8 +84,11 @@ class TrainingsType extends AbstractType
                 'class' => ClassRooms::class,
                 'required' => false,
                 //'placeholder' => 'Aucun',
-                'query_builder' => function (EntityRepository $er): QueryBuilder {
+                'query_builder' => function (EntityRepository $er) use ($options): QueryBuilder {
                     return $er->createQueryBuilder('u')
+                        ->innerJoin('u.place', 'p', 'WITH', 'p.id = :place')
+                        ->where('u.inactive IS NULL')
+                        ->setParameter('place', $options['place']->getId())
                         ->orderBy('u.name', 'ASC');
                 },
                 'autocomplete' => true,
@@ -157,6 +164,7 @@ class TrainingsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Trainings::class,
+            'place' => false 
         ]);
     }
 }

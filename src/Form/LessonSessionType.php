@@ -49,10 +49,12 @@ class LessonSessionType extends AbstractType
             ->add('topic', EntityType::class,
                 [
                     'class' => TopicsTrainings::class,
-                    /*'query_builder' => function (EntityRepository $er): QueryBuilder {
+                    'query_builder' => function (EntityRepository $er) use ($options): QueryBuilder {
                             return $er->createQueryBuilder('u')
-                                ->orderBy('u.topics', 'ASC');
-                        },*/
+                                ->innerJoin('u.trainings', 't', 'WITH', 't.id = :training')
+                                ->setParameter('training', $options['training']->getId())
+                                ;
+                        },
                     'autocomplete' => true,
                     'required' => true,
                     'tom_select_options' => [
@@ -95,6 +97,7 @@ class LessonSessionType extends AbstractType
                     //'placeholder' => 'Aucun',
                     'query_builder' => function (EntityRepository $er): QueryBuilder {
                         return $er->createQueryBuilder('u')
+                            ->where('u.inactive IS NULL')
                             ->orderBy('u.name', 'ASC');
                     },
                     'autocomplete' => true,
@@ -112,8 +115,11 @@ class LessonSessionType extends AbstractType
                     'class' => ClassRooms::class,
                     'required' => false,
                     'placeholder' => 'Aucun',
-                    'query_builder' => function (EntityRepository $er): QueryBuilder {
+                    'query_builder' => function (EntityRepository $er) use ($options) : QueryBuilder {
                         return $er->createQueryBuilder('u')
+                            ->innerJoin('u.place', 'p', 'WITH', 'p.id = :place')
+                            ->setParameter('place', $options['training']->getPlace()->getId())
+                            ->where('u.inactive IS NULL')
                             ->orderBy('u.name', 'ASC');
                     },
                     'autocomplete' => true,
@@ -132,6 +138,7 @@ class LessonSessionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => LessonSessions::class,
+            'training' => false
         ]);
     }
 }

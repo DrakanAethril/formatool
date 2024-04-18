@@ -28,6 +28,7 @@ class TopicsTrainingsType extends AbstractType
                     'class' => Topics::class,
                        'query_builder' => function (EntityRepository $er): QueryBuilder {
                             return $er->createQueryBuilder('u')
+                                ->where('u.inactive IS NULL')
                                 ->orderBy('u.name', 'ASC');
                         },
                         'autocomplete' => true,
@@ -49,6 +50,7 @@ class TopicsTrainingsType extends AbstractType
                     'required' => false,
                     'query_builder' => function (EntityRepository $er): QueryBuilder {
                         return $er->createQueryBuilder('u')
+                            ->where('u.inactive IS NULL')
                             ->orderBy('u.name', 'ASC');
                     },
                     'autocomplete' => true
@@ -60,10 +62,11 @@ class TopicsTrainingsType extends AbstractType
                     'multiple' => true,
                     'by_reference' => false,
                     'required' => false,
-                    'query_builder' => function (EntityRepository $er): QueryBuilder {
+                    'query_builder' => function (EntityRepository $er) use ($options): QueryBuilder {
                         return $er->createQueryBuilder('u')
-                            ->join('u.timeSlotsTypes', 't')
-                            ->where('t.id = 2')
+                            ->innerJoin('u.timeSlotsTypes', 't', 'WITH', 't.id = 2') //lesson ID forced
+                            ->innerJoin('u.training', 'tr', 'WITH', 'tr.id = :training')
+                            ->setParameter('training', $options['training']->getId())
                             ->orderBy('u.name', 'ASC');
                     },
                     'autocomplete' => true

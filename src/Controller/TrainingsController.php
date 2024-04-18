@@ -209,7 +209,9 @@ class TrainingsController extends AbstractController
         }
         
         
-        $form = $this->createForm(LessonSessionType::class, $lessonSession);
+        $form = $this->createForm(LessonSessionType::class, $lessonSession,[
+            'training' => $training
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
