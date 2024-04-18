@@ -32,6 +32,7 @@ class CursusFormType extends AbstractType
                 'class' => CursusType::class,
                 'query_builder' => function (EntityRepository $er): QueryBuilder {
                     return $er->createQueryBuilder('u')
+                        ->where('u.inactive IS NULL')
                         ->orderBy('u.level', 'ASC');
                 },
                 'autocomplete' => true,
