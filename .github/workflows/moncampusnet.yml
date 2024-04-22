@@ -18,6 +18,7 @@ jobs:
           host: ${{ secrets.MONCAMPUSNET_SSH_HOST }}
           username: ${{ secrets.MONCAMPUSNET_SSH_USER }}
           key: ${{ secrets.MONCAMPUSNET_SSH_KEY }}
+          passphrase: ${{ secrets.MONCAMPUSNET_SSH_PASSPHRASE }}
           script: |
               cd stack
               sudo git config --global --add safe.directory ./
