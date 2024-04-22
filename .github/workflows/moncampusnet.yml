@@ -22,14 +22,15 @@ jobs:
           script: |
               cd htdocs
               sudo chown -Rf daemon:bitnami ./
-              sudo chmod -Rf 755 ./ 
+              sudo chmod -Rf 775 ./ 
               git config --global --add safe.directory ./
               git reset --hard
               git pull 
               composer update
-              npm install
+              sudo npm install
               npm run build
               php bin/console d:m:m --no-interaction
               php bin/console c:c
               php bin/console assets:install
+              sudo chmod -Rf 775 ./ 
               sudo chown -Rf daemon:daemon ./
