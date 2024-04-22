@@ -21,13 +21,15 @@ jobs:
           passphrase: ${{ secrets.MONCAMPUSNET_SSH_PASSPHRASE }}
           script: |
               cd htdocs
-              sudo git config --global --add safe.directory ./
-              sudo git reset --hard
-              sudo git pull 
-              sudo composer update
-              sudo npm install
-              sudo npm build
-              sudo php bin/console d:m:m --no-interaction
-              sudo php bin/console c:c
-              sudo php bin/console assets:install
+              sudo chown -Rf daemon:bitnami ./
+              sudo chmod -Rf 755 ./ 
+              git config --global --add safe.directory ./
+              git reset --hard
+              git pull 
+              composer update
+              npm install
+              npm run build
+              php bin/console d:m:m --no-interaction
+              php bin/console c:c
+              php bin/console assets:install
               sudo chown -Rf daemon:daemon ./
