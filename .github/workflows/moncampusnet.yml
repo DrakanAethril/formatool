@@ -1,0 +1,32 @@
+name: moncampus.net deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.MONCAMPUSNET_SSH_HOST }}
+          username: ${{ secrets.MONCAMPUSNET_SSH_USER }}
+          key: ${{ secrets.MONCAMPUSNET_SSH_KEY }}
+          script: |
+              cd stack
+              sudo git config --global --add safe.directory ./
+              sudo git reset --hard
+              sudo git pull 
+              sudo composer update
+              sudo npm install
+              sudo npm build
+              sudo php bin/console d:m:m --no-interaction
+              sudo php bin/console c:c
+              sudo php bin/console assets:install
+              sudo chown -Rf daemon:daemon ./
