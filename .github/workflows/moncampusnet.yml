@@ -20,7 +20,7 @@ jobs:
           key: ${{ secrets.MONCAMPUSNET_SSH_KEY }}
           passphrase: ${{ secrets.MONCAMPUSNET_SSH_PASSPHRASE }}
           script: |
-              cd stack
+              cd htdocs
               sudo git config --global --add safe.directory ./
               sudo git reset --hard
               sudo git pull 
