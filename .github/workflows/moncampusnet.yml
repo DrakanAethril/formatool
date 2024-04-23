@@ -20,7 +20,7 @@ jobs:
           key: ${{ secrets.MONCAMPUSNET_SSH_KEY }}
           #passphrase: ${{ secrets.MONCAMPUSNET_SSH_PASSPHRASE }}
           script: |
-              cd htdocs
+              cd /home/bitnami/htdocs
               sudo npm install
               sudo su daemon
               git config --global --add safe.directory ./
