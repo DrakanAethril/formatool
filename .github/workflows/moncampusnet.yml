@@ -22,6 +22,7 @@ jobs:
           script: |
               cd /home/bitnami/htdocs
               sudo npm install
+              sudo chown -Rf daemon:daemon /home/bitnami/htdocs/
               sudo su daemon
               git config --global --add safe.directory ./
               git reset --hard
