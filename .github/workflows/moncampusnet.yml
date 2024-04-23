@@ -18,15 +18,15 @@ jobs:
           host: ${{ secrets.MONCAMPUSNET_SSH_HOST }}
           username: ${{ secrets.MONCAMPUSNET_SSH_USER }}
           key: ${{ secrets.MONCAMPUSNET_SSH_KEY }}
-          passphrase: ${{ secrets.MONCAMPUSNET_SSH_PASSPHRASE }}
+          #passphrase: ${{ secrets.MONCAMPUSNET_SSH_PASSPHRASE }}
           script: |
               cd htdocs
+              sudo npm install
               sudo su daemon
               git config --global --add safe.directory ./
               git reset --hard
               git pull 
               composer update
-              npm install
               npm run build
               php bin/console d:m:m --no-interaction
               php bin/console c:c
