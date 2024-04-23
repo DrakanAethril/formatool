@@ -20,11 +20,12 @@ jobs:
           key: ${{ secrets.MONCAMPUSNET_SSH_KEY }}
           #passphrase: ${{ secrets.MONCAMPUSNET_SSH_PASSPHRASE }}
           script: |
+              sudo chown -Rf bitnami:bitnami /home/bitnami/htdocs/ 
               cd /home/bitnami/htdocs
               sudo npm install
               sudo chown -Rf daemon:daemon /home/bitnami/htdocs/
-              sudo su daemon
               git config --global --add safe.directory ./
+              git config --global --add safe.directory /opt/bitnami/apache/htdocs
               git reset --hard
               git pull 
               composer update
@@ -32,3 +33,4 @@ jobs:
               php bin/console d:m:m --no-interaction
               php bin/console c:c
               php bin/console assets:install
+              sudo chown -Rf daemon:daemon /home/bitnami/htdocs/
