@@ -27,10 +27,10 @@ jobs:
               git config --global --add safe.directory ./
               git config --global --add safe.directory /opt/bitnami/apache/htdocs
               git reset --hard
-              git pull 
-              composer update
-              npm run build
+              sudo git pull 
+              sudo composer update
+              sudo npm run build
+              sudo chown -Rf daemon:bitnami /home/bitnami/htdocs/
               php bin/console d:m:m --no-interaction
               php bin/console c:c
               php bin/console assets:install
-              sudo chown -Rf daemon:daemon /home/bitnami/htdocs/
