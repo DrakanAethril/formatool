@@ -363,14 +363,14 @@ class TrainingsController extends AbstractController
     }
 
     #[Route('/financial/remove/{id}', name: 'training_remove_financial_item')]
-    public function removeFinancialItem($id, LessonSessionsRepository $lessonSessionsRepository, EntityManagerInterface $entityManager) : Response
+    public function removeFinancialItem($id, TrainingFinancialItemsRepository $trainingFinancialItemsRepository, EntityManagerInterface $entityManager) : Response
     {   
-        $lessonSession = $lessonSessionsRepository->findOneBy(['id' => intval($id)]);
-        if(!empty($lessonSession)) {
-            $idTraining = $lessonSession->getTraining()->getId();
-            $entityManager->remove($lessonSession);
+        $financialItem = $trainingFinancialItemsRepository->findOneBy(['id' => intval($id)]);
+        if(!empty($financialItem)) {
+            $idTraining = $financialItem->getTraining()->getId();
+            $entityManager->remove($financialItem);
             $entityManager->flush();
-            return $this->redirectToRoute('training_parameters_timetable', ['id' => $idTraining]);
+            return $this->redirectToRoute('training_parameters_financial', ['id' => $idTraining]);
         } else {
             return $this->redirectToRoute('home');
         }
