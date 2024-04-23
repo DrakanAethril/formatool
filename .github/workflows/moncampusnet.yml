@@ -21,13 +21,4 @@ jobs:
           #passphrase: ${{ secrets.MONCAMPUSNET_SSH_PASSPHRASE }}
           script: |
               cd /home/bitnami/htdocs
-              sudo npm install
-              sudo su daemon
-              git config --global --add safe.directory ./
-              git reset --hard
-              git pull 
-              composer update
-              npm run build
-              php bin/console d:m:m --no-interaction
-              php bin/console c:c
-              php bin/console assets:install
+              ls -al
