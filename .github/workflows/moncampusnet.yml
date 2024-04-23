@@ -21,6 +21,6 @@ jobs:
           #passphrase: ${{ secrets.MONCAMPUSNET_SSH_PASSPHRASE }}
           script: |
               cd /home/bitnami/htdocs
-              ls -al
               sudo su daemon
-              whoami
+              ls -al
+              
