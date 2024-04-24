@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 
-#[Route('/training/{training<\d+>}/reporting')]
+#[Route('/app/training/{training<\d+>}/reporting')]
 
 class TrainingsReportingController extends AbstractController
 {

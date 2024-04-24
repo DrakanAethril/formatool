@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/app')]
 class TeacherAjaxController extends AbstractController
 {
     #[Route('/ajax/teacher/{id<\d+>}/timetable/sessions', name: 'ajax_teacher_timetable_sessions')]
