@@ -1,39 +1,28 @@
-{% extends 'empty.html.twig' %}
+{% extends 'empty-tight.html.twig' %}
 
 {% block title %}Mot de passe oublié{% endblock %}
 
 {% block body %}
-<div class="row align-items-center g-4">
-    <div class="col-lg">
-        <div class="container-tight">
-            <div class="text-center mb-4">
-                <a href="{{path('home')}}" class="navbar-brand navbar-brand-autodark"><img src="{{asset('static/logo.svg')}}" height="36" alt=""></a>
-            </div>
-            <div class="card card-md">
-                <div class="card-body">
-                    <h2 class="h2 text-center mb-4">Mot de passe oublié</h2>
-                    {% for flash_error in app.flashes('reset_password_error') %}
-                        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-                    {% endfor %}
-                    {{ form_start(requestForm) }}
-                        <div class="mb-3">
-                        {{ form_row(requestForm.email) }}
-                        </div>
-                        <div class="mb-3">
-                            <small>
-                                Entrez votre mail et nous vous enverrons un lien de réinitialisation de votre mot de passe
-                            </small>
-                        </div>
-
-                        <button class="btn btn-primary">Recevoir un mail de réinitialisation</button>
-                    {{ form_end(requestForm) }}
+    <div class="text-center mb-4">
+        <a href="{{path('home')}}" class="navbar-brand navbar-brand-autodark"><img src="{{asset('static/logo.svg')}}" height="36" alt=""></a>
+    </div>
+    <div class="card card-md">
+        <div class="card-body">
+            <h2 class="h2 text-center mb-4">Mot de passe oublié</h2>
+            <p class="text-secondary mb-4">Entrez votre adresse mail et nous vous enverrons un lien de réinitialisation de votre mot de passe.</p>
+            {% for flash_error in app.flashes('reset_password_error') %}
+                <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+            {% endfor %}
+            {{ form_start(requestForm) }}
+                <div class="mb-4">
+                {{ form_row(requestForm.email) }}
                 </div>
-            </div>
-        </div>
+                <button class="btn btn-primary w-100">
+                    <!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                    Recevoir un mail de réinitialisation
+                </button>
+            {{ form_end(requestForm) }}
+        </div>  
     </div>
-    <div class="col-lg d-none d-lg-block">
-        <img src="{{asset('static/illustrations/undraw_secure_login_pdn4.svg')}}" height="300" class="d-block mx-auto" alt="">
-    </div>
-</div>
-    
 {% endblock %}

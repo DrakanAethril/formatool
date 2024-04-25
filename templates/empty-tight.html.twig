@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('formatool') }}
+    {% endblock %}
+    {% block javascripts %}
+        {{ encore_entry_script_tags('formatool') }}
+    {% endblock %}
+  </head>
+  <body  class=" d-flex flex-column">
+    <div class="page page-center">
+      <div class="container container-tight py-4">
+         {% block body %}{% endblock %}
+      </div>
+    </div>
+  </body>
+</html>

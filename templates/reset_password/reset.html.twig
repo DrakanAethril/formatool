@@ -1,32 +1,25 @@
-{% extends 'empty.html.twig' %}
+{% extends 'empty-tight.html.twig' %}
 
 {% block title %}Mot de passe oublié{% endblock %}
 
 {% block body %}
-<div class="row align-items-center g-4">
-    <div class="col-lg">
-        <div class="container-tight">
-            <div class="text-center mb-4">
-                <a href="{{path('home')}}" class="navbar-brand navbar-brand-autodark"><img src="{{asset('static/logo.svg')}}" height="36" alt=""></a>
-            </div>
-            <div class="card card-md">
-                <div class="card-body">
-                    <h2 class="h2 text-center mb-4">Mot de passe oublié</h2>
-                    {{ form_start(resetForm) }}
-                    <div class="mb-3">
-                        {{ form_row(resetForm.plainPassword.first) }}
-                    </div>
-                     <div class="mb-3">
-                        {{ form_row(resetForm.plainPassword.second) }}
-                    </div>
-                    <button class="btn btn-primary">Modifier le mot de passe</button>
-                    {{ form_end(resetForm) }}
-                </div>
-            </div>
+
+<div class="text-center mb-4">
+    <a href="{{path('home')}}" class="navbar-brand navbar-brand-autodark"><img src="{{asset('static/logo.svg')}}" height="36" alt=""></a>
+</div>
+<div class="card card-md">
+    <div class="card-body">
+        <h2 class="h2 text-center mb-4">Mot de passe oublié</h2>
+        {{ form_start(resetForm) }}
+        <div class="mb-4">
+            {{ form_row(resetForm.plainPassword.first) }}
         </div>
-    </div>
-    <div class="col-lg d-none d-lg-block">
-        <img src="{{asset('static/illustrations/undraw_secure_login_pdn4.svg')}}" height="300" class="d-block mx-auto" alt="">
+            <div class="mb-4">
+            {{ form_row(resetForm.plainPassword.second) }}
+        </div>
+        <button class="btn btn-primary w-100">Modifier le mot de passe</button>
+        {{ form_end(resetForm) }}
     </div>
 </div>
+    
 {% endblock %}
