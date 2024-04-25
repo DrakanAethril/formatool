@@ -11,7 +11,7 @@
               </div>
               <div class="card card-md">
                 <div class="card-body">
-                    <h2 class="h2 text-center mb-4">Login to your account</h2>
+                    <h2 class="h2 text-center mb-4">Connectez-vous à votre compte</h2>
                     <form method="post">
                         {% if error %}
                             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -22,16 +22,14 @@
                                 You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
                             </div>
                         {% endif %}
-
-                        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
                         <div class="mb-3">
-                            <label class="form-label" for="inputEmail">Email address</label>
+                            <label class="form-label" for="inputEmail">Email</label>
                             <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
                         </div>
                         <div class="mb-2">
                           <div class="toggle-password-container">
                               <label class="form-label" for="inputPassword">
-                                  Password
+                                  Mot de passe
                               </label>
                               <div class="input-group has-validation">
                                   <input 
@@ -39,7 +37,7 @@
                                     name="password" 
                                     id="inputPassword" 
                                     class="form-control" 
-                                    autocomplete="current-password" 
+                                    autocomplete="Mot de passe" 
                                     required
                                     {{ stimulus_controller('symfony/ux-toggle-password/toggle-password', {
                                         visibleLabel: 'Afficher',
@@ -54,7 +52,7 @@
                         </div>
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                         <div class="form-footer">
-                        <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                        <button type="submit" class="btn btn-primary w-100">Se connecter</button>
                         </div>
                     </form>
                     <div class="hr-text"> OU </div>
