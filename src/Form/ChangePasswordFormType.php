@@ -23,16 +23,19 @@ class ChangePasswordFormType extends AbstractType
                 'options' => [
                     'attr' => [
                         'autocomplete' => 'new-password',
+                        'class' => 'form-control'
                     ],
                 ],
                 'first_options' => [
                     'constraints' => UsersRepository::getPasswordContstraints(),
-                    'label' => 'New password',
+                    'label' => 'Nouveau mot de passe',
+                    'label_attr' => ['class' => 'form-label']
                 ],
                 'second_options' => [
-                    'label' => 'Repeat Password',
+                    'label' => 'Confirmation du nouveau mot de passe',
+                    'label_attr' => ['class' => 'form-label']
                 ],
-                'invalid_message' => 'The password fields must match.',
+                'invalid_message' => 'Les mots de passe doivent correspondre.',
                 // Instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,

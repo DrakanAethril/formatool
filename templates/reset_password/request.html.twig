@@ -1,22 +1,39 @@
 {% extends 'empty.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% block title %}Mot de passe oublié{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
-    <h1>Reset your password</h1>
+<div class="row align-items-center g-4">
+    <div class="col-lg">
+        <div class="container-tight">
+            <div class="text-center mb-4">
+                <a href="{{path('home')}}" class="navbar-brand navbar-brand-autodark"><img src="{{asset('static/logo.svg')}}" height="36" alt=""></a>
+            </div>
+            <div class="card card-md">
+                <div class="card-body">
+                    <h2 class="h2 text-center mb-4">Mot de passe oublié</h2>
+                    {% for flash_error in app.flashes('reset_password_error') %}
+                        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                    {% endfor %}
+                    {{ form_start(requestForm) }}
+                        <div class="mb-3">
+                        {{ form_row(requestForm.email) }}
+                        </div>
+                        <div class="mb-3">
+                            <small>
+                                Entrez votre mail et nous vous enverrons un lien de réinitialisation de votre mot de passe
+                            </small>
+                        </div>
 
-    {{ form_start(requestForm) }}
-        {{ form_row(requestForm.email) }}
-        <div>
-            <small>
-                Enter your email address, and we will send you a
-                link to reset your password.
-            </small>
+                        <button class="btn btn-primary">Recevoir un mail de réinitialisation</button>
+                    {{ form_end(requestForm) }}
+                </div>
+            </div>
         </div>
-
-        <button class="btn btn-primary">Send password reset email</button>
-    {{ form_end(requestForm) }}
+    </div>
+    <div class="col-lg d-none d-lg-block">
+        <img src="{{asset('static/illustrations/undraw_secure_login_pdn4.svg')}}" height="300" class="d-block mx-auto" alt="">
+    </div>
+</div>
+    
 {% endblock %}
