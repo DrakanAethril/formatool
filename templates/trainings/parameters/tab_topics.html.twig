@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="table card-table table-vcenter text-nowrap datatable" id="topics-table" style="width:100%">
+    <table class="table card-table table-vcenter text-nowrap datatable" id="topics-table-dashboard" style="width:100%">
         <thead>
             <tr>
                 <th>Nom</th>
@@ -7,7 +7,7 @@
                 <th>TD</th>
                 <th>TP</th>
                 <th>Vol. Total</th>
-                <th>Vol. Planifié</th>
+                <!--<th>Vol. Planifié</th>-->
                 <th>U.E.</th>
                 <th class="w-1"></th>
             </tr>
@@ -30,7 +30,7 @@
                     <td class="">
                         {{topic.totalVolume}}
                     </td>
-                    <td 
+                    <!--<td 
                         class="
                             {% if(volumesByTopics[topic.id]|default(0) != topic.totalVolume) %}
                                  text-warning fw-bold
@@ -40,7 +40,7 @@
                         ">
                         
                         {{volumesByTopics[topic.id]|default(0)}} 
-                    </td>
+                    </td>-->
                     <td>
                         {{topic.topicsGroups.name|default('NA')}}
                     </td>
