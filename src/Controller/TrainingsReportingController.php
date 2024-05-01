@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
@@ -25,6 +26,7 @@ class TrainingsReportingController extends AbstractController
 
     
     #[Route('/scholarship', name: 'training_reporting_scholarship')]
+    #[IsGranted('TRAINING_REPORTING|READ', 'training')]
     public function scholarship(#[MapEntity(expr: 'repository.find(training)')] Trainings $training): Response
     {
         return $this->render('trainings_reporting/index.html.twig', [
