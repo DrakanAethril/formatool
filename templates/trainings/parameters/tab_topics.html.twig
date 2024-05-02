@@ -1,5 +1,9 @@
+{% set dataTableId = 'topics-table' %}
+{% if (allowEditTopics) %}
+    {% set dataTableId = 'topics-table-dashboard' %}
+{% endif %}
 <div class="table-responsive">
-    <table class="table card-table table-vcenter text-nowrap datatable" id="topics-table-dashboard" style="width:100%">
+    <table class="table card-table table-vcenter text-nowrap datatable" id="{{dataTableId}}" style="width:100%">
         <thead>
             <tr>
                 <th>Nom</th>
@@ -7,7 +11,9 @@
                 <th>TD</th>
                 <th>TP</th>
                 <th>Vol. Total</th>
-                <!--<th>Vol. Planifié</th>-->
+                {% if (allowEditTopics) %}
+                    <th>Vol. Planifié</th>
+                {% endif %}
                 <th>U.E.</th>
                 <th class="w-1"></th>
             </tr>
@@ -30,17 +36,19 @@
                     <td class="">
                         {{topic.totalVolume}}
                     </td>
-                    <!--<td 
-                        class="
-                            {% if(volumesByTopics[topic.id]|default(0) != topic.totalVolume) %}
-                                 text-warning fw-bold
-                            {% else %}
-                                text-success
-                            {% endif %}
-                        ">
-                        
-                        {{volumesByTopics[topic.id]|default(0)}} 
-                    </td>-->
+                    {% if (allowEditTopics) %}
+                        <td 
+                            class="
+                                {% if(volumesByTopics[topic.id]|default(0) != topic.totalVolume) %}
+                                    text-warning fw-bold
+                                {% else %}
+                                    text-success
+                                {% endif %}
+                            ">
+                            
+                            {{volumesByTopics[topic.id]|default(0)}} 
+                        </td>
+                    {% endif %}
                     <td>
                         {{topic.topicsGroups.name|default('NA')}}
                     </td>
