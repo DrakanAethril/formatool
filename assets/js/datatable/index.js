@@ -49,77 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
         let colNum = $("#topics-table > tbody > tr:first > td").length;
         $('#topics-table').dataTable( {
             "pageLength": 50,
-            "order": [[6, 'asc'],[0, 'asc']],
-            "language": languageFr,
-            'columnDefs': [ 
-                {
-                    'targets': [7], /* column index */
-                    'orderable': false, /* true or false */
-                },
-                {
-                    'targets': [6],
-                    'visible': false
-                },
-            ],
-            "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
-            rowGroup: {
-                dataSrc: 6,
-                startRender: function ( rows, group ) {
-                    return $('<tr/>')
-                        .append( '<td class="text-center fw-bold" colspan="'+colNum+'">'+group +' ('+rows.count()+' matière(s))'+'</td>' );
-                },
-                endRender: function (rows, group) {
-                    let sumCm =
-                        rows
-                            .data()
-                            .pluck(1)
-                            .reduce((a, b) => a*1 + b*1);
-                    let sumTd =
-                        rows
-                            .data()
-                            .pluck(2)
-                            .reduce((a, b) => a*1 + b*1);
-                    let sumTp =
-                        rows
-                            .data()
-                            .pluck(3)
-                            .reduce((a, b) => a*1 + b*1);
-                    let sumTotal =
-                        rows
-                            .data()
-                            .pluck(4)
-                            .reduce((a, b) => a*1 + b*1);
-                    let sumPlanned =
-                            rows
-                                .data()
-                                .pluck(5)
-                                .reduce((a, b) => a*1 + b*1);
-    
-                    let tr = document.createElement('tr');
-                    tr.classList.add("text-muted")
-                    dataTable_addCell(tr, '');
-                    dataTable_addCell(tr, sumCm+' H');
-                    dataTable_addCell(tr, sumTd+' H');
-                    dataTable_addCell(tr, sumTp+' H');
-                    dataTable_addCell(tr, sumTotal+' H');
-                    dataTable_addCell(tr, sumPlanned+' H');
-                    dataTable_addCell(tr, '', 2);
-                    return tr;
-                }
-            }
-        } );
-    }
-
-    let dataTableTopicsDashboard = document.getElementById("topics-table-dashboard");
-    if(dataTableTopicsDashboard) {
-        let colNum = $("#topics-table-dashboard > tbody > tr:first > td").length;
-        $('#topics-table-dashboard').dataTable( {
-            "pageLength": 50,
             "order": [[5, 'asc'],[0, 'asc']],
             "language": languageFr,
             'columnDefs': [ 
                 {
-                    'targets': [5], /* column index */
+                    'targets': [6], /* column index */
                     'orderable': false, /* true or false */
                 },
                 {
@@ -163,6 +97,72 @@ document.addEventListener("DOMContentLoaded", () => {
                     dataTable_addCell(tr, sumTd+' H');
                     dataTable_addCell(tr, sumTp+' H');
                     dataTable_addCell(tr, sumTotal+' H');
+                    dataTable_addCell(tr, '', 2);
+                    return tr;
+                }
+            }
+        } );
+    }
+
+    let dataTableTopicsDashboard = document.getElementById("topics-table-dashboard");
+    if(dataTableTopicsDashboard) {
+        let colNum = $("#topics-table-dashboard > tbody > tr:first > td").length;
+        $('#topics-table-dashboard').dataTable( {
+            "pageLength": 50,
+            "order": [[6, 'asc'],[0, 'asc']],
+            "language": languageFr,
+            'columnDefs': [ 
+                {
+                    'targets': [7], /* column index */
+                    'orderable': false, /* true or false */
+                },
+                {
+                    'targets': [6],
+                    'visible': false
+                },
+            ],
+            "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
+            rowGroup: {
+                dataSrc: 6,
+                startRender: function ( rows, group ) {
+                    return $('<tr/>')
+                        .append( '<td class="text-center fw-bold" colspan="'+colNum+'">'+group +' ('+rows.count()+' matière(s))'+'</td>' );
+                },
+                endRender: function (rows, group) {
+                    let sumCm =
+                        rows
+                            .data()
+                            .pluck(1)
+                            .reduce((a, b) => a*1 + b*1);
+                    let sumTd =
+                        rows
+                            .data()
+                            .pluck(2)
+                            .reduce((a, b) => a*1 + b*1);
+                    let sumTp =
+                        rows
+                            .data()
+                            .pluck(3)
+                            .reduce((a, b) => a*1 + b*1);
+                    let sumTotal =
+                        rows
+                            .data()
+                            .pluck(4)
+                            .reduce((a, b) => a*1 + b*1);
+                    let sumPlanned =
+                        rows
+                            .data()
+                            .pluck(5)
+                            .reduce((a, b) => a*1 + b*1);
+    
+                    let tr = document.createElement('tr');
+                    tr.classList.add("text-muted")
+                    dataTable_addCell(tr, '');
+                    dataTable_addCell(tr, sumCm+' H');
+                    dataTable_addCell(tr, sumTd+' H');
+                    dataTable_addCell(tr, sumTp+' H');
+                    dataTable_addCell(tr, sumTotal+' H');
+                    dataTable_addCell(tr, sumPlanned+' H');
                     dataTable_addCell(tr, '', 2);
                     return tr;
                 }
