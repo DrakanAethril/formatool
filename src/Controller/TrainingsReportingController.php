@@ -26,7 +26,7 @@ class TrainingsReportingController extends AbstractController
 
     
     #[Route('/scholarship', name: 'training_reporting_scholarship')]
-    #[IsGranted('TRAINING_REPORTING|READ', 'training')]
+    #[IsGranted('TRAINING_REPORTING|UPDATE', 'training')]
     public function scholarship(#[MapEntity(expr: 'repository.find(training)')] Trainings $training): Response
     {
         return $this->render('trainings_reporting/index.html.twig', [

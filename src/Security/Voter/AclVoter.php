@@ -10,6 +10,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use App\Config\AclPrivilegesEnum;
 use App\Config\AclRessourcesEnum;
+use App\Entity\Places;
+use App\Entity\Trainings;
 
 class AclVoter extends Voter
 {
@@ -31,8 +33,6 @@ class AclVoter extends Voter
         $this->testedRessource = $aAttributes[0];
         $this->testedPerm = $aAttributes[1];
 
-        //dd($subject);
-
         return in_array($aAttributes[0], AclRessourcesEnum::names())
             && in_array($aAttributes[1], AclPrivilegesEnum::names())
             && is_object($subject);
@@ -42,27 +42,21 @@ class AclVoter extends Voter
     {
         $user = $token->getUser();
         $attributes = $token->getAttributes();
-        dd($this->requestStack->getSession()->get('AclPermissions'));
-        //$session = $this->container->get('session');
-
+        $permissions = $this->requestStack->getSession()->get('AclPermissions');
+        
         // if the user is anonymous, do not grant access
         if (!$user instanceof UserInterface) {
             return false;
         }
-/*
-        // ... (check conditions and return true to grant permission) ...
-        switch ($attribute) {
-            case self::EDIT:
-                // logic to determine if the user can EDIT
-                // return true or false
-                break;
 
-            case self::VIEW:
-                // logic to determine if the user can VIEW
-                // return true or false
-                break;
+        if($subject instanceof Trainings) {
+
         }
-*/
-        return false;
+
+        if($subject instanceof Places) {
+            
+        }
+
+        return in_array($this->testedRessource.'|'.$this->testedPerm.'|'.$subject->getId(), $permissions);
     }
 }
