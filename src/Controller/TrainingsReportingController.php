@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Config\AclPrivilegesEnum;
+use App\Config\AclRessourcesEnum;
 use App\Config\FinancialItemsSourceEnum;
 use App\Config\FinancialItemsTypeEnum;
 use App\Entity\Trainings;
@@ -26,7 +28,7 @@ class TrainingsReportingController extends AbstractController
 
     
     #[Route('/scholarship', name: 'training_reporting_scholarship')]
-    #[IsGranted('TRAINING_REPORTING|UPDATE', 'training')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_REPORTING_SCHOLARSHIP->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
     public function scholarship(#[MapEntity(expr: 'repository.find(training)')] Trainings $training): Response
     {
         return $this->render('trainings_reporting/index.html.twig', [
@@ -37,6 +39,7 @@ class TrainingsReportingController extends AbstractController
     }
 
     #[Route('/pedagogic', name: 'training_reporting_pedagogic')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_REPORTING_PEDAGOGIC->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
     public function pedagogic(
         #[MapEntity(expr: 'repository.find(training)')] Trainings $training, 
         LessonSessionsRepository $lessonSessionsRepository, 
@@ -94,6 +97,7 @@ class TrainingsReportingController extends AbstractController
 
     #[Route('/', name: 'training_reporting')]
     #[Route('/financial', name: 'training_reporting_financial')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_REPORTING_FINANCIAL->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
     public function financial(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, LessonSessionsRepository $lessonSessionsRepository): Response
     {
         $totalCost = 0;

@@ -1,26 +1,26 @@
 <ul class="nav nav-pills card-header-pills" data-bs-toggle="tabs" role="tablist">
     <li class="nav-item" role="presentation">
-        <a href="{{path('training_parameters', {'id': training.id})}}" class="nav-link {{ (currentTab == 'timeSlots') ? 'active' : '' }}" ">
+        <a href="{{path('training_parameters', {'training': training.id})}}" class="nav-link {{ (currentTab == 'timeSlots') ? 'active' : '' }}" ">
             Gestion des périodes
         </a>
     </li>
     <li class="nav-item" role="presentation">
-        <a href="{{path('training_parameters_topics_groups', {'id': training.id})}}" class="nav-link {{ (currentTab == 'topicsGroups') ? 'active' : '' }}">
+        <a href="{{path('training_parameters_topics_groups', {'training': training.id})}}" class="nav-link {{ (currentTab == 'topicsGroups') ? 'active' : '' }}">
                 Gestion des U.E.
         </a>
     </li>
     <li class="nav-item" role="presentation">
-        <a href="{{path('training_parameters_topics', {'id': training.id})}}" class="nav-link {{ (currentTab == 'topics') ? 'active' : '' }}">
+        <a href="{{path('training_parameters_topics', {'training': training.id})}}" class="nav-link {{ (currentTab == 'topics') ? 'active' : '' }}">
                 Gestion des matières
         </a>
     </li>
     <li class="nav-item" role="presentation">
-        <a href="{{path('training_parameters_timetable', {'id': training.id})}}" class="nav-link {{ (currentTab == 'timetable') ? 'active' : '' }}">
+        <a href="{{path('training_parameters_timetable', {'training': training.id})}}" class="nav-link {{ (currentTab == 'timetable') ? 'active' : '' }}">
                 Gestion de l'agenda
         </a>
     </li>
     <li class="nav-item" role="presentation">
-        <a href="{{path('training_parameters_financial', {'id': training.id})}}" class="nav-link {{ (currentTab == 'financial') ? 'active' : '' }}">
+        <a href="{{path('training_parameters_financial', {'training': training.id})}}" class="nav-link {{ (currentTab == 'financial') ? 'active' : '' }}">
                 Gestion financière
         </a>
     </li>

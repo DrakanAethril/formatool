@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Config\AclPrivilegesEnum;
+use App\Config\AclRessourcesEnum;
 use App\Config\FinancialItemsTypeEnum;
 use App\Config\FinancialItemsSourceEnum;
 use App\Entity\LessonSessions;
@@ -28,13 +30,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('app/trainings')]
 
 class TrainingsController extends AbstractController
 {
 
-    #[Route('/{id}', name: 'training_detail')]
+    #[Route('/{training}', name: 'training_detail')]
     public function detail(Trainings $training): Response
     {
 
@@ -69,8 +71,8 @@ class TrainingsController extends AbstractController
 
     // TOPICS
 
-    #[Route('/{id<\d+>}/topic/add/{tt<\d+>?0}', name: 'training_add_topic')]
-    public function addTopic(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, TopicsTrainingsRepository $topicsTrainingsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/{training<\d+>}/topic/add/{tt<\d+>?0}', name: 'training_add_topic')]
+    public function addTopic(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, int $tt, TopicsTrainingsRepository $topicsTrainingsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
         if(empty($tt)) {
@@ -126,8 +128,8 @@ class TrainingsController extends AbstractController
 
     // TRAININGS GROUPS
 
-    #[Route('/{id<\d+>}/topics/group/add/{tt<\d+>?0}', name: 'training_add_topics_group')]
-    public function addTopicsGroup(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, TopicsGroupsRepository $topicsGroupsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/{training<\d+>}/topics/group/add/{tt<\d+>?0}', name: 'training_add_topics_group')]
+    public function addTopicsGroup(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, int $tt, TopicsGroupsRepository $topicsGroupsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
         if(empty($tt)) {
@@ -176,8 +178,8 @@ class TrainingsController extends AbstractController
 
     // Lesson Sessions
 
-    #[Route('/{id<\d+>}/lessonsession/add/{tt<\d+>?0}', name: 'training_add_lessonsession')]
-    public function addLessonSession(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, LessonSessionsRepository $lessonSessionsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/{training<\d+>}/lessonsession/add/{tt<\d+>?0}', name: 'training_add_lessonsession')]
+    public function addLessonSession(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, int $tt, LessonSessionsRepository $lessonSessionsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
         if(empty($tt)) {
@@ -248,8 +250,8 @@ class TrainingsController extends AbstractController
 
     // TIMESLOTS
 
-    #[Route('/{id<\d+>}/timeslot/add/{tt<\d+>?0}', name: 'training_add_timeslot')]
-    public function addTimeSlot(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, TimeSlotsRepository $timeSlotsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/{training<\d+>}/timeslot/add/{tt<\d+>?0}', name: 'training_add_timeslot')]
+    public function addTimeSlot(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, int $tt, TimeSlotsRepository $timeSlotsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
         if(empty($tt)) {
@@ -378,7 +380,29 @@ class TrainingsController extends AbstractController
 
     // PARAMETERS - DEFAULT TO TIMESLOTS TABS
 
-    #[Route('/{id<\d+>}/parameters', name: 'training_parameters')]
+    #[Route('/{training<\d+>}/parameters', name: 'training_parameters')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
+    public function parameterRouting(Trainings $training) {
+        //if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TIMESLOT->value.'|'.AclPrivilegesEnum::READ->value)) 
+            return $this->redirectToRoute('training_parameters_timeslots', ['training' => $training->getId()]);
+
+        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC_GROUP->value.'|'.AclPrivilegesEnum::READ->value)) 
+            return $this->redirectToRoute('training_parameters_topics_groups', ['training' => $training->getId()]);
+
+        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC->value.'|'.AclPrivilegesEnum::READ->value)) 
+            return $this->redirectToRoute('training_parameters_topics', ['training' => $training->getId()]);
+
+        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_LESSON_SESSION->value.'|'.AclPrivilegesEnum::READ->value)) 
+            return $this->redirectToRoute('training_parameters_timetable', ['training' => $training->getId()]);
+
+        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_FINANCIAL->value.'|'.AclPrivilegesEnum::READ->value)) 
+            return $this->redirectToRoute('training_parameters_financial', ['training' => $training->getId()]);
+        
+            return $this->redirectToRoute('home');
+    }
+
+    #[Route('/{training<\d+>}/parameters/timeslots', name: 'training_parameters_timeslots')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TIMESLOT->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
     public function parameterstimeSlots(Trainings $training): Response
     {
 
@@ -392,7 +416,8 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/{id<\d+>}/parameters/topics', name: 'training_parameters_topics')]
+    #[Route('/{training<\d+>}/parameters/topics', name: 'training_parameters_topics')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
     public function parametersTopics(Trainings $training, LessonSessionsRepository $lessonSessionsRepository): Response
     {
 
@@ -411,7 +436,8 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/{id<\d+>}/parameters/topics/groups', name: 'training_parameters_topics_groups')]
+    #[Route('/{training<\d+>}/parameters/topics/groups', name: 'training_parameters_topics_groups')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC_GROUP->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
     public function parametersTopicsGroups(Trainings $training): Response
     {
 
@@ -425,7 +451,8 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/{id<\d+>}/parameters/timetable', name: 'training_parameters_timetable')]
+    #[Route('/{training<\d+>}/parameters/timetable', name: 'training_parameters_timetable')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_LESSON_SESSION->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
     public function parametersTimetable(Trainings $training, Request $request): Response
     {
 
@@ -455,7 +482,8 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/{id<\d+>}/parameters/financial', name: 'training_parameters_financial')]
+    #[Route('/{training<\d+>}/parameters/financial', name: 'training_parameters_financial')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_FINANCIAL->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
     public function parametersFinancial(Trainings $training, Request $request, LessonSessionsRepository $lessonSessionsRepository): Response
     {
 
@@ -473,7 +501,7 @@ class TrainingsController extends AbstractController
 
     // PLANNING DISPLAY PAGES
 
-    #[Route('/{id<\d+>}/planning', name: 'training_planning')]
+    #[Route('/{training<\d+>}/planning', name: 'training_planning')]
     public function planning(Trainings $training): Response
     {
 
@@ -486,7 +514,7 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/{id<\d+>}/timetable/weekly', name: 'training_timetable_weekly')]
+    #[Route('/{training<\d+>}/timetable/weekly', name: 'training_timetable_weekly')]
     public function timetableWeekly(Trainings $training): Response
     {
 
@@ -500,7 +528,7 @@ class TrainingsController extends AbstractController
     }
 
     //TEACHERS
-    #[Route('/{id<\d+>}/teachers', name: 'training_teachers')]
+    #[Route('/{training<\d+>}/teachers', name: 'training_teachers')]
     public function teachers(Trainings $training): Response
     {
         if(empty($training))
@@ -522,7 +550,8 @@ class TrainingsController extends AbstractController
 
     // TIMETABLE MANAGEMENT
 
-    #[Route('/{id<\d+>}/timetable/generation', name: 'training_timetable_generation')]
+    #[Route('/{training<\d+>}/timetable/generation', name: 'training_timetable_generation')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_LESSON_SESSION->value.'|'.AclPrivilegesEnum::WRITE->value, 'training')]
     public function timetable_generate(Trainings $training, EntityManagerInterface $entityManager): Response
     {
         if(empty($training))

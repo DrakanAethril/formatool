@@ -3,9 +3,9 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+        <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3 pt-0">
             <a href="{{ path('home') }}">
-                <img src="{{ asset('static/logo.svg') }}" width="110" height="32" alt="Tabler" class="navbar-brand-image">
+                <img src="{{ asset('static/logo.svg') }}" width="110" height="32" alt="MonCampus" class="navbar-brand-image">
             </a>
         </h1>
         <div class="navbar-nav flex-row order-md-last">
@@ -111,7 +111,7 @@
                                                 {{training.ShortDisplayName}}
                                             </a>
                                             <div class="dropdown-menu">
-                                                <a href="{{ path('training_detail', {'id': training.id} ) }}" class="dropdown-item">
+                                                <a href="{{ path('training_detail', {'training': training.id} ) }}" class="dropdown-item">
                                                     Dashboard
                                                 </a>
                                                 <!--
@@ -122,10 +122,10 @@
                                                     Etudiants
                                                 </a>
                                                 -->
-                                                <a href="{{ path('training_teachers', {'id': training.id} ) }}"  href="#" class="dropdown-item">
+                                                <a href="{{ path('training_teachers', {'training': training.id} ) }}"  href="#" class="dropdown-item">
                                                     Enseignants
                                                 </a>
-                                                <a href="{{ path('training_planning', {'id': training.id} ) }}" class="dropdown-item">
+                                                <a href="{{ path('training_planning', {'training': training.id} ) }}" class="dropdown-item">
                                                     Calendrier
                                                 </a>
                                                 <a href="{{ path('training_reporting', {'training': training.id} ) }}" class="dropdown-item">
@@ -136,7 +136,7 @@
                                                     Dossiers d'inscription
                                                 </a>
                                                 -->
-                                                <a href="{{ path('training_parameters', {'id': training.id} ) }}" class="dropdown-item">
+                                                <a href="{{ path('training_parameters', {'training': training.id} ) }}" class="dropdown-item">
                                                     Paramétrage
                                                 </a>
                                             

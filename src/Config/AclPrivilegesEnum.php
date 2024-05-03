@@ -11,9 +11,10 @@ enum AclPrivilegesEnum:string implements TranslatableInterface {
 
     use EnumListingTrait;
 
-    case CREATE = 'CREATE';
+    //case CREATE = 'CREATE';
     case READ = 'READ';
-    case UPDATE = 'UPDATE';
+    //case UPDATE = 'UPDATE';
+    CASE WRITE = 'WRITE';
     case DELETE = 'DELETE';
 
     public function trans(TranslatorInterface $translator, string $locale = null): string
@@ -23,9 +24,10 @@ enum AclPrivilegesEnum:string implements TranslatableInterface {
         
         // Translate enum using custom labels
         return match ($this) {
-            self::CREATE  => 'Création',
+            //self::CREATE  => 'Création',
             self::READ  => 'Lecture',
-            self::UPDATE => 'Mise à jour',
+            //self::UPDATE => 'Mise à jour',
+            self::WRITE => 'Ecriture',
             self::DELETE => 'Suppression'
         };
     }

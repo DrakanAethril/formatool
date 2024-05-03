@@ -14,23 +14,23 @@
     {% set tabContent = '' %}
     {% if currentTab == 'timeSlots' %}
             {% set addTxt = 'Nouvelle période' %}
-            {% set addLink = path('training_add_timeslot', {'id': training.id, 'tt': 0}) %}
+            {% set addLink = path('training_add_timeslot', {'training': training.id, 'tt': 0}) %}
             {% set tabContent = 'trainings/parameters/tab_timeslots.html.twig' %}
     {% endif %}
     {% if currentTab == 'topics' %}
             {% set addTxt = 'Nouvelle matière' %}
-            {% set addLink = path('training_add_topic', {'id': training.id, 'tt': 0}) %}
+            {% set addLink = path('training_add_topic', {'training': training.id, 'tt': 0}) %}
             {% set tabContent = 'trainings/parameters/tab_topics.html.twig' %}
             {% set allowEditTopics = true %}
     {% endif %}
     {% if currentTab == 'topicsGroups' %}
             {% set addTxt = 'Nouvelle UE' %}
-            {% set addLink = path('training_add_topics_group', {'id': training.id, 'tt': 0}) %}
+            {% set addLink = path('training_add_topics_group', {'training': training.id, 'tt': 0}) %}
             {% set tabContent = 'trainings/parameters/tab_topics_groups.html.twig' %}
     {% endif %}
     {% if currentTab == 'timetable' %}
             {% set addTxt = 'Générer l\'agenda' %}
-            {% set addLink = path('training_timetable_generation', {'id': training.id, 'tt': 0}) %}
+            {% set addLink = path('training_timetable_generation', {'training': training.id, 'tt': 0}) %}
             {% set tabContent = 'trainings/parameters/tab_timetable.html.twig' %}
     {% endif %}
     {% if currentTab == 'financial' %}
