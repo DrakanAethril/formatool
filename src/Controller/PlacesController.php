@@ -2,16 +2,19 @@
 
 namespace App\Controller;
 
+use App\Config\UsersStatusPlacesEnum;
 use App\Entity\ClassRooms;
 use App\Entity\Cursus;
 use App\Entity\Places;
 use App\Entity\Trainings;
+use App\Entity\UsersPlaces;
 use App\Form\ClassRoomType;
 use App\Form\CursusFormType;
 use App\Form\TrainingsType;
 use App\Repository\ClassRoomsRepository;
 use App\Repository\CursusRepository;
 use App\Repository\TrainingsRepository;
+use App\Repository\UsersPlacesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -151,27 +154,27 @@ class PlacesController extends AbstractController
 
     // CURSUSES
 
-    #[Route('/{place<\d+>}/cursus/add/{tt<\d+>?0}', name: 'place_add_cursus')]
+    #[Route('/{place<\d+>}/userPlaces/add/{tt<\d+>?0}', name: 'place_add_cursus')]
     public function addCursus(#[MapEntity(expr: 'repository.find(place)')] Places $place, int $tt, CursusRepository $cursusRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
         if(empty($tt)) {
-            $cursus = new Cursus();
-            $cursus->addPlace($place);
+            $userPlaces = new Cursus();
+            $userPlaces->addPlace($place);
             $create = true;
         } else {
-            $cursus = $cursusRepository->findOneBy(['id'=> $tt]);
-            if(empty($cursus)) {
+            $userPlaces = $cursusRepository->findOneBy(['id'=> $tt]);
+            if(empty($userPlaces)) {
                 return $this->redirectToRoute('home');
             }
         }
         
         
-        $form = $this->createForm(CursusFormType::class, $cursus);
+        $form = $this->createForm(CursusFormType::class, $userPlaces);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($cursus);
+            $entityManager->persist($userPlaces);
             $entityManager->flush();
             //redirect on training page
             return $this->redirectToRoute('places_parameters_cursuses', ['place' => $place->getId()]);
@@ -185,14 +188,14 @@ class PlacesController extends AbstractController
         ]);
     }
 
-    #[Route('/{place<\d+>}cursus/remove/{id}', name: 'place_remove_cursus')]
+    #[Route('/{place<\d+>}/userPlaces/remove/{id}', name: 'place_remove_cursus')]
     public function removeCursus(#[MapEntity(expr: 'repository.find(place)')] Places $place, $id, CursusRepository $cursusRepository, EntityManagerInterface $entityManager) : Response
     {   
-        $cursus = $cursusRepository->findOneBy(['id' => intval($id)]);
-        if(!empty($cursus)) {
+        $userPlaces = $cursusRepository->findOneBy(['id' => intval($id)]);
+        if(!empty($userPlaces)) {
             $idPlace = $place->getId();
-            $cursus->setInactive(new \DateTime());
-            $entityManager->persist($cursus);
+            $userPlaces->setInactive(new \DateTime());
+            $entityManager->persist($userPlaces);
             $entityManager->flush();
             return $this->redirectToRoute('places_parameters_cursuses', ['place' => $idPlace]);
         } else {
@@ -200,6 +203,56 @@ class PlacesController extends AbstractController
         }
     }
 
+    // USERS
+
+    #[Route('/{place<\d+>}/user/add/{tt<\d+>?0}', name: 'place_add_person')]
+    public function addPerson(#[MapEntity(expr: 'repository.find(place)')] Places $place, int $tt, UsersPlacesRepository $usersPlacesRepository, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $create = false;
+        if(empty($tt)) {
+            $userPlaces = new UsersPlaces();
+            $userPlaces->setPlace($place);
+            $create = true;
+        } else {
+            $userPlaces = $usersPlacesRepository->findOneBy(['id'=> $tt]);
+            if(empty($userPlaces)) {
+                return $this->redirectToRoute('home');
+            }
+        }
+        
+        
+        $form = $this->createForm(UserPlacesType::class, $userPlaces);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($userPlaces);
+            $entityManager->flush();
+            //redirect on training page
+            return $this->redirectToRoute('places_parameters_people', ['place' => $place->getId()]);
+        }
+
+
+        return $this->render('places/add_people.html.twig', [
+            'place' => $place,
+            'userForm' => $form->createView(),
+            'menuPlaces' => 'active'
+        ]);
+    }
+
+    #[Route('/{place<\d+>}/user/remove/{id}', name: 'place_remove_person')]
+    public function removePerson(#[MapEntity(expr: 'repository.find(place)')] Places $place, $id, UsersPlacesRepository $usersPlacesRepository, EntityManagerInterface $entityManager) : Response
+    {   
+        $userPlaces = $usersPlacesRepository->findOneBy(['id' => intval($id)]);
+        if(!empty($userPlaces)) {
+            $idPlace = $place->getId();
+            $userPlaces->setStatus(UsersStatusPlacesEnum::INACTIVE->value);
+            $entityManager->persist($userPlaces);
+            $entityManager->flush();
+            return $this->redirectToRoute('places_parameters_people', ['place' => $idPlace]);
+        } else {
+            return $this->redirectToRoute('home');
+        }
+    }
 
     // PARAMETERS - DEFAULT TO ROOMS TABS
 
