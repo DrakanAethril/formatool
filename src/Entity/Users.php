@@ -83,6 +83,18 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: AclPermissions::class, mappedBy: 'user')]
     private Collection $aclPermissions;
 
+    /**
+     * @var Collection<int, UsersPlaces>
+     */
+    #[ORM\OneToMany(targetEntity: UsersPlaces::class, mappedBy: 'user')]
+    private Collection $usersPlaces;
+
+    /**
+     * @var Collection<int, UsersTrainings>
+     */
+    #[ORM\OneToMany(targetEntity: UsersTrainings::class, mappedBy: 'user')]
+    private Collection $usersTrainings;
+
     public function __construct()
     {
         $this->ownedTrainings = new ArrayCollection();
@@ -92,6 +104,8 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         $this->trainingsScholarshipContact = new ArrayCollection();
         $this->trainingsAdministrativeContact = new ArrayCollection();
         $this->aclPermissions = new ArrayCollection();
+        $this->usersPlaces = new ArrayCollection();
+        $this->usersTrainings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -464,6 +478,66 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($aclPermission->getUser() === $this) {
                 $aclPermission->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UsersPlaces>
+     */
+    public function getUsersPlaces(): Collection
+    {
+        return $this->usersPlaces;
+    }
+
+    public function addUsersPlace(UsersPlaces $usersPlace): static
+    {
+        if (!$this->usersPlaces->contains($usersPlace)) {
+            $this->usersPlaces->add($usersPlace);
+            $usersPlace->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsersPlace(UsersPlaces $usersPlace): static
+    {
+        if ($this->usersPlaces->removeElement($usersPlace)) {
+            // set the owning side to null (unless already changed)
+            if ($usersPlace->getUser() === $this) {
+                $usersPlace->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UsersTrainings>
+     */
+    public function getUsersTrainings(): Collection
+    {
+        return $this->usersTrainings;
+    }
+
+    public function addUsersTraining(UsersTrainings $usersTraining): static
+    {
+        if (!$this->usersTrainings->contains($usersTraining)) {
+            $this->usersTrainings->add($usersTraining);
+            $usersTraining->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsersTraining(UsersTrainings $usersTraining): static
+    {
+        if ($this->usersTrainings->removeElement($usersTraining)) {
+            // set the owning side to null (unless already changed)
+            if ($usersTraining->getUser() === $this) {
+                $usersTraining->setUser(null);
             }
         }
 

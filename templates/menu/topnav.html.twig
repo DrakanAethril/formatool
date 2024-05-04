@@ -63,10 +63,10 @@
                                                 {{place.name}}
                                             </a>
                                             <div class="dropdown-menu">
-                                                <a href="{{ path('places_trainings', {'id': place.id} ) }}" class="dropdown-item">
+                                                <a href="{{ path('places_trainings', {'place': place.id} ) }}" class="dropdown-item">
                                                     Liste des formations
                                                 </a>
-                                                <a href="{{ path('places_parameters', {'id': place.id} ) }}" class="dropdown-item">
+                                                <a href="{{ path('places_parameters', {'place': place.id} ) }}" class="dropdown-item">
                                                     Paramétrage
                                                 </a>
                                             

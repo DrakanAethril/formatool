@@ -10,13 +10,18 @@
 {% block body %}
     {% if currentTab == 'rooms' %}
             {% set addTxt = 'Nouvelle salle' %}
-            {% set addLink = path('place_add_class_room', {'id': place.id, 'tt': 0}) %}
+            {% set addLink = path('place_add_class_room', {'place': place.id, 'tt': 0}) %}
             {% set tabContent = 'places/parameters/tab_rooms.html.twig' %}
     {% endif %}
     {% if currentTab == 'cursuses' %}
             {% set addTxt = 'Nouveau cursus' %}
-            {% set addLink = path('place_add_cursus', {'id': place.id, 'tt': 0}) %}
+            {% set addLink = path('place_add_cursus', {'place': place.id, 'tt': 0}) %}
             {% set tabContent = 'places/parameters/tab_cursuses.html.twig' %}
+    {% endif %}
+    {% if currentTab == 'people' %}
+            {% set addTxt = 'Nouvel utilisateur' %}
+            {% set addLink = path('place_add_person', {'place': place.id, 'tt': 0}) %}
+            {% set tabContent = 'places/parameters/tab_people.html.twig' %}
     {% endif %}
     <div class="page-header d-print-none">
         <div class="container-xl">

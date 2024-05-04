@@ -19,7 +19,7 @@
                         </td>
                         <td class="text-end">
                             <div class="btn-list flex-nowrap justify-content-end">
-                                <a href="{{path('place_add_cursus', {'id':place.id, 'tt':cursus.id})}}" class="btn btn-ghost-warning">
+                                <a href="{{path('place_add_cursus', {'place':place.id, 'tt':cursus.id})}}" class="btn btn-ghost-warning">
                                     Modifier
                                 </a>
                                 <a href="{{path('place_remove_cursus', {'place':place.id,'id':cursus.id})}}" class="btn btn-ghost-danger">

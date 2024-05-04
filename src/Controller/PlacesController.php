@@ -22,8 +22,8 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 #[Route('app/places')]
 class PlacesController extends AbstractController
 {
-    #[Route('/{id<\d+>}/trainings', name: 'places_trainings')]
-    public function index(Places $place, TrainingsRepository $trainingsRepository): Response
+    #[Route('/{place<\d+>}/trainings', name: 'places_trainings')]
+    public function trainings(Places $place, TrainingsRepository $trainingsRepository): Response
     {
         return $this->render('places/index.html.twig', [
             'place' => $place,
@@ -35,8 +35,8 @@ class PlacesController extends AbstractController
 
     // TRAININGS
 
-    #[Route('/{id<\d+>}/training/add/{tt<\d+>?0}', name: 'place_add_training')]
-    public function addTraining(#[MapEntity(expr: 'repository.find(id)')] Places $place, int $tt, TrainingsRepository $trainingsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/{place<\d+>}/training/add/{tt<\d+>?0}', name: 'place_add_training')]
+    public function addTraining(#[MapEntity(expr: 'repository.find(place)')] Places $place, int $tt, TrainingsRepository $trainingsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
         if(empty($tt)) {
@@ -59,7 +59,7 @@ class PlacesController extends AbstractController
             $entityManager->persist($training);
             $entityManager->flush();
             //redirect on training page
-            return $this->redirectToRoute('places_trainings', ['id' => $place->getId()]);
+            return $this->redirectToRoute('places_trainings', ['place' => $place->getId()]);
         }
 
 
@@ -70,29 +70,29 @@ class PlacesController extends AbstractController
         ]);
     }
 
-    #[Route('/training/archive/{id}', name: 'place_archive_training')]
-    public function removeTraining($id, TrainingsRepository $trainingsRepository, EntityManagerInterface $entityManager) : Response
+    #[Route('/training/archive/{training}', name: 'place_archive_training')]
+    public function removeTraining($training, TrainingsRepository $trainingsRepository, EntityManagerInterface $entityManager) : Response
     {   
-        $training = $trainingsRepository->findOneBy(['id' => intval($id)]);
+        $training = $trainingsRepository->findOneBy(['id' => intval($training)]);
         if(!empty($training)) {
             $training->setInactive(new \DateTime('now'));
             $entityManager->persist($training);
             $entityManager->flush();
-            return $this->redirectToRoute('places_trainings', ['id' => $training->getPlace()->getId()]);
+            return $this->redirectToRoute('places_trainings', ['place' => $training->getPlace()->getId()]);
         } else {
             return $this->redirectToRoute('home');
         }
     }
 
-    #[Route('/training/reactivate/{id}', name: 'place_reactivate_training')]
-    public function reactivateTraining($id, TrainingsRepository $trainingsRepository, EntityManagerInterface $entityManager) : Response
+    #[Route('/training/reactivate/{training}', name: 'place_reactivate_training')]
+    public function reactivateTraining($training, TrainingsRepository $trainingsRepository, EntityManagerInterface $entityManager) : Response
     {   
-        $training = $trainingsRepository->findOneBy(['id' => intval($id)]);
+        $training = $trainingsRepository->findOneBy(['id' => intval($training)]);
         if(!empty($training)) {
             $training->setInactive(null);
             $entityManager->persist($training);
             $entityManager->flush();
-            return $this->redirectToRoute('places_trainings', ['id' => $training->getPlace()->getId()]);
+            return $this->redirectToRoute('places_trainings', ['place' => $training->getPlace()->getId()]);
         } else {
             return $this->redirectToRoute('home');
         }
@@ -100,8 +100,8 @@ class PlacesController extends AbstractController
 
     // CLASSROOMS
 
-    #[Route('/{id<\d+>}/classroom/add/{tt<\d+>?0}', name: 'place_add_class_room')]
-    public function addClassRoom(#[MapEntity(expr: 'repository.find(id)')] Places $place, int $tt, ClassRoomsRepository $classRoomsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/{place<\d+>}/classroom/add/{tt<\d+>?0}', name: 'place_add_class_room')]
+    public function addClassRoom(#[MapEntity(expr: 'repository.find(place)')] Places $place, int $tt, ClassRoomsRepository $classRoomsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
         if(empty($tt)) {
@@ -123,7 +123,7 @@ class PlacesController extends AbstractController
             $entityManager->persist($classRoom);
             $entityManager->flush();
             //redirect on training page
-            return $this->redirectToRoute('places_parameters', ['id' => $place->getId()]);
+            return $this->redirectToRoute('places_parameters', ['place' => $place->getId()]);
         }
 
 
@@ -143,7 +143,7 @@ class PlacesController extends AbstractController
             $classRoom->setInactive(new \DateTime());
             $entityManager->persist($classRoom);
             $entityManager->flush();
-            return $this->redirectToRoute('places_parameters', ['id' => $idPlace]);
+            return $this->redirectToRoute('places_parameters', ['place' => $idPlace]);
         } else {
             return $this->redirectToRoute('home');
         }
@@ -151,8 +151,8 @@ class PlacesController extends AbstractController
 
     // CURSUSES
 
-    #[Route('/{id<\d+>}/cursus/add/{tt<\d+>?0}', name: 'place_add_cursus')]
-    public function addCursus(#[MapEntity(expr: 'repository.find(id)')] Places $place, int $tt, CursusRepository $cursusRepository, Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/{place<\d+>}/cursus/add/{tt<\d+>?0}', name: 'place_add_cursus')]
+    public function addCursus(#[MapEntity(expr: 'repository.find(place)')] Places $place, int $tt, CursusRepository $cursusRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
         if(empty($tt)) {
@@ -174,7 +174,7 @@ class PlacesController extends AbstractController
             $entityManager->persist($cursus);
             $entityManager->flush();
             //redirect on training page
-            return $this->redirectToRoute('places_parameters_cursuses', ['id' => $place->getId()]);
+            return $this->redirectToRoute('places_parameters_cursuses', ['place' => $place->getId()]);
         }
 
 
@@ -194,7 +194,7 @@ class PlacesController extends AbstractController
             $cursus->setInactive(new \DateTime());
             $entityManager->persist($cursus);
             $entityManager->flush();
-            return $this->redirectToRoute('places_parameters_cursuses', ['id' => $idPlace]);
+            return $this->redirectToRoute('places_parameters_cursuses', ['place' => $idPlace]);
         } else {
             return $this->redirectToRoute('home');
         }
@@ -203,7 +203,7 @@ class PlacesController extends AbstractController
 
     // PARAMETERS - DEFAULT TO ROOMS TABS
 
-    #[Route('/{id<\d+>}/parameters', name: 'places_parameters')]
+    #[Route('/{place<\d+>}/parameters', name: 'places_parameters')]
     public function parametersRooms(Places $place): Response
     {
 
@@ -217,7 +217,7 @@ class PlacesController extends AbstractController
         ]);
     }
 
-    #[Route('/{id<\d+>}/parameters/cursuses', name: 'places_parameters_cursuses')]
+    #[Route('/{place<\d+>}/parameters/cursuses', name: 'places_parameters_cursuses')]
     public function parametersCursuses(Places $place): Response
     {
 
@@ -228,6 +228,20 @@ class PlacesController extends AbstractController
             'place' => $place,
             'menuPlaces' => 'active',
             'currentTab' => 'cursuses' 
+        ]);
+    }
+
+    #[Route('/{place<\d+>}/parameters/people', name: 'places_parameters_people')]
+    public function parametersPeople(Places $place): Response
+    {
+
+        if(empty($place))
+        return $this->redirectToRoute('home');
+
+        return $this->render('places/parameters.html.twig', [
+            'place' => $place,
+            'menuPlaces' => 'active',
+            'currentTab' => 'people' 
         ]);
     }
 }
