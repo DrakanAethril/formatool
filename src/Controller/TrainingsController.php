@@ -6,6 +6,8 @@ use App\Config\AclPrivilegesEnum;
 use App\Config\AclRessourcesEnum;
 use App\Config\FinancialItemsTypeEnum;
 use App\Config\FinancialItemsSourceEnum;
+use App\Config\UsersRolesTrainingsEnum;
+use App\Config\UsersStatusTrainingsEnum;
 use App\Entity\LessonSessions;
 use App\Entity\TimeSlots;
 use App\Entity\TimeTableGenerator;
@@ -14,16 +16,19 @@ use App\Entity\TopicsTrainings;
 use App\Entity\TopicsTrainingsLabel;
 use App\Entity\TrainingFinancialItems;
 use App\Entity\Trainings;
+use App\Entity\UsersTrainings;
 use App\Form\FinancialItemType;
 use App\Form\LessonSessionType;
 use App\Form\TimeSlotType;
 use App\Form\TopicsGroupType;
 use App\Form\TopicsTrainingsType;
+use App\Form\UsersTrainingsType;
 use App\Repository\LessonSessionsRepository;
 use App\Repository\TimeSlotsRepository;
 use App\Repository\TopicsGroupsRepository;
 use App\Repository\TopicsTrainingsRepository;
 use App\Repository\TrainingFinancialItemsRepository;
+use App\Repository\UsersTrainingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -299,11 +304,11 @@ class TrainingsController extends AbstractController
     }
 
     // Financial entries
-    #[Route('/{id<\d+>}/financial/add_per_session/{tt<\d+>?0}', name: 'training_add_financial_session')]
-    #[Route('/{id<\d+>}/financial/add_per_student/{tt<\d+>?0}', name: 'training_edit_financial_student')]
-    #[Route('/{id<\d+>}/financial/add_manual_item/{tt<\d+>?0}', name: 'training_edit_financial_manual')]
-    #[Route('/{id<\d+>}/financial/edit/{tt<\d+>?0}', name: 'training_edit_financial_item')]
-    public function addFinancialItem(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, TrainingFinancialItemsRepository $financialItemsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/{training<\d+>}/financial/add_per_session/{tt<\d+>?0}', name: 'training_add_financial_session')]
+    #[Route('/{training<\d+>}/financial/add_per_student/{tt<\d+>?0}', name: 'training_edit_financial_student')]
+    #[Route('/{training<\d+>}/financial/add_manual_item/{tt<\d+>?0}', name: 'training_edit_financial_manual')]
+    #[Route('/{training<\d+>}/financial/edit/{tt<\d+>?0}', name: 'training_edit_financial_item')]
+    public function addFinancialItem(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, int $tt, TrainingFinancialItemsRepository $financialItemsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
 
         $create = false;
@@ -348,7 +353,7 @@ class TrainingsController extends AbstractController
             $entityManager->persist($financialItem);
             $entityManager->flush();
             //redirect on training page
-            $redirect = $this->generateUrl('training_parameters_financial', ['id' => $training->getId()]);
+            $redirect = $this->generateUrl('training_parameters_financial', ['training' => $training->getId()]);
             return $this->redirect($redirect);
         }
 
@@ -372,11 +377,104 @@ class TrainingsController extends AbstractController
             $idTraining = $financialItem->getTraining()->getId();
             $entityManager->remove($financialItem);
             $entityManager->flush();
-            return $this->redirectToRoute('training_parameters_financial', ['id' => $idTraining]);
+            return $this->redirectToRoute('training_parameters_financial', ['training' => $idTraining]);
         } else {
             return $this->redirectToRoute('home');
         }
     }
+
+        // USERS
+
+        #[Route('/{training<\d+>}/user/add/{tt<\d+>?0}', name: 'training_add_person')]
+        public function addPerson(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, int $tt, UsersTrainingsRepository $usersTrainingsRepository, Request $request, EntityManagerInterface $entityManager): Response
+        {
+            $create = false;
+            if(empty($tt)) {
+                $userTrainings = new UsersTrainings();
+                $userTrainings->setTraining($training);
+                $create = true;
+                $roles = [];
+                $status = null;
+            } else {
+                $userTrainings = $usersTrainingsRepository->findOneBy(['id'=> $tt]);
+                $status = UsersStatusTrainingsEnum::from($userTrainings->getStatus());
+                $roles = [];
+                if(!empty($userTrainings->getRoles())) {
+                    foreach($userTrainings->getRoles() as $role) {
+                        $roles[] = UsersRolesTrainingsEnum::from($role);
+                    }
+                }
+                
+                if(empty($userTrainings)) {
+                    return $this->redirectToRoute('home');
+                }
+            }
+            
+            
+            $form = $this->createForm(UsersTrainingsType::class, $userTrainings, [
+                'status' => $status,
+                'roles' => $roles,
+                'create' => $create
+            ]);
+            $form->handleRequest($request);
+    
+            if ($form->isSubmitted() && $form->isValid()) {
+                $userTrainings->setStatus($form->get('statusEntry')->getData()->value);
+                $newRoles = [];
+                foreach($form->get('rolesEntry')->getData() as $role) {
+                    $newRoles[] = $role->value;
+                }
+                $userTrainings->setRoles($newRoles);
+                $entityManager->persist($userTrainings);
+                $entityManager->flush();
+                //redirect on training page
+                return $this->redirectToRoute('trainings_parameters_people', ['training' => $training->getId()]);
+            }
+    
+    
+            return $this->render('trainings/add_people.html.twig', [
+                'training' => $training,
+                'userForm' => $form->createView(),
+                'menuPlaces' => 'active'
+            ]);
+        }
+    
+        #[Route('/{training<\d+>}/user/remove/{id}', name: 'training_remove_person')]
+        public function removePerson(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, $id, UsersTrainingsRepository $usersTrainingsRepository, EntityManagerInterface $entityManager) : Response
+        {   
+            $userTrainings = $usersTrainingsRepository->findOneBy(['id' => intval($id)]);
+            if(!empty($userTrainings)) {
+                $idTraining = $training->getId();
+                if($userTrainings->getTraining()->getId() != $training->getId()) {
+                    return $this->redirectToRoute('home');
+                }
+                $userTrainings->setStatus(UsersStatusTrainingsEnum::INACTIVE->value);
+                $entityManager->persist($userTrainings);
+                $entityManager->flush();
+                return $this->redirectToRoute('trainings_parameters_people', ['training' => $idTraining]);
+            } else {
+                return $this->redirectToRoute('home');
+            }
+        }
+    
+        #[Route('/{training<\d+>}/user/reactivate/{id}', name: 'training_reactivate_person')]
+        public function reactivatePerson(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, $id, UsersTrainingsRepository $usersTrainingsRepository, EntityManagerInterface $entityManager) : Response
+        {   
+            $userTrainings = $usersTrainingsRepository->findOneBy(['id' => intval($id)]);
+            if(!empty($userTrainings)) {
+                $idTraining = $training->getId();
+                if($userTrainings->getTraining()->getId() != $training->getId()) {
+                    return $this->redirectToRoute('home');
+                }
+                $userTrainings->setStatus(UsersStatusTrainingsEnum::ACTIVE->value);
+                $entityManager->persist($userTrainings);
+                $entityManager->flush();
+                return $this->redirectToRoute('trainings_parameters_people', ['training' => $idTraining]);
+            } else {
+                return $this->redirectToRoute('home');
+            }
+        }
+
 
     // PARAMETERS - DEFAULT TO TIMESLOTS TABS
 
@@ -496,6 +594,21 @@ class TrainingsController extends AbstractController
             'currentTab' => 'financial',
             'volumePerLessonType' => $lessonSessionsRepository->getTotalLengthPerTypeForTraining($training),
             'volumePerStudent' => 8
+        ]);
+    }
+
+    #[Route('/{training<\d+>}/parameters/people', name: 'trainings_parameters_people')]
+    public function parametersPeople(Trainings $training): Response
+    {
+
+        if(empty($training))
+        return $this->redirectToRoute('home');
+
+        return $this->render('trainings/parameters.html.twig', [
+            'rolesEnum' => UsersRolesTrainingsEnum::array(),
+            'training' => $training,
+            'menuPlaces' => 'active',
+            'currentTab' => 'people' 
         ]);
     }
 
