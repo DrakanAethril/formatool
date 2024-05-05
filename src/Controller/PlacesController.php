@@ -156,7 +156,7 @@ class PlacesController extends AbstractController
 
     // CURSUSES
 
-    #[Route('/{place<\d+>}/userPlaces/add/{tt<\d+>?0}', name: 'place_add_cursus')]
+    #[Route('/{place<\d+>}/cursus/add/{tt<\d+>?0}', name: 'place_add_cursus')]
     public function addCursus(#[MapEntity(expr: 'repository.find(place)')] Places $place, int $tt, CursusRepository $cursusRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
@@ -190,7 +190,7 @@ class PlacesController extends AbstractController
         ]);
     }
 
-    #[Route('/{place<\d+>}/userPlaces/remove/{id}', name: 'place_remove_cursus')]
+    #[Route('/{place<\d+>}/cursus/remove/{id}', name: 'place_remove_cursus')]
     public function removeCursus(#[MapEntity(expr: 'repository.find(place)')] Places $place, $id, CursusRepository $cursusRepository, EntityManagerInterface $entityManager) : Response
     {   
         $userPlaces = $cursusRepository->findOneBy(['id' => intval($id)]);
@@ -267,7 +267,28 @@ class PlacesController extends AbstractController
         $userPlaces = $usersPlacesRepository->findOneBy(['id' => intval($id)]);
         if(!empty($userPlaces)) {
             $idPlace = $place->getId();
+            if($userPlaces->getPlace()->getId() != $place->getId()) {
+                return $this->redirectToRoute('home');
+            }
             $userPlaces->setStatus(UsersStatusPlacesEnum::INACTIVE->value);
+            $entityManager->persist($userPlaces);
+            $entityManager->flush();
+            return $this->redirectToRoute('places_parameters_people', ['place' => $idPlace]);
+        } else {
+            return $this->redirectToRoute('home');
+        }
+    }
+
+    #[Route('/{place<\d+>}/user/reactivate/{id}', name: 'place_reactivate_person')]
+    public function reactivatePerson(#[MapEntity(expr: 'repository.find(place)')] Places $place, $id, UsersPlacesRepository $usersPlacesRepository, EntityManagerInterface $entityManager) : Response
+    {   
+        $userPlaces = $usersPlacesRepository->findOneBy(['id' => intval($id)]);
+        if(!empty($userPlaces)) {
+            $idPlace = $place->getId();
+            if($userPlaces->getPlace()->getId() != $place->getId()) {
+                return $this->redirectToRoute('home');
+            }
+            $userPlaces->setStatus(UsersStatusPlacesEnum::ACTIVE->value);
             $entityManager->persist($userPlaces);
             $entityManager->flush();
             return $this->redirectToRoute('places_parameters_people', ['place' => $idPlace]);

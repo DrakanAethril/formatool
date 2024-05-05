@@ -10,33 +10,37 @@
         </thead>
         <tbody>
             {% for person in place.usersPlaces %}
-                
-                    <tr>
-                        <td>
-                            {{person.user.displayName}}
-                        </td>
-                        <td>
-                            {% set roles = [] %}
-                            {% for role in person.rolesEnumForDisplay %}
-                                {% set roles = roles | merge([role|trans()]) %}
-                            {% endfor %}
-                            {{roles|sort|join(', ')}}
-                        </td>
-                        <td>
-                            {{ person.enumStatusObject|trans()}}
-                        </td>
-                        <td class="text-end">
-                            <div class="btn-list flex-nowrap justify-content-end">
-                                <a href="{{path('place_add_person', {'place':place.id, 'tt':person.id})}}" class="btn btn-ghost-warning">
-                                    Modifier
-                                </a>
+                <tr>
+                    <td>
+                        {{person.user.displayName}}
+                    </td>
+                    <td>
+                        {% set roles = [] %}
+                        {% for role in person.rolesEnumForDisplay %}
+                            {% set roles = roles | merge([role|trans()]) %}
+                        {% endfor %}
+                        {{roles|sort|join(', ')}}
+                    </td>
+                    <td>
+                        {{ person.enumStatusObject|trans()}}
+                    </td>
+                    <td class="text-end">
+                        <div class="btn-list flex-nowrap justify-content-end">
+                            <a href="{{path('place_add_person', {'place':place.id, 'tt':person.id})}}" class="btn btn-ghost-warning">
+                                Modifier
+                            </a>
+                            {% if(person.enumStatusObject.value == 'ACTIVE') %}
                                 <a href="{{path('place_remove_person', {'place':place.id, 'id':person.id})}}" class="btn btn-ghost-danger">
                                     Désactiver
                                 </a>
-                            </div>
-                        </td>
-                    </tr>
-                
+                            {% else %}
+                                <a href="{{path('place_reactivate_person', {'place':place.id, 'id':person.id})}}" class="btn btn-ghost-danger">
+                                    Réactiver
+                                </a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
             {%endfor%}
         </tbody>
     </table>
