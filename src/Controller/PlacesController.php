@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Config\UsersRolesPlacesEnum;
 use App\Config\UsersStatusPlacesEnum;
 use App\Entity\ClassRooms;
 use App\Entity\Cursus;
@@ -11,6 +12,7 @@ use App\Entity\UsersPlaces;
 use App\Form\ClassRoomType;
 use App\Form\CursusFormType;
 use App\Form\TrainingsType;
+use App\Form\UsersPlacesType;
 use App\Repository\ClassRoomsRepository;
 use App\Repository\CursusRepository;
 use App\Repository\TrainingsRepository;
@@ -213,18 +215,38 @@ class PlacesController extends AbstractController
             $userPlaces = new UsersPlaces();
             $userPlaces->setPlace($place);
             $create = true;
+            $roles = [];
+            $status = null;
         } else {
             $userPlaces = $usersPlacesRepository->findOneBy(['id'=> $tt]);
+            $status = UsersStatusPlacesEnum::from($userPlaces->getStatus());
+            $roles = [];
+            if(!empty($userPlaces->getRoles())) {
+                foreach($userPlaces->getRoles() as $role) {
+                    $roles[] = UsersRolesPlacesEnum::from($role);
+                }
+            }
+            
             if(empty($userPlaces)) {
                 return $this->redirectToRoute('home');
             }
         }
         
         
-        $form = $this->createForm(UserPlacesType::class, $userPlaces);
+        $form = $this->createForm(UsersPlacesType::class, $userPlaces, [
+            'status' => $status,
+            'roles' => $roles,
+            'create' => $create
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $userPlaces->setStatus($form->get('statusEntry')->getData()->value);
+            $newRoles = [];
+            foreach($form->get('rolesEntry')->getData() as $role) {
+                $newRoles[] = $role->value;
+            }
+            $userPlaces->setRoles($newRoles);
             $entityManager->persist($userPlaces);
             $entityManager->flush();
             //redirect on training page
@@ -292,6 +314,7 @@ class PlacesController extends AbstractController
         return $this->redirectToRoute('home');
 
         return $this->render('places/parameters.html.twig', [
+            'rolesEnum' => UsersRolesPlacesEnum::array(),
             'place' => $place,
             'menuPlaces' => 'active',
             'currentTab' => 'people' 

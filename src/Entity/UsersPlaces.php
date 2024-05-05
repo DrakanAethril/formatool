@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Config\UsersRolesPlacesEnum;
+use App\Config\UsersStatusPlacesEnum;
 use App\Repository\UsersPlacesRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -100,5 +102,19 @@ class UsersPlaces
         $this->permissions = $permissions;
 
         return $this;
+    }
+
+    public function getEnumStatusObject() {
+        return UsersStatusPlacesEnum::tryFrom($this->getStatus());
+    }
+
+    public function getRolesEnumForDisplay() : array {
+        $res = [];
+        if(!empty($this->getRoles())) {
+            foreach($this->getRoles() as $role) {
+                $res[] = UsersRolesPlacesEnum::tryFrom($role);
+            }
+        }
+        return $res;
     }
 }

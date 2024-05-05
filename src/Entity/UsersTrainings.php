@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Config\UsersRolesTrainingsEnum;
+use App\Config\UsersStatusTrainingsEnum;
 use App\Repository\UsersTrainingsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,11 +28,11 @@ class UsersTrainings
     #[ORM\Column(length: 50)]
     private ?string $status = null;
 
-    #[ORM\Column]
-    private array $role = [];
-
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $perms = null;
+
+    #[ORM\Column]
+    private array $roles = [];
 
     #[ORM\UniqueConstraint(
         name: 'user_training_unique_idx',
@@ -78,18 +80,6 @@ class UsersTrainings
         return $this;
     }
 
-    public function getRole(): array
-    {
-        return $this->role;
-    }
-
-    public function setRole(array $role): static
-    {
-        $this->role = $role;
-
-        return $this;
-    }
-
     public function getPerms(): ?string
     {
         return $this->perms;
@@ -100,5 +90,32 @@ class UsersTrainings
         $this->perms = $perms;
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+
+    public function getEnumStatusObject() {
+        return UsersStatusTrainingsEnum::tryFrom($this->getStatus());
+    }
+
+    public function getRolesEnumForDisplay() : array {
+        $res = [];
+        if(!empty($this->getRoles())) {
+            foreach($this->getRoles() as $role) {
+                $res[] = UsersRolesTrainingsEnum::tryFrom($role);
+            }
+        }
+        return $res;
     }
 }
