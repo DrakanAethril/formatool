@@ -14,6 +14,7 @@
                 <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
             {% endfor %}
             {{ form_start(requestForm) }}
+                {{ form_errors(requestForm.captcha) }}
                 <div class="mb-4">
                 {{ form_row(requestForm.email) }}
                 </div>
