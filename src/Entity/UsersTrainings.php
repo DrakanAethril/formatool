@@ -118,4 +118,33 @@ class UsersTrainings
         }
         return $res;
     }
+
+    public function generatePermsBasedOnRole(string $role):array {
+        $res = [];
+        switch($role) {
+            case UsersRolesTrainingsEnum::TEACHER->value:
+
+            break;
+            case UsersRolesTrainingsEnum::STUDENT->value:
+
+            break;
+            case UsersRolesTrainingsEnum::SCHOLARSHIP_MANAGER->value:
+                //$res[] = 'TRAINING_ALL|ALL|'.$this->getTraining()->getId();
+            break;
+            case UsersRolesTrainingsEnum::PEDAGOGIC_MANAGER->value:
+                //$res[] = 'TRAINING_ALL|ALL|'.$this->getTraining()->getId();
+            break;
+            case UsersRolesTrainingsEnum::ADMINISTRATIVE_MANAGER->value:
+                //$res[] = 'TRAINING_ALL|ALL|'.$this->getTraining()->getId();
+            break;
+            case UsersRolesTrainingsEnum::STAFF->value:
+                //$res[] = 'TRAINING_ALL|READ|'.$this->getTraining()->getId();
+            break;
+            case UsersRolesTrainingsEnum::ADMIN->value:
+                $res[] = 'TRAINING_ALL|ALL|'.$this->getTraining()->getId();
+            break;
+            default:
+        }
+        return $res;
+    }
 }

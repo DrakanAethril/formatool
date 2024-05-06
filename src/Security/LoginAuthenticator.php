@@ -49,6 +49,7 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
     {
         $user = $token->getUser();
         $aclPermissionsRepository = $this->entityManager->getRepository(AclPermissions::class);
+        //dd($aclPermissionsRepository->generateUserPermsForSession($user));
         $request->getSession()->set('AclPermissions', $aclPermissionsRepository->generateUserPermsForSession($user));
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);

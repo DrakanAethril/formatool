@@ -16,6 +16,7 @@ enum AclPrivilegesEnum:string implements TranslatableInterface {
     //case UPDATE = 'UPDATE';
     CASE WRITE = 'WRITE';
     case DELETE = 'DELETE';
+    case ALL = 'ALL';
 
     public function trans(TranslatorInterface $translator, string $locale = null): string
     {
@@ -28,7 +29,8 @@ enum AclPrivilegesEnum:string implements TranslatableInterface {
             self::READ  => 'Lecture',
             //self::UPDATE => 'Mise à jour',
             self::WRITE => 'Ecriture',
-            self::DELETE => 'Suppression'
+            self::DELETE => 'Suppression',
+            self::ALL => 'Tous les droits'
         };
     }
 }

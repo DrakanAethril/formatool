@@ -15,6 +15,9 @@ enum UsersRolesTrainingsEnum:string implements TranslatableInterface {
     case TEACHER = 'ROLE_TEACHER';
     case STAFF = 'ROLE_STAFF';
     case ADMIN = 'ROLE_ADMIN';
+    case PEDAGOGIC_MANAGER = 'ROLE_PEDAGOGIC_MANAGER';
+    case SCHOLARSHIP_MANAGER = 'ROLE_SCHOLARSHIP_MANAGER';
+    case ADMINISTRATIVE_MANAGER = 'ROLE_ADMINISTRATIVE_MANAGER';
 
     public function trans(TranslatorInterface $translator, string $locale = null): string
     {
@@ -27,6 +30,9 @@ enum UsersRolesTrainingsEnum:string implements TranslatableInterface {
             self::TEACHER => 'Enseignant',
             self::STAFF => 'Personnel',
             self::ADMIN => 'Admin',
+            self::PEDAGOGIC_MANAGER => 'Responsable pédagogique',
+            self::SCHOLARSHIP_MANAGER => 'Responsable vie scolaire',
+            self::ADMINISTRATIVE_MANAGER => 'Responsable administratif',
         };
     }
 

@@ -117,4 +117,24 @@ class UsersPlaces
         }
         return $res;
     }
+
+    public function generatePermsBasedOnRole(string $role):array {
+        $res = [];
+        switch($role) {
+            case UsersRolesPlacesEnum::TEACHER->value:
+
+            break;
+            case UsersRolesPlacesEnum::STAFF->value:
+
+            break;
+            case UsersRolesPlacesEnum::MANAGEMENT->value:
+                //$res[] = 'PLACE_ALL|ALL|'.$this->getPlace()->getId();
+            break;
+            case UsersRolesPlacesEnum::ADMIN->value:
+                $res[] = 'PLACE_ALL|ALL|'.$this->getPlace()->getId();
+            break;
+            default:
+        }
+        return $res;
+    }
 }

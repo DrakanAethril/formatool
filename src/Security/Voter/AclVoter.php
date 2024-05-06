@@ -40,7 +40,7 @@ class AclVoter extends Voter
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
-        return true;
+        //return true;
         $user = $token->getUser();
         $attributes = $token->getAttributes();
         $permissions = $this->requestStack->getSession()->get('AclPermissions');
@@ -51,11 +51,25 @@ class AclVoter extends Voter
         }
 
         if($subject instanceof Trainings) {
-
+            if(substr($this->testedRessource, 0, 8) != 'TRAINING') return false;
+            if(
+                in_array('PLACE_ALL|ALL'.'|'.$subject->getPlace()->getId(), $permissions) ||
+                in_array('PLACE_ALL|'.$this->testedPerm.'|'.$subject->getPlace()->getId(), $permissions) ||
+                in_array('TRAINING_ALL|ALL'.'|'.$subject->getId(), $permissions) ||
+                in_array('TRAINING_ALL|'.$this->testedPerm.'|'.$subject->getId(), $permissions)
+            ) {
+                return true;
+            }
         }
 
         if($subject instanceof Places) {
-            
+            if(substr($this->testedRessource, 0, 5) != 'PLACE') return false;
+            if(
+                in_array('PLACE_ALL|ALL'.'|'.$subject->getId(), $permissions) ||
+                in_array('PLACE_ALL|'.$this->testedPerm.'|'.$subject->getId(), $permissions)
+            ) {
+                return true;
+            }
         }
 
         return in_array($this->testedRessource.'|'.$this->testedPerm.'|'.$subject->getId(), $permissions);
