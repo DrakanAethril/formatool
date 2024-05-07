@@ -72,6 +72,6 @@ class AclVoter extends Voter
             }
         }
 
-        return in_array($this->testedRessource.'|'.$this->testedPerm.'|'.$subject->getId(), $permissions);
+        return (in_array($this->testedRessource.'|'.$this->testedPerm.'|'.$subject->getId(), $permissions) || in_array($this->testedRessource.'|ALL|'.$subject->getId(), $permissions)) ;
     }
 }

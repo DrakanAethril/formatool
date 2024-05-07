@@ -125,10 +125,11 @@ class UsersPlaces
 
             break;
             case UsersRolesPlacesEnum::STAFF->value:
-
+                $res[] = 'PLACE_PARAMETERS|READ|'.$this->getPlace()->getId();
+                $res[] = 'PLACE_PARAMETERS_CLASSROOM|READ|'.$this->getPlace()->getId();
             break;
             case UsersRolesPlacesEnum::MANAGEMENT->value:
-                //$res[] = 'PLACE_ALL|ALL|'.$this->getPlace()->getId();
+                $res[] = 'PLACE_ALL|ALL|'.$this->getPlace()->getId();
             break;
             case UsersRolesPlacesEnum::ADMIN->value:
                 $res[] = 'PLACE_ALL|ALL|'.$this->getPlace()->getId();

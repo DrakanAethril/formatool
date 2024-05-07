@@ -129,16 +129,36 @@ class UsersTrainings
 
             break;
             case UsersRolesTrainingsEnum::SCHOLARSHIP_MANAGER->value:
-                //$res[] = 'TRAINING_ALL|ALL|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_PARAMETERS|READ|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_PARAMETERS_LESSON_SESSION|ALL|'.$this->getTraining()->getId();
+                
+                $res[] = 'TRAINING_REPORTING|READ|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_REPORTING_SCHOLARSHIP|READ|'.$this->getTraining()->getId();
             break;
             case UsersRolesTrainingsEnum::PEDAGOGIC_MANAGER->value:
-                //$res[] = 'TRAINING_ALL|ALL|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_PARAMETERS|READ|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_PARAMETERS_TIMESLOT|ALL|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_PARAMETERS_TOPIC_GROUP|ALL|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_PARAMETERS_TOPIC|ALL|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_PARAMETERS_LESSON_SESSION|ALL|'.$this->getTraining()->getId();
+                
+                $res[] = 'TRAINING_REPORTING|READ|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_REPORTING_SCHOLARSHIP|READ|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_REPORTING_PEDAGOGIC|READ|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_REPORTING_FINANCIAL|READ|'.$this->getTraining()->getId();
             break;
             case UsersRolesTrainingsEnum::ADMINISTRATIVE_MANAGER->value:
-                //$res[] = 'TRAINING_ALL|ALL|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_PARAMETERS|READ|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_PARAMETERS_FINANCIAL|ALL|'.$this->getTraining()->getId();
+                
+                $res[] = 'TRAINING_REPORTING|READ|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_REPORTING_FINANCIAL|READ|'.$this->getTraining()->getId();
             break;
             case UsersRolesTrainingsEnum::STAFF->value:
-                //$res[] = 'TRAINING_ALL|READ|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_REPORTING|READ|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_REPORTING_SCHOLARSHIP|READ|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_REPORTING_PEDAGOGIC|READ|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_REPORTING_FINANCIAL|READ|'.$this->getTraining()->getId();
             break;
             case UsersRolesTrainingsEnum::ADMIN->value:
                 $res[] = 'TRAINING_ALL|ALL|'.$this->getTraining()->getId();

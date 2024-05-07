@@ -33,6 +33,7 @@ enum AclRessourcesEnum:string implements TranslatableInterface {
     case TRAINING_PARAMETERS_USER = 'TRAINING_PARAMETERS_USER';
 
     // TRAINING REPORTING
+    case TRAINING_REPORTING = 'TRAINING_REPORTING';
     case TRAINING_REPORTING_SCHOLARSHIP = 'TRAINING_REPORTING_SCHOLARSHIP';
     case TRAINING_REPORTING_PEDAGOGIC = 'TRAINING_REPORTING_PEDAGOGIC';
     case TRAINING_REPORTING_FINANCIAL = 'TRAINING_REPORTING_FINANCIAL';
@@ -62,6 +63,7 @@ enum AclRessourcesEnum:string implements TranslatableInterface {
             self::TRAINING_PARAMETERS_FINANCIAL => 'Paramétrage de la formation - Finances',
             self::TRAINING_PARAMETERS_USER => 'Paramétrage de la formation - Utilisateurs',
 
+            self::TRAINING_REPORTING  => 'Reporting de la formations',
             self::TRAINING_REPORTING_SCHOLARSHIP => 'Reporting de la formation - Vie scolaire',
             self::TRAINING_REPORTING_PEDAGOGIC => 'Reporting de la formation - Pédagogique',
             self::TRAINING_REPORTING_FINANCIAL => 'Reporting de la formation - Financier',
