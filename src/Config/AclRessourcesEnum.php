@@ -16,6 +16,7 @@ enum AclRessourcesEnum:string implements TranslatableInterface {
 
     // PLACE PARAMS
     case PLACE_PARAMETERS = 'PLACE_PARAMETERS';
+    case PLACE_PARAMETERS_TRAINING = 'PLACE_PARAMETERS_TRAINING';
     case PLACE_PARAMETERS_CLASSROOM = 'PLACE_PARAMETERS_CLASSROOM';
     case PLACE_PARAMETERS_CURSUS = 'PLACE_PARAMETERS_CURSUS';
     case PLACE_PARAMETERS_USER = 'PLACE_PARAMETERS_USER';
@@ -31,6 +32,7 @@ enum AclRessourcesEnum:string implements TranslatableInterface {
     case TRAINING_PARAMETERS_LESSON_SESSION = 'TRAINING_PARAMETERS_LESSON_SESSION';
     case TRAINING_PARAMETERS_FINANCIAL = 'TRAINING_PARAMETERS_FINANCIAL';
     case TRAINING_PARAMETERS_USER = 'TRAINING_PARAMETERS_USER';
+    
 
     // TRAINING REPORTING
     case TRAINING_REPORTING = 'TRAINING_REPORTING';
@@ -49,6 +51,7 @@ enum AclRessourcesEnum:string implements TranslatableInterface {
             self::PLACE_ALL  => 'Accès à toute la structure',
 
             self::PLACE_PARAMETERS  => 'Paramétrage de la structure',
+            self::PLACE_PARAMETERS_TRAINING => 'Paramétrage de la structure - Formations',
             self::PLACE_PARAMETERS_CLASSROOM => 'Paramétrage de la structure - Salles de classe',
             self::PLACE_PARAMETERS_CURSUS => 'Paramétrage de la structure - Cursus',
             self::PLACE_PARAMETERS_USER => 'Paramétrage de la structure - Utilisateurs',

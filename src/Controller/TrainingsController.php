@@ -77,6 +77,7 @@ class TrainingsController extends AbstractController
     // TOPICS
 
     #[Route('/{training<\d+>}/topic/add/{tt<\d+>?0}', name: 'training_add_topic')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC->value.'|'.AclPrivilegesEnum::WRITE->value, 'training')]
     public function addTopic(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, int $tt, TopicsTrainingsRepository $topicsTrainingsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
@@ -118,6 +119,7 @@ class TrainingsController extends AbstractController
     }
 
     #[Route('/topic/remove/{id}', name: 'training_remove_topic')]
+    //#[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
     public function removeTopic($id, TopicsTrainingsRepository $topicsTrainingsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $topicsTrainings = $topicsTrainingsRepository->findOneBy(['id' => intval($id)]);
@@ -134,6 +136,7 @@ class TrainingsController extends AbstractController
     // TRAININGS GROUPS
 
     #[Route('/{training<\d+>}/topics/group/add/{tt<\d+>?0}', name: 'training_add_topics_group')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC_GROUP->value.'|'.AclPrivilegesEnum::WRITE->value, 'training')]
     public function addTopicsGroup(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, int $tt, TopicsGroupsRepository $topicsGroupsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
@@ -168,6 +171,7 @@ class TrainingsController extends AbstractController
     }
 
     #[Route('/topics/group/remove/{id}', name: 'training_remove_topics_group')]
+    //#[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC_GROUP->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
     public function removeTopicsGroup($id, TopicsGroupsRepository $topicsGroupsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $topicsTrainings = $topicsGroupsRepository->findOneBy(['id' => intval($id)]);
@@ -184,6 +188,7 @@ class TrainingsController extends AbstractController
     // Lesson Sessions
 
     #[Route('/{training<\d+>}/lessonsession/add/{tt<\d+>?0}', name: 'training_add_lessonsession')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_LESSON_SESSION->value.'|'.AclPrivilegesEnum::WRITE->value, 'training')]
     public function addLessonSession(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, int $tt, LessonSessionsRepository $lessonSessionsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
@@ -240,6 +245,7 @@ class TrainingsController extends AbstractController
     }
 
     #[Route('/lessonsessions/remove/{id}', name: 'training_remove_lessonsession')]
+    //#[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_LESSON_SESSION->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
     public function removeLessonSession($id, LessonSessionsRepository $lessonSessionsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $lessonSession = $lessonSessionsRepository->findOneBy(['id' => intval($id)]);
@@ -256,6 +262,7 @@ class TrainingsController extends AbstractController
     // TIMESLOTS
 
     #[Route('/{training<\d+>}/timeslot/add/{tt<\d+>?0}', name: 'training_add_timeslot')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TIMESLOT->value.'|'.AclPrivilegesEnum::WRITE->value, 'training')]
     public function addTimeSlot(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, int $tt, TimeSlotsRepository $timeSlotsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
@@ -290,6 +297,7 @@ class TrainingsController extends AbstractController
     }
 
     #[Route('/timeslot/remove/{id}', name: 'training_remove_timeslot')]
+    //#[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TIMESLOT->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
     public function removeTimeSlot($id, TimeSlotsRepository $timeSlotsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $timeSlot = $timeSlotsRepository->findOneBy(['id' => intval($id)]);
@@ -308,6 +316,7 @@ class TrainingsController extends AbstractController
     #[Route('/{training<\d+>}/financial/add_per_student/{tt<\d+>?0}', name: 'training_edit_financial_student')]
     #[Route('/{training<\d+>}/financial/add_manual_item/{tt<\d+>?0}', name: 'training_edit_financial_manual')]
     #[Route('/{training<\d+>}/financial/edit/{tt<\d+>?0}', name: 'training_edit_financial_item')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_FINANCIAL->value.'|'.AclPrivilegesEnum::WRITE->value, 'training')]
     public function addFinancialItem(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, int $tt, TrainingFinancialItemsRepository $financialItemsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
 
@@ -368,8 +377,9 @@ class TrainingsController extends AbstractController
             'isManual' => $source == FinancialItemsSourceEnum::SourceManual,
         ]);
     }
-
+    
     #[Route('/financial/remove/{id}', name: 'training_remove_financial_item')]
+    //#[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_FINANCIAL->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
     public function removeFinancialItem($id, TrainingFinancialItemsRepository $trainingFinancialItemsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $financialItem = $trainingFinancialItemsRepository->findOneBy(['id' => intval($id)]);
@@ -383,97 +393,99 @@ class TrainingsController extends AbstractController
         }
     }
 
-        // USERS
+    // USERS
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_USER->value.'|'.AclPrivilegesEnum::WRITE->value, 'training')]
+    #[Route('/{training<\d+>}/user/add/{tt<\d+>?0}', name: 'training_add_person')]
+    public function addPerson(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, int $tt, UsersTrainingsRepository $usersTrainingsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $create = false;
+        if(empty($tt)) {
+            $userTrainings = new UsersTrainings();
+            $userTrainings->setTraining($training);
+            $create = true;
+            $roles = [];
+            $status = null;
+        } else {
+            $userTrainings = $usersTrainingsRepository->findOneBy(['id'=> $tt]);
+            $status = UsersStatusTrainingsEnum::from($userTrainings->getStatus());
+            $roles = [];
+            if(!empty($userTrainings->getRoles())) {
+                foreach($userTrainings->getRoles() as $role) {
+                    $roles[] = UsersRolesTrainingsEnum::from($role);
+                }
+            }
+            
+            if(empty($userTrainings)) {
+                return $this->redirectToRoute('home');
+            }
+        }
+        
+        
+        $form = $this->createForm(UsersTrainingsType::class, $userTrainings, [
+            'status' => $status,
+            'roles' => $roles,
+            'create' => $create
+        ]);
+        $form->handleRequest($request);
 
-        #[Route('/{training<\d+>}/user/add/{tt<\d+>?0}', name: 'training_add_person')]
-        public function addPerson(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, int $tt, UsersTrainingsRepository $usersTrainingsRepository, Request $request, EntityManagerInterface $entityManager): Response
-        {
-            $create = false;
-            if(empty($tt)) {
-                $userTrainings = new UsersTrainings();
-                $userTrainings->setTraining($training);
-                $create = true;
-                $roles = [];
-                $status = null;
-            } else {
-                $userTrainings = $usersTrainingsRepository->findOneBy(['id'=> $tt]);
-                $status = UsersStatusTrainingsEnum::from($userTrainings->getStatus());
-                $roles = [];
-                if(!empty($userTrainings->getRoles())) {
-                    foreach($userTrainings->getRoles() as $role) {
-                        $roles[] = UsersRolesTrainingsEnum::from($role);
-                    }
-                }
-                
-                if(empty($userTrainings)) {
-                    return $this->redirectToRoute('home');
-                }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $userTrainings->setStatus($form->get('statusEntry')->getData()->value);
+            $newRoles = [];
+            foreach($form->get('rolesEntry')->getData() as $role) {
+                $newRoles[] = $role->value;
             }
-            
-            
-            $form = $this->createForm(UsersTrainingsType::class, $userTrainings, [
-                'status' => $status,
-                'roles' => $roles,
-                'create' => $create
-            ]);
-            $form->handleRequest($request);
-    
-            if ($form->isSubmitted() && $form->isValid()) {
-                $userTrainings->setStatus($form->get('statusEntry')->getData()->value);
-                $newRoles = [];
-                foreach($form->get('rolesEntry')->getData() as $role) {
-                    $newRoles[] = $role->value;
-                }
-                $userTrainings->setRoles($newRoles);
-                $entityManager->persist($userTrainings);
-                $entityManager->flush();
-                //redirect on training page
-                return $this->redirectToRoute('trainings_parameters_people', ['training' => $training->getId()]);
-            }
-    
-    
-            return $this->render('trainings/add_people.html.twig', [
-                'training' => $training,
-                'userForm' => $form->createView(),
-                'menuPlaces' => 'active'
-            ]);
+            $userTrainings->setRoles($newRoles);
+            $entityManager->persist($userTrainings);
+            $entityManager->flush();
+            //redirect on training page
+            return $this->redirectToRoute('trainings_parameters_people', ['training' => $training->getId()]);
         }
-    
-        #[Route('/{training<\d+>}/user/remove/{id}', name: 'training_remove_person')]
-        public function removePerson(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, $id, UsersTrainingsRepository $usersTrainingsRepository, EntityManagerInterface $entityManager) : Response
-        {   
-            $userTrainings = $usersTrainingsRepository->findOneBy(['id' => intval($id)]);
-            if(!empty($userTrainings)) {
-                $idTraining = $training->getId();
-                if($userTrainings->getTraining()->getId() != $training->getId()) {
-                    return $this->redirectToRoute('home');
-                }
-                $userTrainings->setStatus(UsersStatusTrainingsEnum::INACTIVE->value);
-                $entityManager->persist($userTrainings);
-                $entityManager->flush();
-                return $this->redirectToRoute('trainings_parameters_people', ['training' => $idTraining]);
-            } else {
+
+
+        return $this->render('trainings/add_people.html.twig', [
+            'training' => $training,
+            'userForm' => $form->createView(),
+            'menuPlaces' => 'active'
+        ]);
+    }
+
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_USER->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
+    #[Route('/{training<\d+>}/user/remove/{id}', name: 'training_remove_person')]
+    public function removePerson(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, $id, UsersTrainingsRepository $usersTrainingsRepository, EntityManagerInterface $entityManager) : Response
+    {   
+        $userTrainings = $usersTrainingsRepository->findOneBy(['id' => intval($id)]);
+        if(!empty($userTrainings)) {
+            $idTraining = $training->getId();
+            if($userTrainings->getTraining()->getId() != $training->getId()) {
                 return $this->redirectToRoute('home');
             }
+            $userTrainings->setStatus(UsersStatusTrainingsEnum::INACTIVE->value);
+            $entityManager->persist($userTrainings);
+            $entityManager->flush();
+            return $this->redirectToRoute('trainings_parameters_people', ['training' => $idTraining]);
+        } else {
+            return $this->redirectToRoute('home');
         }
+    }
     
-        #[Route('/{training<\d+>}/user/reactivate/{id}', name: 'training_reactivate_person')]
-        public function reactivatePerson(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, $id, UsersTrainingsRepository $usersTrainingsRepository, EntityManagerInterface $entityManager) : Response
-        {   
-            $userTrainings = $usersTrainingsRepository->findOneBy(['id' => intval($id)]);
-            if(!empty($userTrainings)) {
-                $idTraining = $training->getId();
-                if($userTrainings->getTraining()->getId() != $training->getId()) {
-                    return $this->redirectToRoute('home');
-                }
-                $userTrainings->setStatus(UsersStatusTrainingsEnum::ACTIVE->value);
-                $entityManager->persist($userTrainings);
-                $entityManager->flush();
-                return $this->redirectToRoute('trainings_parameters_people', ['training' => $idTraining]);
-            } else {
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_USER->value.'|'.AclPrivilegesEnum::WRITE->value, 'training')]
+    #[Route('/{training<\d+>}/user/reactivate/{id}', name: 'training_reactivate_person')]
+    public function reactivatePerson(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, $id, UsersTrainingsRepository $usersTrainingsRepository, EntityManagerInterface $entityManager) : Response
+    {   
+        $userTrainings = $usersTrainingsRepository->findOneBy(['id' => intval($id)]);
+        if(!empty($userTrainings)) {
+            $idTraining = $training->getId();
+            if($userTrainings->getTraining()->getId() != $training->getId()) {
                 return $this->redirectToRoute('home');
             }
+            $userTrainings->setStatus(UsersStatusTrainingsEnum::ACTIVE->value);
+            $entityManager->persist($userTrainings);
+            $entityManager->flush();
+            return $this->redirectToRoute('trainings_parameters_people', ['training' => $idTraining]);
+        } else {
+            return $this->redirectToRoute('home');
         }
+    }
 
 
     // PARAMETERS - DEFAULT TO TIMESLOTS TABS
@@ -598,6 +610,7 @@ class TrainingsController extends AbstractController
     }
 
     #[Route('/{training<\d+>}/parameters/people', name: 'trainings_parameters_people')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_USER->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
     public function parametersPeople(Trainings $training): Response
     {
 

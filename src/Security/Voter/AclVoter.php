@@ -42,13 +42,15 @@ class AclVoter extends Voter
     {
         //return true;
         $user = $token->getUser();
-        $attributes = $token->getAttributes();
         $permissions = $this->requestStack->getSession()->get('AclPermissions');
         
         // if the user is anonymous, do not grant access
         if (!$user instanceof UserInterface) {
             return false;
         }
+
+        // superadmin of the platfor is.... superadmin
+        if(in_array('ROLE_ADMIN', $user->getRoles())) return true;
 
         if($subject instanceof Trainings) {
             if(substr($this->testedRessource, 0, 8) != 'TRAINING') return false;

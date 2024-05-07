@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Config\AclPrivilegesEnum;
+use App\Config\AclRessourcesEnum;
 use App\Config\UsersRolesPlacesEnum;
 use App\Config\UsersStatusPlacesEnum;
 use App\Entity\ClassRooms;
@@ -23,10 +25,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('app/places')]
 class PlacesController extends AbstractController
 {
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_TRAINING->value.'|'.AclPrivilegesEnum::READ->value, 'place')]
     #[Route('/{place<\d+>}/trainings', name: 'places_trainings')]
     public function trainings(Places $place, TrainingsRepository $trainingsRepository): Response
     {
@@ -41,6 +45,7 @@ class PlacesController extends AbstractController
     // TRAININGS
 
     #[Route('/{place<\d+>}/training/add/{tt<\d+>?0}', name: 'place_add_training')]
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_TRAINING->value.'|'.AclPrivilegesEnum::WRITE->value, 'place')]
     public function addTraining(#[MapEntity(expr: 'repository.find(place)')] Places $place, int $tt, TrainingsRepository $trainingsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
@@ -76,6 +81,7 @@ class PlacesController extends AbstractController
     }
 
     #[Route('/training/archive/{training}', name: 'place_archive_training')]
+    //#[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_TRAINING->value.'|'.AclPrivilegesEnum::DELETE->value, 'place')]
     public function removeTraining($training, TrainingsRepository $trainingsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $training = $trainingsRepository->findOneBy(['id' => intval($training)]);
@@ -90,6 +96,7 @@ class PlacesController extends AbstractController
     }
 
     #[Route('/training/reactivate/{training}', name: 'place_reactivate_training')]
+    //#[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_TRAINING->value.'|'.AclPrivilegesEnum::WRITE->value, 'place')]
     public function reactivateTraining($training, TrainingsRepository $trainingsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $training = $trainingsRepository->findOneBy(['id' => intval($training)]);
@@ -106,6 +113,7 @@ class PlacesController extends AbstractController
     // CLASSROOMS
 
     #[Route('/{place<\d+>}/classroom/add/{tt<\d+>?0}', name: 'place_add_class_room')]
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_CLASSROOM->value.'|'.AclPrivilegesEnum::WRITE->value, 'place')]
     public function addClassRoom(#[MapEntity(expr: 'repository.find(place)')] Places $place, int $tt, ClassRoomsRepository $classRoomsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
@@ -140,6 +148,7 @@ class PlacesController extends AbstractController
     }
 
     #[Route('/classroom/remove/{id}', name: 'place_remove_class_room')]
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_CLASSROOM->value.'|'.AclPrivilegesEnum::DELETE->value, 'place')]
     public function removeClassRoom($id, ClassRoomsRepository $classRoomsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $classRoom = $classRoomsRepository->findOneBy(['id' => intval($id)]);
@@ -157,6 +166,7 @@ class PlacesController extends AbstractController
     // CURSUSES
 
     #[Route('/{place<\d+>}/cursus/add/{tt<\d+>?0}', name: 'place_add_cursus')]
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_CURSUS->value.'|'.AclPrivilegesEnum::WRITE->value, 'place')]
     public function addCursus(#[MapEntity(expr: 'repository.find(place)')] Places $place, int $tt, CursusRepository $cursusRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
@@ -191,6 +201,7 @@ class PlacesController extends AbstractController
     }
 
     #[Route('/{place<\d+>}/cursus/remove/{id}', name: 'place_remove_cursus')]
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_CURSUS->value.'|'.AclPrivilegesEnum::DELETE->value, 'place')]
     public function removeCursus(#[MapEntity(expr: 'repository.find(place)')] Places $place, $id, CursusRepository $cursusRepository, EntityManagerInterface $entityManager) : Response
     {   
         $userPlaces = $cursusRepository->findOneBy(['id' => intval($id)]);
@@ -208,6 +219,7 @@ class PlacesController extends AbstractController
     // USERS
 
     #[Route('/{place<\d+>}/user/add/{tt<\d+>?0}', name: 'place_add_person')]
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_USER->value.'|'.AclPrivilegesEnum::WRITE->value, 'place')]
     public function addPerson(#[MapEntity(expr: 'repository.find(place)')] Places $place, int $tt, UsersPlacesRepository $usersPlacesRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         $create = false;
@@ -262,6 +274,7 @@ class PlacesController extends AbstractController
     }
 
     #[Route('/{place<\d+>}/user/remove/{id}', name: 'place_remove_person')]
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_USER->value.'|'.AclPrivilegesEnum::DELETE->value, 'place')]
     public function removePerson(#[MapEntity(expr: 'repository.find(place)')] Places $place, $id, UsersPlacesRepository $usersPlacesRepository, EntityManagerInterface $entityManager) : Response
     {   
         $userPlaces = $usersPlacesRepository->findOneBy(['id' => intval($id)]);
@@ -280,6 +293,7 @@ class PlacesController extends AbstractController
     }
 
     #[Route('/{place<\d+>}/user/reactivate/{id}', name: 'place_reactivate_person')]
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_USER->value.'|'.AclPrivilegesEnum::WRITE->value, 'place')]
     public function reactivatePerson(#[MapEntity(expr: 'repository.find(place)')] Places $place, $id, UsersPlacesRepository $usersPlacesRepository, EntityManagerInterface $entityManager) : Response
     {   
         $userPlaces = $usersPlacesRepository->findOneBy(['id' => intval($id)]);
@@ -300,6 +314,7 @@ class PlacesController extends AbstractController
     // PARAMETERS - DEFAULT TO ROOMS TABS
 
     #[Route('/{place<\d+>}/parameters', name: 'places_parameters')]
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS->value.'|'.AclPrivilegesEnum::READ->value, 'place')]
     public function parametersRooms(Places $place): Response
     {
 
@@ -314,6 +329,7 @@ class PlacesController extends AbstractController
     }
 
     #[Route('/{place<\d+>}/parameters/cursuses', name: 'places_parameters_cursuses')]
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_CURSUS->value.'|'.AclPrivilegesEnum::READ->value, 'place')]
     public function parametersCursuses(Places $place): Response
     {
 
@@ -328,6 +344,7 @@ class PlacesController extends AbstractController
     }
 
     #[Route('/{place<\d+>}/parameters/people', name: 'places_parameters_people')]
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_USER->value.'|'.AclPrivilegesEnum::READ->value, 'place')]
     public function parametersPeople(Places $place): Response
     {
 
