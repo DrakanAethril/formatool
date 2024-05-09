@@ -27,12 +27,12 @@ class UsersTrainings
 
     #[ORM\Column(length: 50)]
     private ?string $status = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $perms = null;
-
+    
     #[ORM\Column]
     private array $roles = [];
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $permissions = null;
 
     #[ORM\UniqueConstraint(
         name: 'user_training_unique_idx',
@@ -76,18 +76,6 @@ class UsersTrainings
     public function setStatus(string $status): static
     {
         $this->status = $status;
-
-        return $this;
-    }
-
-    public function getPerms(): ?string
-    {
-        return $this->perms;
-    }
-
-    public function setPerms(?string $perms): static
-    {
-        $this->perms = $perms;
 
         return $this;
     }
@@ -166,5 +154,17 @@ class UsersTrainings
             default:
         }
         return $res;
+    }
+
+    public function getPermissions(): ?string
+    {
+        return $this->permissions;
+    }
+
+    public function setPermissions(?string $permissions): static
+    {
+        $this->permissions = $permissions;
+
+        return $this;
     }
 }

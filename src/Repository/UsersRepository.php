@@ -2,6 +2,8 @@
 
 namespace App\Repository;
 
+use App\Config\UsersStatusPlacesEnum;
+use App\Config\UsersStatusTrainingsEnum;
 use App\Entity\Users;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -55,6 +57,34 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
 
         // returns an array of Product objects
         return $query->getResult(); 
+    }
+
+    public function getAllowedPlacesForUser(?Users $user):array {
+        $res = [];
+        if(empty($user)) return $res;
+        $userPlaces = $user->getUsersPlaces();
+        if(!empty($userPlaces)) {
+            foreach($userPlaces as $userPlace) {
+                if($userPlace->getStatus() == UsersStatusPlacesEnum::ACTIVE->value){
+                    $res[] = $userPlace->getPlace();
+                }
+            }
+        }
+        return $res;
+    }
+
+    public function getAllowedTrainingsForUser(?Users $user):array {
+        $res = [];
+        if(empty($user)) return $res;
+        $userTrainings = $user->getUsersTrainings();
+        if(!empty($userTrainings)) {
+            foreach($userTrainings as $userTraining) {
+                if($userTraining->getStatus() == UsersStatusTrainingsEnum::ACTIVE->value){
+                    $res[] = $userTraining->getTraining();
+                }
+            }
+        }
+        return $res;
     }
 
     public static function getPasswordContstraints(): array {

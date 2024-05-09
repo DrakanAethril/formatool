@@ -42,7 +42,8 @@ class AclVoter extends Voter
     {
         //return true;
         $user = $token->getUser();
-        $permissions = $this->requestStack->getSession()->get('AclPermissions');
+        $sessionAppData = $this->requestStack->getSession()->get('AclPermissions');
+        $permissions = empty($sessionAppData['perms']) ?? [];
         
         // if the user is anonymous, do not grant access
         if (!$user instanceof UserInterface) {
