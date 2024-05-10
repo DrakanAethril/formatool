@@ -13,6 +13,7 @@ enum AclRessourcesEnum:string implements TranslatableInterface {
 
     // PLACE ADMIN
     case PLACE_ALL = 'PLACE_ALL';
+    case PLACE_ALL_TRAININGS = 'PLACE_ALL_TRAININGS';
 
     // PLACE PARAMS
     case PLACE_PARAMETERS = 'PLACE_PARAMETERS';
@@ -49,6 +50,7 @@ enum AclRessourcesEnum:string implements TranslatableInterface {
         return match ($this) {
 
             self::PLACE_ALL  => 'Accès à toute la structure',
+            self::PLACE_ALL_TRAININGS  => 'Accès à toutes les formations de la structure',
 
             self::PLACE_PARAMETERS  => 'Paramétrage de la structure',
             self::PLACE_PARAMETERS_TRAINING => 'Paramétrage de la structure - Formations',

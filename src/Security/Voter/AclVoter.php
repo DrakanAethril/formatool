@@ -58,6 +58,8 @@ class AclVoter extends Voter
             if(
                 in_array('PLACE_ALL|ALL'.'|'.$subject->getPlace()->getId(), $permissions) ||
                 in_array('PLACE_ALL|'.$this->testedPerm.'|'.$subject->getPlace()->getId(), $permissions) ||
+                in_array('PLACE_ALL_TRAININGS|ALL'.'|'.$subject->getPlace()->getId(), $permissions) ||
+                in_array('PLACE_ALL_TRAININGS|'.$this->testedPerm.'|'.$subject->getPlace()->getId(), $permissions) ||
                 in_array('TRAINING_ALL|ALL'.'|'.$subject->getId(), $permissions) ||
                 in_array('TRAINING_ALL|'.$this->testedPerm.'|'.$subject->getId(), $permissions)
             ) {
