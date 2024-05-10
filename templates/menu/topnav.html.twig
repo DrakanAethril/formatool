@@ -53,25 +53,28 @@
                             Etablissements
                             </span>
                         </a>
+                       
                         
                         <div class="dropdown-menu" data-bs-popper="static">
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
                                     {% for place in menu_places %}
-                                        <div class="dropend">
-                                            <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                                {{place.name}}
-                                            </a>
-                                            <div class="dropdown-menu">
-                                                <a href="{{ path('places_trainings', {'place': place.id} ) }}" class="dropdown-item">
-                                                    Liste des formations
+                                        {% if place.id in app.session.get('AclPermissions').places|keys %}
+                                            <div class="dropend">
+                                                <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                                    {{place.name}}
                                                 </a>
-                                                <a href="{{ path('places_parameters', {'place': place.id} ) }}" class="dropdown-item">
-                                                    Paramétrage
-                                                </a>
-                                            
+                                                <div class="dropdown-menu">
+                                                    <a href="{{ path('places_trainings', {'place': place.id} ) }}" class="dropdown-item">
+                                                        Liste des formations
+                                                    </a>
+                                                    <a href="{{ path('places_parameters', {'place': place.id} ) }}" class="dropdown-item">
+                                                        Paramétrage
+                                                    </a>
+                                                
+                                                </div>
                                             </div>
-                                        </div>
+                                        {% endif %}
                                     {% endfor %}
                                     <!--
                                      <a class="dropdown-item text-pink" href="#">
@@ -106,42 +109,44 @@
                             <div class="dropdown-menu-columns">
                                 <div class="dropdown-menu-column">
                                     {% for training in menu_trainings %}
-                                        <div class="dropend">
-                                            <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                                {{training.ShortDisplayName}}
-                                            </a>
-                                            <div class="dropdown-menu">
-                                                <a href="{{ path('training_detail', {'training': training.id} ) }}" class="dropdown-item">
-                                                    Dashboard
+                                        {% if training.id in app.session.get('AclPermissions').trainings|keys %}
+                                            <div class="dropend">
+                                                <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                                    {{training.ShortDisplayName}}
                                                 </a>
-                                                <!--
-                                                <a href="#" class="dropdown-item">
-                                                    Emploi du temps
-                                                </a>
-                                                <a href="#" class="dropdown-item">
-                                                    Etudiants
-                                                </a>
-                                                -->
-                                                <a href="{{ path('training_teachers', {'training': training.id} ) }}"  href="#" class="dropdown-item">
-                                                    Enseignants
-                                                </a>
-                                                <a href="{{ path('training_planning', {'training': training.id} ) }}" class="dropdown-item">
-                                                    Calendrier
-                                                </a>
-                                                <a href="{{ path('training_reporting', {'training': training.id} ) }}" class="dropdown-item">
-                                                    Reporting
-                                                </a>
-                                                <!--
-                                                <a href="#" class="dropdown-item">
-                                                    Dossiers d'inscription
-                                                </a>
-                                                -->
-                                                <a href="{{ path('training_parameters', {'training': training.id} ) }}" class="dropdown-item">
-                                                    Paramétrage
-                                                </a>
-                                            
+                                                <div class="dropdown-menu">
+                                                    <a href="{{ path('training_detail', {'training': training.id} ) }}" class="dropdown-item">
+                                                        Dashboard
+                                                    </a>
+                                                    <!--
+                                                    <a href="#" class="dropdown-item">
+                                                        Emploi du temps
+                                                    </a>
+                                                    <a href="#" class="dropdown-item">
+                                                        Etudiants
+                                                    </a>
+                                                    -->
+                                                    <a href="{{ path('training_teachers', {'training': training.id} ) }}"  href="#" class="dropdown-item">
+                                                        Enseignants
+                                                    </a>
+                                                    <a href="{{ path('training_planning', {'training': training.id} ) }}" class="dropdown-item">
+                                                        Calendrier
+                                                    </a>
+                                                    <a href="{{ path('training_reporting', {'training': training.id} ) }}" class="dropdown-item">
+                                                        Reporting
+                                                    </a>
+                                                    <!--
+                                                    <a href="#" class="dropdown-item">
+                                                        Dossiers d'inscription
+                                                    </a>
+                                                    -->
+                                                    <a href="{{ path('training_parameters', {'training': training.id} ) }}" class="dropdown-item">
+                                                        Paramétrage
+                                                    </a>
+                                                
+                                                </div>
                                             </div>
-                                        </div>
+                                        {% endif %}
                                     {% endfor %}
                                     <!--
                                      <a class="dropdown-item text-pink" href="#">

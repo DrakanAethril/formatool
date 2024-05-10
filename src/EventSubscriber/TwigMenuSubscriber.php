@@ -16,15 +16,15 @@ class TwigMenuSubscriber implements EventSubscriberInterface
 {
     private $twig;
     private $trainingsRepository;
-    private $usersRepository;
+    private $placesRepository;
     private $userToken;
     private $user;
 
-    public function __construct(Environment $twig, TrainingsRepository $trainingsRepository, UsersRepository $usersRepository, TokenStorageInterface $tokenStorageInterface)
+    public function __construct(Environment $twig, TrainingsRepository $trainingsRepository, PlacesRepository $placesRepository, TokenStorageInterface $tokenStorageInterface)
     {
         $this->twig = $twig;
         $this->trainingsRepository = $trainingsRepository;
-        $this->usersRepository = $usersRepository;
+        $this->placesRepository = $placesRepository;
         $this->userToken = $tokenStorageInterface;
         if(!empty($this->userToken) && !empty($this->userToken->getToken())){
             $this->user = $tokenStorageInterface->getToken()->getUser();
@@ -34,11 +34,11 @@ class TwigMenuSubscriber implements EventSubscriberInterface
     }
     public function onKernelController(ControllerEvent $event): void
     {
-        $allowedPlaces = $this->usersRepository->getAllowedPlacesForUser($this->user);
-        $this->twig->addGlobal('menu_places', $allowedPlaces);
+        $activePlaces = $this->placesRepository->findBy(['inactive' => null], ['name' => 'ASC']);
+        $this->twig->addGlobal('menu_places', $activePlaces);
 
-        $allowedTrainings = $this->usersRepository->getAllowedTrainingsForUser($this->user);
-        $this->twig->addGlobal('menu_trainings', $this->trainingsRepository->findBy(['inactive' => null], ['title' => 'ASC']));
+        $activeTrainings =  $this->trainingsRepository->findBy(['inactive' => null], ['title' => 'ASC']);
+        $this->twig->addGlobal('menu_trainings', $activeTrainings);
     }
 
     public static function getSubscribedEvents(): array

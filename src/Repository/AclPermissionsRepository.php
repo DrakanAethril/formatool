@@ -40,11 +40,9 @@ class AclPermissionsRepository extends ServiceEntityRepository
             $userTrainings = $user->getUsersTrainings();
             if(!empty($userTrainings)) {
                 foreach($userTrainings as $userTraining) {
-                    if(!empty($userTraining->getTraining()->getInactive())) {
+                    //if(!empty($userTraining->getTraining()->getInactive())) { REMOVED HERE TO BE ADDED IN THE TEMPLATE MENU TO AVOID SESSION DATA PERSISTENCE VERSUS DB UPDATE
                         $rolesForTraining = $userTraining->getRoles();
                         $res['trainings'][$userTraining->getTraining()->getId()] = [
-                            'name' => $userTraining->getTraining()->getTitle(),
-                            'shortName' => $userTraining->getTraining()->getShortTitle(),
                             'status' => $userTraining->getStatus(),
                             'role' => $userTraining->getRoles(),
                         ];
@@ -61,7 +59,7 @@ class AclPermissionsRepository extends ServiceEntityRepository
                         ) {
                             $res['perms'] = array_merge($userTraining, $res['perms']);
                         }
-                    }
+                    //}
                     
                 }
             }
@@ -72,9 +70,8 @@ class AclPermissionsRepository extends ServiceEntityRepository
             if(!empty($userPlaces)) {
                 foreach($userPlaces as $userPlace) {
                     $rolesForPlace = $userPlace->getRoles();
-                    if(empty($userPlace->getPlace()->getInactive())) {
+                    //if(empty($userPlace->getPlace()->getInactive())) {
                         $res['places'][$userPlace->getPlace()->getId()] = [
-                            'name' => $userPlace->getPlace()->getName(),
                             'status' => $userPlace->getStatus(),
                             'role' => $userPlace->getRoles(),
                         ];
@@ -98,16 +95,11 @@ class AclPermissionsRepository extends ServiceEntityRepository
                             in_array('PLACE_ALL_TRAININGS|ALL|'.$userPlace->getPlace()->getId(), $res['perms']) ||
                             in_array('PLACE_ALL_TRAININGS|READ|'.$userPlace->getPlace()->getId(), $res['perms'])
                         ) {
-                            /**
-                             * TODO : grab place registry and make a method to get only active trainings to avoid multiple subqueries in the future
-                             */
                             $allTrainingsForPlaces = $userPlace->getPlace()->getTrainings();
                             if(!empty($allTrainingsForPlaces)) {
                                 foreach($allTrainingsForPlaces as $training) {
-                                    if(!array_key_exists($training->getId(), $res['trainings']) && empty($training->getInactive())) {
+                                    if(!array_key_exists($training->getId(), $res['trainings']) ) { //&& empty($training->getInactive())
                                         $res['trainings'][$training->getId()] = [
-                                            'name' => $training->getTitle(),
-                                            'shortName' => $training->getShortTitle(),
                                             'status' => UsersStatusTrainingsEnum::ACTIVE->value,
                                             'role' => 'HERITED',
                                         ];
@@ -116,14 +108,13 @@ class AclPermissionsRepository extends ServiceEntityRepository
                             }
 
                         }
-                    }
+                    //}
                     
                 }
             }
 
             
         }
-        dd($res);
         return $res;
     }
 
