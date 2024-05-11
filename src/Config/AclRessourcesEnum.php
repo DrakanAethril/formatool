@@ -53,7 +53,7 @@ enum AclRessourcesEnum:string implements TranslatableInterface {
             self::PLACE_ALL_TRAININGS  => 'Accès à toutes les formations de la structure',
 
             self::PLACE_PARAMETERS  => 'Paramétrage de la structure',
-            self::PLACE_PARAMETERS_TRAINING => 'Paramétrage de la structure - Formations',
+            self::PLACE_PARAMETERS_TRAINING => 'Paramétrage de la structure - Formations', //allowed to all that can see the place for the read privilege.
             self::PLACE_PARAMETERS_CLASSROOM => 'Paramétrage de la structure - Salles de classe',
             self::PLACE_PARAMETERS_CURSUS => 'Paramétrage de la structure - Cursus',
             self::PLACE_PARAMETERS_USER => 'Paramétrage de la structure - Utilisateurs',

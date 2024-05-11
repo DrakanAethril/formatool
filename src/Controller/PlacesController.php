@@ -305,9 +305,10 @@ class PlacesController extends AbstractController
         }
     }
 
-    // PARAMETERS - DEFAULT TO ROOMS TABS
+    // PARAMETERS - DEFAULT TO TRAININGS TABS SOON ACTUALLY CURSUSES
 
     #[Route('/{place<\d+>}/parameters', name: 'places_parameters')]
+    #[Route('/{place<\d+>}/parameters', name: 'places_parameters_classrooms')]
     #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS->value.'|'.AclPrivilegesEnum::READ->value, 'place')]
     public function parametersRooms(Places $place): Response
     {

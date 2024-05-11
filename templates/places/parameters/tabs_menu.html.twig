@@ -1,7 +1,7 @@
 <ul class="nav nav-pills card-header-pills" data-bs-toggle="tabs" role="tablist">
     {% if (is_granted('PLACE_PARAMETERS_CLASSROOM|READ', place)) %}
         <li class="nav-item" role="presentation">
-            <a href="{{path('places_parameters', {'place': place.id})}}" class="nav-link {{ (currentTab == 'rooms') ? 'active' : '' }}" ">
+            <a href="{{path('places_parameters_classrooms', {'place': place.id})}}" class="nav-link {{ (currentTab == 'rooms') ? 'active' : '' }}" ">
                 Les salles
             </a>
         </li>
