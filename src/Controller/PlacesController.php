@@ -80,31 +80,31 @@ class PlacesController extends AbstractController
         ]);
     }
 
-    #[Route('/training/archive/{training}', name: 'place_archive_training')]
-    //#[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_TRAINING->value.'|'.AclPrivilegesEnum::DELETE->value, 'place')]
-    public function removeTraining($training, TrainingsRepository $trainingsRepository, EntityManagerInterface $entityManager) : Response
+    #[Route('/{place<\d+>}/training/archive/{training}', name: 'place_archive_training')]
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_TRAINING->value.'|'.AclPrivilegesEnum::DELETE->value, 'place')]
+    public function removeTraining(#[MapEntity(expr: 'repository.find(place)')] Places $place, $training, TrainingsRepository $trainingsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $training = $trainingsRepository->findOneBy(['id' => intval($training)]);
-        if(!empty($training)) {
+        if(!empty($training) && $training->getPlace()->getId() == $place->getId()) {
             $training->setInactive(new \DateTime('now'));
             $entityManager->persist($training);
             $entityManager->flush();
-            return $this->redirectToRoute('places_trainings', ['place' => $training->getPlace()->getId()]);
+            return $this->redirectToRoute('places_parameters_trainings', ['place' => $training->getPlace()->getId()]);
         } else {
             return $this->redirectToRoute('home');
         }
     }
 
-    #[Route('/training/reactivate/{training}', name: 'place_reactivate_training')]
-    //#[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_TRAINING->value.'|'.AclPrivilegesEnum::WRITE->value, 'place')]
-    public function reactivateTraining($training, TrainingsRepository $trainingsRepository, EntityManagerInterface $entityManager) : Response
+    #[Route('/{place<\d+>}/training/reactivate/{training}', name: 'place_reactivate_training')]
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_TRAINING->value.'|'.AclPrivilegesEnum::DELETE->value, 'place')]
+    public function reactivateTraining(#[MapEntity(expr: 'repository.find(place)')] Places $place, $training, TrainingsRepository $trainingsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $training = $trainingsRepository->findOneBy(['id' => intval($training)]);
-        if(!empty($training)) {
+        if(!empty($training) && $training->getPlace()->getId() == $place->getId()) {
             $training->setInactive(null);
             $entityManager->persist($training);
             $entityManager->flush();
-            return $this->redirectToRoute('places_trainings', ['place' => $training->getPlace()->getId()]);
+            return $this->redirectToRoute('places_parameters_trainings', ['place' => $training->getPlace()->getId()]);
         } else {
             return $this->redirectToRoute('home');
         }
@@ -305,11 +305,25 @@ class PlacesController extends AbstractController
         }
     }
 
-    // PARAMETERS - DEFAULT TO TRAININGS TABS SOON ACTUALLY CURSUSES
+    // PARAMETERS - DEFAULT TO TRAININGS TABS
 
     #[Route('/{place<\d+>}/parameters', name: 'places_parameters')]
-    #[Route('/{place<\d+>}/parameters', name: 'places_parameters_classrooms')]
-    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS->value.'|'.AclPrivilegesEnum::READ->value, 'place')]
+    #[Route('/{place<\d+>}/parameters/trainings', name: 'places_parameters_trainings')]
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_TRAINING->value.'|'.AclPrivilegesEnum::READ->value, 'place')]
+    public function parametersTrainings(Places $place): Response
+    {
+
+        if(empty($place))
+        return $this->redirectToRoute('home');
+
+        return $this->render('places/parameters.html.twig', [
+            'place' => $place,
+            'menuPlaces' => 'active',
+            'currentTab' => 'trainings' 
+        ]);
+    }
+    #[Route('/{place<\d+>}/parameters/classrooms', name: 'places_parameters_classrooms')]
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_CLASSROOM->value.'|'.AclPrivilegesEnum::READ->value, 'place')]
     public function parametersRooms(Places $place): Response
     {
 

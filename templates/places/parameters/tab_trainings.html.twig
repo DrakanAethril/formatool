@@ -1,0 +1,39 @@
+<div class="table-responsive">
+    <table class="table card-table table-vcenter text-nowrap datatable" id="place-trainings-table" style="width:100%">
+        <thead>
+            <tr>
+                <th>Intitulé</th>
+                <th>Niveau</th>
+                <th class="w-1"></th>   
+            </tr>
+        </thead>
+        <tbody>
+            {% for training in place.trainings %}
+                {% if training.inactive is null %}
+                    <tr>
+                        <td>
+                            {{training.title}}
+                        </td>
+                        <td>
+                           
+                        </td>
+                        <td class="text-end">
+                            <div class="btn-list flex-nowrap justify-content-end">
+                                 {% if (is_granted('PLACE_PARAMETERS_TRAINING|WRITE', place)) %}
+                                    <a href="{{path('place_add_training', {'place':place.id, 'tt':training.id})}}" class="btn btn-ghost-warning">
+                                        Modifier
+                                    </a>
+                                {% endif %}
+                                 {% if (is_granted('PLACE_PARAMETERS_TRAINING|DELETE', place)) %}
+                                    <a href="{{path('place_archive_training', {'place':place.id,'training':training.id})}}" class="btn btn-ghost-danger">
+                                        Désactiver
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+            {%endfor%}
+        </tbody>
+    </table>
+</div>

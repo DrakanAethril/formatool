@@ -12,6 +12,13 @@
     {% set addTxt = '' %}
     {% set addLink = '' %}
 
+    {% if currentTab == 'trainings' %}
+        {% if (is_granted('PLACE_PARAMETERS_TRAINING|WRITE', place)) %}
+            {% set addTxt = 'Nouvelle formation' %}
+            {% set addLink = path('place_add_training', {'place': place.id, 'tt': 0}) %}
+        {% endif %}
+        {% set tabContent = 'places/parameters/tab_trainings.html.twig' %}
+    {% endif %}
     {% if currentTab == 'rooms' %}
         {% if (is_granted('PLACE_PARAMETERS_CLASSROOM|WRITE', place)) %}
             {% set addTxt = 'Nouvelle salle' %}

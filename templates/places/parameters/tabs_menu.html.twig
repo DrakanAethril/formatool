@@ -1,7 +1,14 @@
 <ul class="nav nav-pills card-header-pills" data-bs-toggle="tabs" role="tablist">
+    {% if (is_granted('PLACE_PARAMETERS_TRAINING|READ', place)) %}
+        <li class="nav-item" role="presentation">
+            <a href="{{path('places_parameters_trainings', {'place': place.id})}}" class="nav-link {{ (currentTab == 'trainings') ? 'active' : '' }}">
+                Les formations
+            </a>
+        </li>
+    {% endif %}
     {% if (is_granted('PLACE_PARAMETERS_CLASSROOM|READ', place)) %}
         <li class="nav-item" role="presentation">
-            <a href="{{path('places_parameters_classrooms', {'place': place.id})}}" class="nav-link {{ (currentTab == 'rooms') ? 'active' : '' }}" ">
+            <a href="{{path('places_parameters_classrooms', {'place': place.id})}}" class="nav-link {{ (currentTab == 'rooms') ? 'active' : '' }}">
                 Les salles
             </a>
         </li>
@@ -9,7 +16,7 @@
     {# Deactivated for now, needs to make deactivation per place and not global
         {% if (is_granted('PLACE_PARAMETERS_CURSUS|READ', place)) %}
             <li class="nav-item" role="presentation">
-                <a href="{{path('places_parameters_cursuses', {'place': place.id})}}" class="nav-link {{ (currentTab == 'cursuses') ? 'active' : '' }}" ">
+                <a href="{{path('places_parameters_cursuses', {'place': place.id})}}" class="nav-link {{ (currentTab == 'cursuses') ? 'active' : '' }}">
                     Les cursus
                 </a>
             </li>
@@ -17,7 +24,7 @@
     #}
     {% if (is_granted('PLACE_PARAMETERS_USER|READ', place)) %}
         <li class="nav-item" role="presentation">
-            <a href="{{path('places_parameters_people', {'place': place.id})}}" class="nav-link {{ (currentTab == 'people') ? 'active' : '' }}" ">
+            <a href="{{path('places_parameters_people', {'place': place.id})}}" class="nav-link {{ (currentTab == 'people') ? 'active' : '' }}">
                 Les utilisateurs
             </a>
         </li>
