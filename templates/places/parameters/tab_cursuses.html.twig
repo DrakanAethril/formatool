@@ -19,12 +19,16 @@
                         </td>
                         <td class="text-end">
                             <div class="btn-list flex-nowrap justify-content-end">
-                                <a href="{{path('place_add_cursus', {'place':place.id, 'tt':cursus.id})}}" class="btn btn-ghost-warning">
-                                    Modifier
-                                </a>
-                                <a href="{{path('place_remove_cursus', {'place':place.id,'id':cursus.id})}}" class="btn btn-ghost-danger">
-                                    Désactiver
-                                </a>
+                                 {% if (is_granted('PLACE_PARAMETERS_CURSUS|WRITE', place)) %}
+                                    <a href="{{path('place_add_cursus', {'place':place.id, 'tt':cursus.id})}}" class="btn btn-ghost-warning">
+                                        Modifier
+                                    </a>
+                                {% endif %}
+                                 {% if (is_granted('PLACE_PARAMETERS_CURSUS|DELETE', place)) %}
+                                    <a href="{{path('place_remove_cursus', {'place':place.id,'id':cursus.id})}}" class="btn btn-ghost-danger">
+                                        Désactiver
+                                    </a>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>

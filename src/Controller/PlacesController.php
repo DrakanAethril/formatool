@@ -147,12 +147,12 @@ class PlacesController extends AbstractController
         ]);
     }
 
-    #[Route('/classroom/remove/{id}', name: 'place_remove_class_room')]
+    #[Route('/{place<\d+>}/classroom/remove/{id}', name: 'place_remove_class_room')]
     #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_CLASSROOM->value.'|'.AclPrivilegesEnum::DELETE->value, 'place')]
-    public function removeClassRoom($id, ClassRoomsRepository $classRoomsRepository, EntityManagerInterface $entityManager) : Response
+    public function removeClassRoom(#[MapEntity(expr: 'repository.find(place)')] Places $place, $id, ClassRoomsRepository $classRoomsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $classRoom = $classRoomsRepository->findOneBy(['id' => intval($id)]);
-        if(!empty($classRoom)) {
+        if(!empty($classRoom) && $classRoom->getPlace()->getId() == $place->getId()) {
             $idPlace = $classRoom->getPlace()->getId();
             $classRoom->setInactive(new \DateTime());
             $entityManager->persist($classRoom);
@@ -171,22 +171,22 @@ class PlacesController extends AbstractController
     {
         $create = false;
         if(empty($tt)) {
-            $userPlaces = new Cursus();
-            $userPlaces->addPlace($place);
+            $cursus = new Cursus();
+            $cursus->addPlace($place);
             $create = true;
         } else {
-            $userPlaces = $cursusRepository->findOneBy(['id'=> $tt]);
-            if(empty($userPlaces)) {
+            $cursus = $cursusRepository->findOneBy(['id'=> $tt]);
+            if(empty($cursus)) {
                 return $this->redirectToRoute('home');
             }
         }
         
         
-        $form = $this->createForm(CursusFormType::class, $userPlaces);
+        $form = $this->createForm(CursusFormType::class, $cursus);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($userPlaces);
+            $entityManager->persist($cursus);
             $entityManager->flush();
             //redirect on training page
             return $this->redirectToRoute('places_parameters_cursuses', ['place' => $place->getId()]);
@@ -204,11 +204,11 @@ class PlacesController extends AbstractController
     #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_CURSUS->value.'|'.AclPrivilegesEnum::DELETE->value, 'place')]
     public function removeCursus(#[MapEntity(expr: 'repository.find(place)')] Places $place, $id, CursusRepository $cursusRepository, EntityManagerInterface $entityManager) : Response
     {   
-        $userPlaces = $cursusRepository->findOneBy(['id' => intval($id)]);
-        if(!empty($userPlaces)) {
+        $cursus = $cursusRepository->findOneBy(['id' => intval($id)]);
+        if(!empty($cursus)) {
             $idPlace = $place->getId();
-            $userPlaces->setInactive(new \DateTime());
-            $entityManager->persist($userPlaces);
+            $cursus->setInactive(new \DateTime());
+            $entityManager->persist($cursus);
             $entityManager->flush();
             return $this->redirectToRoute('places_parameters_cursuses', ['place' => $idPlace]);
         } else {
@@ -278,11 +278,8 @@ class PlacesController extends AbstractController
     public function removePerson(#[MapEntity(expr: 'repository.find(place)')] Places $place, $id, UsersPlacesRepository $usersPlacesRepository, EntityManagerInterface $entityManager) : Response
     {   
         $userPlaces = $usersPlacesRepository->findOneBy(['id' => intval($id)]);
-        if(!empty($userPlaces)) {
+        if(!empty($userPlaces) && $userPlaces->getPlace()->getId() == $place->getId()) {
             $idPlace = $place->getId();
-            if($userPlaces->getPlace()->getId() != $place->getId()) {
-                return $this->redirectToRoute('home');
-            }
             $userPlaces->setStatus(UsersStatusPlacesEnum::INACTIVE->value);
             $entityManager->persist($userPlaces);
             $entityManager->flush();
@@ -297,11 +294,8 @@ class PlacesController extends AbstractController
     public function reactivatePerson(#[MapEntity(expr: 'repository.find(place)')] Places $place, $id, UsersPlacesRepository $usersPlacesRepository, EntityManagerInterface $entityManager) : Response
     {   
         $userPlaces = $usersPlacesRepository->findOneBy(['id' => intval($id)]);
-        if(!empty($userPlaces)) {
+        if(!empty($userPlaces) && $userPlaces->getPlace()->getId() == $place->getId()) {
             $idPlace = $place->getId();
-            if($userPlaces->getPlace()->getId() != $place->getId()) {
-                return $this->redirectToRoute('home');
-            }
             $userPlaces->setStatus(UsersStatusPlacesEnum::ACTIVE->value);
             $entityManager->persist($userPlaces);
             $entityManager->flush();

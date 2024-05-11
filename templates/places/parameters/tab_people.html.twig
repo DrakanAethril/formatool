@@ -26,17 +26,23 @@
                     </td>
                     <td class="text-end">
                         <div class="btn-list flex-nowrap justify-content-end">
-                            <a href="{{path('place_add_person', {'place':place.id, 'tt':person.id})}}" class="btn btn-ghost-warning">
-                                Modifier
-                            </a>
+                            {% if (is_granted('PLACE_PARAMETERS_USER|WRITE', place)) %}
+                                <a href="{{path('place_add_person', {'place':place.id, 'tt':person.id})}}" class="btn btn-ghost-warning">
+                                    Modifier
+                                </a>
+                            {% endif %}
                             {% if(person.enumStatusObject.value == 'ACTIVE') %}
-                                <a href="{{path('place_remove_person', {'place':place.id, 'id':person.id})}}" class="btn btn-ghost-danger">
-                                    Désactiver
-                                </a>
+                                {% if (is_granted('PLACE_PARAMETERS_USER|DELETE', place)) %}
+                                    <a href="{{path('place_remove_person', {'place':place.id, 'id':person.id})}}" class="btn btn-ghost-danger">
+                                        Désactiver
+                                    </a>
+                                {% endif %}
                             {% else %}
-                                <a href="{{path('place_reactivate_person', {'place':place.id, 'id':person.id})}}" class="btn btn-ghost-danger">
-                                    Réactiver
-                                </a>
+                                {% if (is_granted('PLACE_PARAMETERS_USER|DELETE', place)) %}
+                                    <a href="{{path('place_reactivate_person', {'place':place.id, 'id':person.id})}}" class="btn btn-ghost-danger">
+                                        Réactiver
+                                    </a>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </td>

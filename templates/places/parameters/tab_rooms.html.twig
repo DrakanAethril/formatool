@@ -16,12 +16,16 @@
                         
                         <td class="text-end">
                             <div class="btn-list flex-nowrap justify-content-end">
-                                <a href="{{path('place_add_class_room', {'place':place.id, 'tt':classRoom.id})}}" class="btn btn-ghost-warning">
-                                    Modifier
-                                </a>
-                                <a href="{{path('place_remove_class_room', {'id':classRoom.id})}}" class="btn btn-ghost-danger">
-                                    Désactiver
-                                </a>
+                                {% if (is_granted('PLACE_PARAMETERS_CLASSROOM|WRITE', place)) %}
+                                    <a href="{{path('place_add_class_room', {'place':place.id, 'tt':classRoom.id})}}" class="btn btn-ghost-warning">
+                                        Modifier
+                                    </a>
+                                {% endif %}
+                                 {% if (is_granted('PLACE_PARAMETERS_CLASSROOM|DELETE', place)) %}
+                                    <a href="{{path('place_remove_class_room', {'place':place.id, 'id':classRoom.id})}}" class="btn btn-ghost-danger">
+                                        Désactiver
+                                    </a>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>
