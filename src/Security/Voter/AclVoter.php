@@ -2,6 +2,7 @@
 
 namespace App\Security\Voter;
 
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -17,16 +18,19 @@ class AclVoter extends Voter
 {
     private $testedRessource = '';
     private $testedPerm = '';
-
+    
     public function __construct(
         private RequestStack $requestStack,
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private Security $security,
+        
     ) {
        
     }
 
     protected function supports(string $attribute, mixed $subject): bool
     {
+
         $aAttributes = explode('|',$attribute);
         if(count($aAttributes) != 2 ) return false;
 
@@ -40,6 +44,10 @@ class AclVoter extends Voter
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
+
+        if ($this->security->isGranted('ROLE_ADMIN')) { // Platform admin has all rights.
+            return true;
+        }
         //return true;
         $user = $token->getUser();
         $sessionAppData = $this->requestStack->getSession()->get('AclPermissions');

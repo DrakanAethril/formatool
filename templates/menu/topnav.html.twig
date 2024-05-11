@@ -37,132 +37,103 @@
                         </a>
                     </li>
                     {% if menu_places is not empty %}
-                    <li class="nav-item dropdown {{menuPlaces|default('')}}">
-                        <a class="nav-link dropdown-toggle" href="#menu-trainings" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-building-community" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                <path d="M8 9l5 5v7h-5v-4m0 4h-5v-7l5 -5m1 1v-6a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v17h-8" />
-                                <path d="M13 7l0 .01" />
-                                <path d="M17 7l0 .01" />
-                                <path d="M17 11l0 .01" />
-                                <path d="M17 15l0 .01" />
-                                </svg>
-                            </span>
-                            <span class="nav-link-title">
-                            Etablissements
-                            </span>
-                        </a>
-                       
+
+                        <li class="nav-item dropdown {{menuPlaces|default('')}}">
+                            <a class="nav-link dropdown-toggle" href="#menu-trainings" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-building-community" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M8 9l5 5v7h-5v-4m0 4h-5v-7l5 -5m1 1v-6a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v17h-8" />
+                                    <path d="M13 7l0 .01" />
+                                    <path d="M17 7l0 .01" />
+                                    <path d="M17 11l0 .01" />
+                                    <path d="M17 15l0 .01" />
+                                    </svg>
+                                </span>
+                                <span class="nav-link-title">
+                                Etablissements
+                                </span>
+                            </a>
                         
-                        <div class="dropdown-menu" data-bs-popper="static">
-                            <div class="dropdown-menu-columns">
-                                <div class="dropdown-menu-column">
-                                    {% for place in menu_places %}
-                                        {% if place.id in app.session.get('AclPermissions').places|keys %}
-                                            <div class="dropend">
-                                                <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                                    {{place.name}}
-                                                </a>
-                                                <div class="dropdown-menu">
-                                                    <a href="{{ path('places_trainings', {'place': place.id} ) }}" class="dropdown-item">
-                                                        Liste des formations
+                            <div class="dropdown-menu" data-bs-popper="static">
+                                <div class="dropdown-menu-columns">
+                                    <div class="dropdown-menu-column">
+                                        {% for place in menu_places %}
+                                            {% if place.id in app.session.get('AclPermissions').places|keys %}
+                                                <div class="dropend">
+                                                    <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                                        {{place.name}}
                                                     </a>
-                                                    <a href="{{ path('places_parameters', {'place': place.id} ) }}" class="dropdown-item">
-                                                        Paramétrage
-                                                    </a>
-                                                
+                                                    <div class="dropdown-menu">
+                                                        {# If you can see the place in your list ou can at least see the trainings. #}
+                                                        <a href="{{ path('places_trainings', {'place': place.id} ) }}" class="dropdown-item">
+                                                            Liste des formations
+                                                        </a>
+                                                        {% if (is_granted('PLACE_PARAMETERS|READ', place)) %}
+                                                            <a href="{{ path('places_parameters', {'place': place.id} ) }}" class="dropdown-item">
+                                                                Paramétrage
+                                                            </a>
+                                                        {% endif %}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                    <!--
-                                     <a class="dropdown-item text-pink" href="#">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                            <path d="M12 5l0 14"/>
-                                            <path d="M5 12l14 0"/>
-                                        </svg>
-                                        Nouvelle formation
-                                    </a>
-                                    -->
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                       
-                    </li>
-
+                        
+                        </li>
                     {% endif %}
 
                     {% if menu_trainings is not empty %}
-                    <li class="nav-item dropdown {{menuTrainings|default('')}}">
-                        <a class="nav-link dropdown-toggle" href="#menu-trainings" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path><path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path><path d="M12 12l-8 -4.5"></path><path d="M16 5.25l-8 4.5"></path></svg>
-                            </span>
-                            <span class="nav-link-title">
-                            Formations
-                            </span>
-                        </a>
-                        
-                        <div class="dropdown-menu" data-bs-popper="static">
-                            <div class="dropdown-menu-columns">
-                                <div class="dropdown-menu-column">
-                                    {% for training in menu_trainings %}
-                                        {% if training.id in app.session.get('AclPermissions').trainings|keys %}
-                                            <div class="dropend">
-                                                <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                                    {{training.ShortDisplayName}}
-                                                </a>
-                                                <div class="dropdown-menu">
-                                                    <a href="{{ path('training_detail', {'training': training.id} ) }}" class="dropdown-item">
-                                                        Dashboard
+
+                        <li class="nav-item dropdown {{menuTrainings|default('')}}">
+                            <a class="nav-link dropdown-toggle" href="#menu-trainings" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path><path d="M12 12l8 -4.5"></path><path d="M12 12l0 9"></path><path d="M12 12l-8 -4.5"></path><path d="M16 5.25l-8 4.5"></path></svg>
+                                </span>
+                                <span class="nav-link-title">
+                                Formations
+                                </span>
+                            </a>
+                            
+                            <div class="dropdown-menu" data-bs-popper="static">
+                                <div class="dropdown-menu-columns">
+                                    <div class="dropdown-menu-column">
+                                        {% for training in menu_trainings %}
+                                            {% if training.id in app.session.get('AclPermissions').trainings|keys %}
+                                                <div class="dropend">
+                                                    <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                                        {{training.ShortDisplayName}}
                                                     </a>
-                                                    <!--
-                                                    <a href="#" class="dropdown-item">
-                                                        Emploi du temps
-                                                    </a>
-                                                    <a href="#" class="dropdown-item">
-                                                        Etudiants
-                                                    </a>
-                                                    -->
-                                                    <a href="{{ path('training_teachers', {'training': training.id} ) }}"  href="#" class="dropdown-item">
-                                                        Enseignants
-                                                    </a>
-                                                    <a href="{{ path('training_planning', {'training': training.id} ) }}" class="dropdown-item">
-                                                        Calendrier
-                                                    </a>
-                                                    <a href="{{ path('training_reporting', {'training': training.id} ) }}" class="dropdown-item">
-                                                        Reporting
-                                                    </a>
-                                                    <!--
-                                                    <a href="#" class="dropdown-item">
-                                                        Dossiers d'inscription
-                                                    </a>
-                                                    -->
-                                                    <a href="{{ path('training_parameters', {'training': training.id} ) }}" class="dropdown-item">
-                                                        Paramétrage
-                                                    </a>
-                                                
+                                                    <div class="dropdown-menu">
+                                                        <a href="{{ path('training_detail', {'training': training.id} ) }}" class="dropdown-item">
+                                                            Dashboard
+                                                        </a>
+                                                        <a href="{{ path('training_planning', {'training': training.id} ) }}" class="dropdown-item">
+                                                            Calendrier de la formation
+                                                        </a>
+                                                        <a href="{{ path('training_teachers', {'training': training.id} ) }}"  href="#" class="dropdown-item">
+                                                            Enseignants
+                                                        </a>
+                                                        {% if (is_granted('TRAINING_REPORTING|READ', training)) %}
+                                                            <a href="{{ path('training_reporting', {'training': training.id} ) }}" class="dropdown-item">
+                                                                Reporting
+                                                            </a>
+                                                        {% endif %}
+                                                        {% if (is_granted('TRAINING_PARAMETERS|READ', training)) %}
+                                                            <a href="{{ path('training_parameters', {'training': training.id} ) }}" class="dropdown-item">
+                                                                Paramétrage
+                                                            </a>
+                                                        {% endif %}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                    <!--
-                                     <a class="dropdown-item text-pink" href="#">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                            <path d="M12 5l0 14"/>
-                                            <path d="M5 12l14 0"/>
-                                        </svg>
-                                        Nouvelle formation
-                                    </a>
-                                    -->
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                       
-                    </li>
+                        </li>
                     {% endif %}
                     {% if is_granted('ROLE_ADMIN') %}
                         <li class="nav-item">
@@ -171,7 +142,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 11l3 3l8 -8" /><path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" /></svg>
                                 </span>
                                 <span class="nav-link-title">
-                                Admin
+                                    Admin
                                 </span>
                             </a>
                         </li>
