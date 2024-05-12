@@ -13,27 +13,36 @@
     {% set addTxt = '' %}
     {% set tabContent = '' %}
     {% if currentTab == 'timeSlots' %}
+        {% if (is_granted('TRAINING_PARAMETERS_TIMESLOT|WRITE', training)) %}
             {% set addTxt = 'Nouvelle période' %}
             {% set addLink = path('training_add_timeslot', {'training': training.id, 'tt': 0}) %}
-            {% set tabContent = 'trainings/parameters/tab_timeslots.html.twig' %}
+        {% endif %}
+        {% set tabContent = 'trainings/parameters/tab_timeslots.html.twig' %}
     {% endif %}
     {% if currentTab == 'topics' %}
+        {% if (is_granted('TRAINING_PARAMETERS_TOPIC|WRITE', training)) %}
             {% set addTxt = 'Nouvelle matière' %}
             {% set addLink = path('training_add_topic', {'training': training.id, 'tt': 0}) %}
-            {% set tabContent = 'trainings/parameters/tab_topics.html.twig' %}
-            {% set allowEditTopics = true %}
+        {% endif %}
+        {% set tabContent = 'trainings/parameters/tab_topics.html.twig' %}
+        {% set allowEditTopics = true %}
     {% endif %}
     {% if currentTab == 'topicsGroups' %}
+        {% if (is_granted('TRAINING_PARAMETERS_TOPIC_GROUP|WRITE', training)) %}
             {% set addTxt = 'Nouvelle UE' %}
             {% set addLink = path('training_add_topics_group', {'training': training.id, 'tt': 0}) %}
-            {% set tabContent = 'trainings/parameters/tab_topics_groups.html.twig' %}
+        {% endif %}
+        {% set tabContent = 'trainings/parameters/tab_topics_groups.html.twig' %}
     {% endif %}
     {% if currentTab == 'timetable' %}
+        {% if (is_granted('TRAINING_PARAMETERS_LESSON_SESSION|WRITE', training)) %}
             {% set addTxt = 'Générer l\'agenda' %}
             {% set addLink = path('training_timetable_generation', {'training': training.id, 'tt': 0}) %}
-            {% set tabContent = 'trainings/parameters/tab_timetable.html.twig' %}
+        {% endif %}
+        {% set tabContent = 'trainings/parameters/tab_timetable.html.twig' %}
     {% endif %}
     {% if currentTab == 'financial' %}
+        {% if (is_granted('TRAINING_PARAMETERS_FINANCIAL|WRITE', training)) %}
             {% set dropdownLink = 'Nouvelle Entrée' %}
             {% set dropdownContent = '
                 <div class="dropdown-menu dropdown-menu-arrow">
@@ -48,13 +57,15 @@
                     </a>
                 </div>
             '%}
-            
-            {% set tabContent = 'trainings/parameters/tab_financial.html.twig' %}
+        {% endif %}
+        {% set tabContent = 'trainings/parameters/tab_financial.html.twig' %}
     {% endif %}
     {% if currentTab == 'people' %}
+        {% if (is_granted('TRAINING_PARAMETERS_USER|WRITE', training)) %}
             {% set addTxt = 'Nouvel utilisateur' %}
             {% set addLink = path('training_add_person', {'training': training.id, 'tt': 0}) %}
-            {% set tabContent = 'trainings/parameters/tab_people.html.twig' %}
+        {% endif %}
+        {% set tabContent = 'trainings/parameters/tab_people.html.twig' %}
     {% endif %}
     <div class="page-header d-print-none">
         <div class="container-xl">

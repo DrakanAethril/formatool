@@ -26,17 +26,23 @@
                     </td>
                     <td class="text-end">
                         <div class="btn-list flex-nowrap justify-content-end">
-                            <a href="{{path('training_add_person', {'training':training.id, 'tt':person.id})}}" class="btn btn-ghost-warning">
-                                Modifier
-                            </a>
+                            {% if (is_granted('TRAINING_PARAMETERS_USER|WRITE', training)) %}
+                                <a href="{{path('training_add_person', {'training':training.id, 'tt':person.id})}}" class="btn btn-ghost-warning">
+                                    Modifier
+                                </a>
+                            {% endif %}
                             {% if(person.enumStatusObject.value == 'ACTIVE') %}
-                                <a href="{{path('training_remove_person', {'training':training.id, 'id':person.id})}}" class="btn btn-ghost-danger">
-                                    Désactiver
-                                </a>
+                                {% if (is_granted('TRAINING_PARAMETERS_USER|DELETE', training)) %}
+                                    <a href="{{path('training_remove_person', {'training':training.id, 'id':person.id})}}" class="btn btn-ghost-danger">
+                                        Désactiver
+                                    </a>
+                                {% endif %}
                             {% else %}
-                                <a href="{{path('training_reactivate_person', {'training':training.id, 'id':person.id})}}" class="btn btn-ghost-danger">
-                                    Réactiver
-                                </a>
+                                {% if (is_granted('TRAINING_PARAMETERS_USER|DELETE', training)) %}
+                                    <a href="{{path('training_reactivate_person', {'training':training.id, 'id':person.id})}}" class="btn btn-ghost-danger">
+                                        Réactiver
+                                    </a>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </td>
