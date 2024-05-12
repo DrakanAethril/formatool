@@ -94,7 +94,7 @@
                         <div class="card-footer text-end">
                             <div class="d-flex">
                                 {% if(tt > 0) %}
-                                    <a href="{{ path('training_remove_financial_item', {'id' : tt} ) }}" class="btn btn-danger">Supprimer</a>
+                                    <a href="{{ path('training_remove_financial_item', {'training': training.id, 'id' : tt} ) }}" class="btn btn-danger">Supprimer</a>
                                 {% endif %}
                                 <button type="submit" class="btn btn-primary ms-auto">Enregistrer</button>
                             </div>

@@ -13,7 +13,6 @@ use App\Entity\TimeSlots;
 use App\Entity\TimeTableGenerator;
 use App\Entity\TopicsGroups;
 use App\Entity\TopicsTrainings;
-use App\Entity\TopicsTrainingsLabel;
 use App\Entity\TrainingFinancialItems;
 use App\Entity\Trainings;
 use App\Entity\UsersTrainings;
@@ -118,12 +117,12 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/topic/remove/{id}', name: 'training_remove_topic')]
-    //#[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
-    public function removeTopic($id, TopicsTrainingsRepository $topicsTrainingsRepository, EntityManagerInterface $entityManager) : Response
+    #[Route('/{training<\d+>}/topic/remove/{id}', name: 'training_remove_topic')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
+    public function removeTopic(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, $id, TopicsTrainingsRepository $topicsTrainingsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $topicsTrainings = $topicsTrainingsRepository->findOneBy(['id' => intval($id)]);
-        if(!empty($topicsTrainings)) {
+        if(!empty($topicsTrainings) && $topicsTrainings->getTrainings()->getId() == $training->getId()) {
             $idTraining = $topicsTrainings->getTrainings()->getId();
             $entityManager->remove($topicsTrainings);
             $entityManager->flush();
@@ -170,12 +169,12 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/topics/group/remove/{id}', name: 'training_remove_topics_group')]
-    //#[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC_GROUP->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
-    public function removeTopicsGroup($id, TopicsGroupsRepository $topicsGroupsRepository, EntityManagerInterface $entityManager) : Response
+    #[Route('/{training<\d+>}/topics/group/remove/{id}', name: 'training_remove_topics_group')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC_GROUP->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
+    public function removeTopicsGroup(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, $id, TopicsGroupsRepository $topicsGroupsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $topicsTrainings = $topicsGroupsRepository->findOneBy(['id' => intval($id)]);
-        if(!empty($topicsTrainings)) {
+        if(!empty($topicsTrainings && $topicsTrainings->getTraining()->getId() == $training->getId())) {
             $idTraining = $topicsTrainings->getTraining()->getId();
             $entityManager->remove($topicsTrainings);
             $entityManager->flush();
@@ -244,12 +243,12 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/lessonsessions/remove/{id}', name: 'training_remove_lessonsession')]
-    //#[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_LESSON_SESSION->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
-    public function removeLessonSession($id, LessonSessionsRepository $lessonSessionsRepository, EntityManagerInterface $entityManager) : Response
+    #[Route('/{training<\d+>}/lessonsessions/remove/{id}', name: 'training_remove_lessonsession')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_LESSON_SESSION->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
+    public function removeLessonSession(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, $id, LessonSessionsRepository $lessonSessionsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $lessonSession = $lessonSessionsRepository->findOneBy(['id' => intval($id)]);
-        if(!empty($lessonSession)) {
+        if(!empty($lessonSession && $lessonSession->getTraining()->getId() == $training->getId())) {
             $idTraining = $lessonSession->getTraining()->getId();
             $entityManager->remove($lessonSession);
             $entityManager->flush();
@@ -296,12 +295,12 @@ class TrainingsController extends AbstractController
         ]);
     }
 
-    #[Route('/timeslot/remove/{id}', name: 'training_remove_timeslot')]
-    //#[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TIMESLOT->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
-    public function removeTimeSlot($id, TimeSlotsRepository $timeSlotsRepository, EntityManagerInterface $entityManager) : Response
+    #[Route('/{training<\d+>}/timeslot/remove/{id}', name: 'training_remove_timeslot')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TIMESLOT->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
+    public function removeTimeSlot(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, $id, TimeSlotsRepository $timeSlotsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $timeSlot = $timeSlotsRepository->findOneBy(['id' => intval($id)]);
-        if(!empty($timeSlot)) {
+        if(!empty($timeSlot) && $timeSlot->getTraining()->getId() == $training->getId()) {
             $idTraining = $timeSlot->getTraining()->getId();
             $entityManager->remove($timeSlot);
             $entityManager->flush();
@@ -378,12 +377,12 @@ class TrainingsController extends AbstractController
         ]);
     }
     
-    #[Route('/financial/remove/{id}', name: 'training_remove_financial_item')]
-    //#[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_FINANCIAL->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
-    public function removeFinancialItem($id, TrainingFinancialItemsRepository $trainingFinancialItemsRepository, EntityManagerInterface $entityManager) : Response
+    #[Route('/{training<\d+>}/financial/remove/{id}', name: 'training_remove_financial_item')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_FINANCIAL->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
+    public function removeFinancialItem(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, $id, TrainingFinancialItemsRepository $trainingFinancialItemsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $financialItem = $trainingFinancialItemsRepository->findOneBy(['id' => intval($id)]);
-        if(!empty($financialItem)) {
+        if(!empty($financialItem) && $financialItem->getTraining()->getId() == $training->getId()) {
             $idTraining = $financialItem->getTraining()->getId();
             $entityManager->remove($financialItem);
             $entityManager->flush();
@@ -493,19 +492,19 @@ class TrainingsController extends AbstractController
     #[Route('/{training<\d+>}/parameters', name: 'training_parameters')]
     #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
     public function parameterRouting(Trainings $training) {
-        //if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TIMESLOT->value.'|'.AclPrivilegesEnum::READ->value)) 
+        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TIMESLOT->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
             return $this->redirectToRoute('training_parameters_timeslots', ['training' => $training->getId()]);
 
-        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC_GROUP->value.'|'.AclPrivilegesEnum::READ->value)) 
+        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC_GROUP->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
             return $this->redirectToRoute('training_parameters_topics_groups', ['training' => $training->getId()]);
 
-        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC->value.'|'.AclPrivilegesEnum::READ->value)) 
+        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
             return $this->redirectToRoute('training_parameters_topics', ['training' => $training->getId()]);
 
-        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_LESSON_SESSION->value.'|'.AclPrivilegesEnum::READ->value)) 
+        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_LESSON_SESSION->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
             return $this->redirectToRoute('training_parameters_timetable', ['training' => $training->getId()]);
 
-        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_FINANCIAL->value.'|'.AclPrivilegesEnum::READ->value)) 
+        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_FINANCIAL->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
             return $this->redirectToRoute('training_parameters_financial', ['training' => $training->getId()]);
         
             return $this->redirectToRoute('home');

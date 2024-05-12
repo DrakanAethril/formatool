@@ -308,6 +308,29 @@ class PlacesController extends AbstractController
     // PARAMETERS - DEFAULT TO TRAININGS TABS
 
     #[Route('/{place<\d+>}/parameters', name: 'places_parameters')]
+    #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS->value.'|'.AclPrivilegesEnum::READ->value, 'place')]
+    public function parameterRouting(Places $place) {
+
+        if($this->isGranted(AclRessourcesEnum::PLACE_PARAMETERS_TRAINING->value.'|'.AclPrivilegesEnum::READ->value, $place)) 
+            return $this->redirectToRoute('places_parameters_trainings', ['place' => $place->getId()]);
+        
+        if($this->isGranted(AclRessourcesEnum::PLACE_PARAMETERS_CLASSROOM->value.'|'.AclPrivilegesEnum::READ->value, $place)) 
+            return $this->redirectToRoute('places_parameters_classrooms', ['place' => $place->getId()]);
+
+        if($this->isGranted(AclRessourcesEnum::PLACE_PARAMETERS_USER->value.'|'.AclPrivilegesEnum::READ->value, $place)) 
+            return $this->redirectToRoute('places_parameters_people', ['place' => $place->getId()]);
+
+        // Cursuse must be revamped to unaffect from place rather than disabling cursus.
+        //if($this->isGranted(AclRessourcesEnum::PLACE_PARAMETERS_CURSUS->value.'|'.AclPrivilegesEnum::READ->value, $place)) 
+        //    return $this->redirectToRoute('places_parameters_cursuses', ['place' => $place->getId()]);
+        
+            return $this->redirectToRoute('home');
+    }
+
+
+
+
+
     #[Route('/{place<\d+>}/parameters/trainings', name: 'places_parameters_trainings')]
     #[IsGranted(AclRessourcesEnum::PLACE_PARAMETERS_TRAINING->value.'|'.AclPrivilegesEnum::READ->value, 'place')]
     public function parametersTrainings(Places $place): Response
