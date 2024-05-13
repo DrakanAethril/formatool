@@ -8,15 +8,37 @@
 
 
 {% block body %}
+    
+    {% set addTxt = '' %}
+    {% set addLink = '' %}
+
+    {% if currentTab == 'trainings' %}
+        {% if (is_granted('PLACE_PARAMETERS_TRAINING|WRITE', place)) %}
+            {% set addTxt = 'Nouvelle formation' %}
+            {% set addLink = path('place_add_training', {'place': place.id, 'tt': 0}) %}
+        {% endif %}
+        {% set tabContent = 'places/parameters/tab_trainings.html.twig' %}
+    {% endif %}
     {% if currentTab == 'rooms' %}
+        {% if (is_granted('PLACE_PARAMETERS_CLASSROOM|WRITE', place)) %}
             {% set addTxt = 'Nouvelle salle' %}
-            {% set addLink = path('place_add_class_room', {'id': place.id, 'tt': 0}) %}
-            {% set tabContent = 'places/parameters/tab_rooms.html.twig' %}
+            {% set addLink = path('place_add_class_room', {'place': place.id, 'tt': 0}) %}
+        {% endif %}
+        {% set tabContent = 'places/parameters/tab_rooms.html.twig' %}
     {% endif %}
     {% if currentTab == 'cursuses' %}
+        {% if (is_granted('PLACE_PARAMETERS_CURSUS|WRITE', place)) %}
             {% set addTxt = 'Nouveau cursus' %}
-            {% set addLink = path('place_add_cursus', {'id': place.id, 'tt': 0}) %}
-            {% set tabContent = 'places/parameters/tab_cursuses.html.twig' %}
+            {% set addLink = path('place_add_cursus', {'place': place.id, 'tt': 0}) %}
+        {% endif %}
+        {% set tabContent = 'places/parameters/tab_cursuses.html.twig' %}
+    {% endif %}
+    {% if currentTab == 'people' %}
+        {% if (is_granted('PLACE_PARAMETERS_USER|WRITE', place)) %}
+            {% set addTxt = 'Nouvel utilisateur' %}
+            {% set addLink = path('place_add_person', {'place': place.id, 'tt': 0}) %}
+        {% endif %}
+        {% set tabContent = 'places/parameters/tab_people.html.twig' %}
     {% endif %}
     <div class="page-header d-print-none">
         <div class="container-xl">

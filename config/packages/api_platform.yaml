@@ -18,3 +18,4 @@ api_platform:
         html:
             mime_types: ['text/html']
     keep_legacy_inflector: false
+    use_symfony_listeners: true

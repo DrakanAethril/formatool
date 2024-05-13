@@ -1,18 +1,40 @@
 <ul class="nav nav-pills card-header-pills" data-bs-toggle="tabs" role="tablist">
-    <li class="nav-item" role="presentation">
-        <a href="{{path('places_parameters', {'id': place.id})}}" class="nav-link {{ (currentTab == 'rooms') ? 'active' : '' }}" ">
-            Gestion des salles
-        </a>
-    </li>
-    <li class="nav-item" role="presentation">
-        <a href="{{path('places_parameters_cursuses', {'id': place.id})}}" class="nav-link {{ (currentTab == 'cursuses') ? 'active' : '' }}" ">
-            Gestion des cursus
-        </a>
-    </li>
-     <li class="nav-item ms-auto" role="presentation">
-        <a href="{{addLink}}" class="nav-link d-sm-inline-block text-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-            {{addTxt}}
-        </a>
-    </li>
+    {% if (is_granted('PLACE_PARAMETERS_TRAINING|READ', place)) %}
+        <li class="nav-item" role="presentation">
+            <a href="{{path('places_parameters_trainings', {'place': place.id})}}" class="nav-link {{ (currentTab == 'trainings') ? 'active' : '' }}">
+                Les formations
+            </a>
+        </li>
+    {% endif %}
+    {% if (is_granted('PLACE_PARAMETERS_CLASSROOM|READ', place)) %}
+        <li class="nav-item" role="presentation">
+            <a href="{{path('places_parameters_classrooms', {'place': place.id})}}" class="nav-link {{ (currentTab == 'rooms') ? 'active' : '' }}">
+                Les salles
+            </a>
+        </li>
+    {% endif %}
+    {# Deactivated for now, needs to make deactivation per place and not global
+        {% if (is_granted('PLACE_PARAMETERS_CURSUS|READ', place)) %}
+            <li class="nav-item" role="presentation">
+                <a href="{{path('places_parameters_cursuses', {'place': place.id})}}" class="nav-link {{ (currentTab == 'cursuses') ? 'active' : '' }}">
+                    Les cursus
+                </a>
+            </li>
+        {% endif %}
+    #}
+    {% if (is_granted('PLACE_PARAMETERS_USER|READ', place)) %}
+        <li class="nav-item" role="presentation">
+            <a href="{{path('places_parameters_people', {'place': place.id})}}" class="nav-link {{ (currentTab == 'people') ? 'active' : '' }}">
+                Les utilisateurs
+            </a>
+        </li>
+    {% endif %}
+    {% if (addTxt is not empty) and (addLink is not empty) %}
+        <li class="nav-item ms-auto" role="presentation">
+            <a href="{{addLink}}" class="nav-link d-sm-inline-block text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                {{addTxt}}
+            </a>
+        </li>
+    {% endif %}
 </ul>

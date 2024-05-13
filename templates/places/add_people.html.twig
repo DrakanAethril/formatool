@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Etablissement : {{place.name}} - Ajouter un nouvel utilisateur{% endblock %}
+
+{% block body %}
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                        {{ place.name}}
+                    </div>
+                    <h2 class="page-title">
+                        Ajout d'un utilisateur
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-cards">
+                <div class="col-12">
+                    {{ form_errors(userForm) }}
+
+                    {{ form_start(userForm, { 'attr' : { 'class': 'card' } } ) }}
+                        <div class="card-body">
+                            <div class="row row-cards">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        {{ form_label(userForm.user, 'Nom de l\'utilisateur', {'label_attr': {'class': 'form-label required'}}) }}
+                                            {{ form_widget(userForm.user, {'attr': {'class': '', 'required': true}}) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        {{ form_label(userForm.statusEntry, 'Status', {'label_attr': {'class': 'form-label'}}) }}
+                                            {{ form_widget(userForm.statusEntry, {'attr': {'class': '', 'required': true}}) }}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        {{ form_label(userForm.rolesEntry, 'Rôles', {'label_attr': {'class': 'form-label', 'required': true}}) }}
+                                            {{ form_widget(userForm.rolesEntry, {
+                                                    'attr' : {'class' : ''}
+                                                }) }}
+                                    </div>
+                                </div>
+
+                            </div>                               
+                        </div>
+                        <div class="card-footer text-end">
+                            <button type="submit" class="btn btn-primary ms-auto">Enregistrer</button>
+                        </div>
+                        
+                    {{ form_end(userForm) }}
+                </div>
+            </div>
+        </div>
+        
+    </div>
+{% endblock %}

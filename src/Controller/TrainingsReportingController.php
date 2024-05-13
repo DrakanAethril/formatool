@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
+use App\Config\AclPrivilegesEnum;
+use App\Config\AclRessourcesEnum;
 use App\Config\FinancialItemsSourceEnum;
 use App\Config\FinancialItemsTypeEnum;
 use App\Entity\Trainings;
-use App\Form\LessonSessionType;
 use App\Repository\LessonSessionsRepository;
 use App\Repository\LessonTypesRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
@@ -23,8 +25,23 @@ use Symfony\UX\Chartjs\Model\Chart;
 class TrainingsReportingController extends AbstractController
 {
 
+    #[Route('/', name: 'training_reporting')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_REPORTING->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
+    public function trainingReportingRouting(Trainings $training) {
+        if($this->isGranted(AclRessourcesEnum::TRAINING_REPORTING_FINANCIAL->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
+            return $this->redirectToRoute('training_reporting_financial', ['training' => $training->getId()]);
+
+        if($this->isGranted(AclRessourcesEnum::TRAINING_REPORTING_PEDAGOGIC->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
+            return $this->redirectToRoute('training_reporting_pedagogic', ['training' => $training->getId()]);
+
+        if($this->isGranted(AclRessourcesEnum::TRAINING_REPORTING_SCHOLARSHIP->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
+            return $this->redirectToRoute('training_reporting_scholarship', ['training' => $training->getId()]);
+
+            return $this->redirectToRoute('home');
+    }
     
     #[Route('/scholarship', name: 'training_reporting_scholarship')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_REPORTING_SCHOLARSHIP->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
     public function scholarship(#[MapEntity(expr: 'repository.find(training)')] Trainings $training): Response
     {
         return $this->render('trainings_reporting/index.html.twig', [
@@ -35,6 +52,7 @@ class TrainingsReportingController extends AbstractController
     }
 
     #[Route('/pedagogic', name: 'training_reporting_pedagogic')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_REPORTING_PEDAGOGIC->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
     public function pedagogic(
         #[MapEntity(expr: 'repository.find(training)')] Trainings $training, 
         LessonSessionsRepository $lessonSessionsRepository, 
@@ -92,6 +110,7 @@ class TrainingsReportingController extends AbstractController
 
     #[Route('/', name: 'training_reporting')]
     #[Route('/financial', name: 'training_reporting_financial')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_REPORTING_FINANCIAL->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
     public function financial(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, LessonSessionsRepository $lessonSessionsRepository): Response
     {
         $totalCost = 0;

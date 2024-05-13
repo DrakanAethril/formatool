@@ -71,12 +71,16 @@
                                 </div>
                             {% endif %}
                             {% if (allowEditTopics) %}
-                                <a href="{{path('training_add_topic', {'id':training.id, 'tt':topic.id})}}" class="btn btn-ghost-warning">
-                                    Modifier
-                                </a>
-                                <a href="{{path('training_remove_topic', {'id':topic.id})}}" class="btn btn-ghost-danger">
-                                    Supprimer
-                                </a>
+                                {% if (is_granted('TRAINING_PARAMETERS_TOPIC|WRITE', training)) %}
+                                    <a href="{{path('training_add_topic', {'training':training.id, 'tt':topic.id})}}" class="btn btn-ghost-warning">
+                                        Modifier
+                                    </a>
+                                {% endif %}
+                                {% if (is_granted('TRAINING_PARAMETERS_TOPIC|DELETE', training)) %}
+                                    <a href="{{path('training_remove_topic', {'training':training.id, 'id':topic.id})}}" class="btn btn-ghost-danger">
+                                        Supprimer
+                                    </a>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </td>

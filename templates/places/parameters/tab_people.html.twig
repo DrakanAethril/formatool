@@ -1,0 +1,53 @@
+<div class="table-responsive">
+    <table class="table card-table table-vcenter text-nowrap datatable" id="place-params-people--table" style="width:100%">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Roles</th>
+                <th>Statut</th>
+                <th class="w-1"></th>   
+            </tr>
+        </thead>
+        <tbody>
+            {% for person in place.usersPlaces %}
+                <tr>
+                    <td>
+                        {{person.user.displayName}}
+                    </td>
+                    <td>
+                        {% set roles = [] %}
+                        {% for role in person.rolesEnumForDisplay %}
+                            {% set roles = roles | merge([role|trans()]) %}
+                        {% endfor %}
+                        {{roles|sort|join(', ')}}
+                    </td>
+                    <td>
+                        {{ person.enumStatusObject|trans()}}
+                    </td>
+                    <td class="text-end">
+                        <div class="btn-list flex-nowrap justify-content-end">
+                            {% if (is_granted('PLACE_PARAMETERS_USER|WRITE', place)) %}
+                                <a href="{{path('place_add_person', {'place':place.id, 'tt':person.id})}}" class="btn btn-ghost-warning">
+                                    Modifier
+                                </a>
+                            {% endif %}
+                            {% if(person.enumStatusObject.value == 'ACTIVE') %}
+                                {% if (is_granted('PLACE_PARAMETERS_USER|DELETE', place)) %}
+                                    <a href="{{path('place_remove_person', {'place':place.id, 'id':person.id})}}" class="btn btn-ghost-danger">
+                                        Désactiver
+                                    </a>
+                                {% endif %}
+                            {% else %}
+                                {% if (is_granted('PLACE_PARAMETERS_USER|DELETE', place)) %}
+                                    <a href="{{path('place_reactivate_person', {'place':place.id, 'id':person.id})}}" class="btn btn-ghost-danger">
+                                        Réactiver
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>

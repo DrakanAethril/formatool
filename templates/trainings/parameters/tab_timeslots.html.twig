@@ -26,12 +26,16 @@
                     </td>
                     <td class="text-end">
                         <div class="btn-list flex-nowrap justify-content-end">
-                            <a href="{{path('training_add_timeslot', {'id':training.id, 'tt':timeslot.id})}}" class="btn btn-ghost-warning">
-                                Modifier
-                            </a>
-                            <a href="{{path('training_remove_timeslot', {'id':timeslot.id})}}" class="btn btn-ghost-danger">
-                                Supprimer
-                            </a>
+                            {% if (is_granted('TRAINING_PARAMETERS_TIMESLOT|WRITE', training)) %}
+                                <a href="{{path('training_add_timeslot', {'training':training.id, 'tt':timeslot.id})}}" class="btn btn-ghost-warning">
+                                    Modifier
+                                </a>
+                            {% endif %}
+                            {% if (is_granted('TRAINING_PARAMETERS_TIMESLOT|DELETE', training)) %}
+                                <a href="{{path('training_remove_timeslot', {'training':training.id, 'id':timeslot.id})}}" class="btn btn-ghost-danger">
+                                    Supprimer
+                                </a>
+                            {% endif %}
                         </div>
                     </td>
                 </tr>

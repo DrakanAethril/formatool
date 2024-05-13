@@ -1,31 +1,31 @@
 <div class="table-responsive">
-    <table class="table card-table table-vcenter text-nowrap datatable" id="place-cursuses-table" style="width:100%">
+    <table class="table card-table table-vcenter text-nowrap datatable" id="place-trainings-table" style="width:100%">
         <thead>
             <tr>
-                <th>Nom</th>
+                <th>Intitulé</th>
                 <th>Niveau</th>
                 <th class="w-1"></th>   
             </tr>
         </thead>
         <tbody>
-            {% for cursus in place.cursuses %}
-                {% if cursus.inactive is null %}
+            {% for training in place.trainings %}
+                {% if training.inactive is null %}
                     <tr>
                         <td>
-                            {{cursus.name}}
+                            {{training.title}}
                         </td>
                         <td>
-                            {{cursus.type.level}}
+                           
                         </td>
                         <td class="text-end">
                             <div class="btn-list flex-nowrap justify-content-end">
-                                 {% if (is_granted('PLACE_PARAMETERS_CURSUS|WRITE', place)) %}
-                                    <a href="{{path('place_add_cursus', {'place':place.id, 'tt':cursus.id})}}" class="btn btn-ghost-warning">
+                                 {% if (is_granted('PLACE_PARAMETERS_TRAINING|WRITE', place)) %}
+                                    <a href="{{path('place_add_training', {'place':place.id, 'tt':training.id})}}" class="btn btn-ghost-warning">
                                         Modifier
                                     </a>
                                 {% endif %}
-                                 {% if (is_granted('PLACE_PARAMETERS_CURSUS|DELETE', place)) %}
-                                    <a href="{{path('place_remove_cursus', {'place':place.id,'id':cursus.id})}}" class="btn btn-ghost-danger">
+                                 {% if (is_granted('PLACE_PARAMETERS_TRAINING|DELETE', place)) %}
+                                    <a href="{{path('place_archive_training', {'place':place.id,'training':training.id})}}" class="btn btn-ghost-danger">
                                         Désactiver
                                     </a>
                                 {% endif %}

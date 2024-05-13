@@ -33,11 +33,18 @@ class Places
     #[ORM\ManyToMany(targetEntity: Cursus::class, mappedBy: 'places')]
     private Collection $cursuses;
 
+    /**
+     * @var Collection<int, UsersPlaces>
+     */
+    #[ORM\OneToMany(targetEntity: UsersPlaces::class, mappedBy: 'place')]
+    private Collection $usersPlaces;
+
     public function __construct()
     {
         $this->trainings = new ArrayCollection();
         $this->classRooms = new ArrayCollection();
         $this->cursuses = new ArrayCollection();
+        $this->usersPlaces = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -155,6 +162,36 @@ class Places
     {
         if ($this->cursuses->removeElement($cursus)) {
             $cursus->removePlace($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UsersPlaces>
+     */
+    public function getUsersPlaces(): Collection
+    {
+        return $this->usersPlaces;
+    }
+
+    public function addUsersPlace(UsersPlaces $usersPlace): static
+    {
+        if (!$this->usersPlaces->contains($usersPlace)) {
+            $this->usersPlaces->add($usersPlace);
+            $usersPlace->setPlace($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsersPlace(UsersPlaces $usersPlace): static
+    {
+        if ($this->usersPlaces->removeElement($usersPlace)) {
+            // set the owning side to null (unless already changed)
+            if ($usersPlace->getPlace() === $this) {
+                $usersPlace->setPlace(null);
+            }
         }
 
         return $this;

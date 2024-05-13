@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
+
 #[Route('/app')]
 class TrainingsAjaxController extends AbstractController
 {
@@ -72,12 +74,12 @@ class TrainingsAjaxController extends AbstractController
                 'end' => $dateEndTime,
                 'backgroundColor' => empty($sessionDb->getLessonType()) ? '#D3D3D3' : $sessionDb->getLessonType()->getAgendaColor(),
                 'allDay' => false,
-                'url' => $this->generateUrl('training_add_lessonsession', ['id' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]),
+                'url' => $this->generateUrl('training_add_lessonsession', ['training' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]),
                 'extendedProps' => [
                     'topic' => $sessionDb->getTopic()->getTopics()->getName(),
                     'training' => $sessionDb->getTraining()->getId(),
                     'lessonType' => empty($sessionDb->getLessonType()) ? 'NA' : $sessionDb->getLessonType()->getName(),
-                    'updateUrl' => $this->generateUrl('training_update_lessonsession', ['id' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]),
+                    'updateUrl' => $this->generateUrl('training_update_lessonsession', ['training' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]),
                     'classRoom' => (empty($sessionDb->getClassRooms())) ? 'NA' : $sessionDb->getClassRooms()->getName()
                 ]
             ];
@@ -88,8 +90,8 @@ class TrainingsAjaxController extends AbstractController
         );
     }
 
-    #[Route('/training/{id<\d+>}/lessonsession/update/{tt<\d+>?0}', name: 'training_update_lessonsession')]
-    public function addLessonSession(#[MapEntity(expr: 'repository.find(id)')] Trainings $training, int $tt, LessonSessionsRepository $lessonSessionsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/training/{training<\d+>}/lessonsession/update/{tt<\d+>?0}', name: 'training_update_lessonsession')]
+    public function addLessonSession(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, int $tt, LessonSessionsRepository $lessonSessionsRepository, Request $request, EntityManagerInterface $entityManager): Response
     {
         
         $lessonSession = $lessonSessionsRepository->findOneBy(['id'=> $tt]);
