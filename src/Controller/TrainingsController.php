@@ -230,7 +230,7 @@ class TrainingsController extends AbstractController
             $entityManager->persist($lessonSession);
             $entityManager->flush();
             //redirect on training page
-            $redirect = $this->generateUrl('training_parameters_timetable', ['id' => $training->getId()]).'?focus='.$lessonSession->getDay()->format('Y-m-d');
+            $redirect = $this->generateUrl('training_parameters_timetable', ['training' => $training->getId()]).'?focus='.$lessonSession->getDay()->format('Y-m-d');
             return $this->redirect($redirect);
         }
 
@@ -252,7 +252,7 @@ class TrainingsController extends AbstractController
             $idTraining = $lessonSession->getTraining()->getId();
             $entityManager->remove($lessonSession);
             $entityManager->flush();
-            return $this->redirectToRoute('training_parameters_timetable', ['id' => $idTraining]);
+            return $this->redirectToRoute('training_parameters_timetable', ['training' => $idTraining]);
         } else {
             return $this->redirectToRoute('home');
         }
@@ -284,7 +284,7 @@ class TrainingsController extends AbstractController
             $entityManager->persist($timeSlot);
             $entityManager->flush();
             //redirect on training page
-            return $this->redirectToRoute('training_parameters', ['id' => $training->getId()]);
+            return $this->redirectToRoute('training_parameters', ['training' => $training->getId()]);
         }
 
 
@@ -304,7 +304,7 @@ class TrainingsController extends AbstractController
             $idTraining = $timeSlot->getTraining()->getId();
             $entityManager->remove($timeSlot);
             $entityManager->flush();
-            return $this->redirectToRoute('training_parameters', ['id' => $idTraining]);
+            return $this->redirectToRoute('training_parameters', ['training' => $idTraining]);
         } else {
             return $this->redirectToRoute('home');
         }
