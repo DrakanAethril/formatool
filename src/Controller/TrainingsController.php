@@ -106,7 +106,7 @@ class TrainingsController extends AbstractController
             $entityManager->persist($topicTraining);
             $entityManager->flush();
             //redirect on training page
-            return $this->redirectToRoute('training_parameters_topics', ['id' => $training->getId()]);
+            return $this->redirectToRoute('training_parameters_topics', ['training' => $training->getId()]);
         }
 
 
@@ -126,7 +126,7 @@ class TrainingsController extends AbstractController
             $idTraining = $topicsTrainings->getTrainings()->getId();
             $entityManager->remove($topicsTrainings);
             $entityManager->flush();
-            return $this->redirectToRoute('training_parameters_topics', ['id' => $idTraining]);
+            return $this->redirectToRoute('training_parameters_topics', ['training' => $idTraining]);
         } else {
             return $this->redirectToRoute('home');
         }
@@ -158,7 +158,7 @@ class TrainingsController extends AbstractController
             $entityManager->persist($topicsGroup);
             $entityManager->flush();
             //redirect on training page
-            return $this->redirectToRoute('training_parameters_topics_groups', ['id' => $training->getId()]);
+            return $this->redirectToRoute('training_parameters_topics_groups', ['training' => $training->getId()]);
         }
 
 
