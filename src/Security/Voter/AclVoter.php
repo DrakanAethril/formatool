@@ -51,16 +51,15 @@ class AclVoter extends Voter
         //return true;
         $user = $token->getUser();
         $sessionAppData = $this->requestStack->getSession()->get('AclPermissions');
-        $permissions = empty($sessionAppData['perms']) ?? [];
-        
+        $permissions = empty($sessionAppData['perms']) ? [] : $sessionAppData['perms'];
         // if the user is anonymous, do not grant access
         if (!$user instanceof UserInterface) {
             return false;
         }
 
         // superadmin of the platfor is.... superadmin
-        if(in_array('ROLE_ADMIN', $user->getRoles())) return true;
-
+        //if(in_array('ROLE_ADMIN', $user->getRoles())) return true;
+        
         if($subject instanceof Trainings) {
             if(substr($this->testedRessource, 0, 8) != 'TRAINING') return false;
             if(
@@ -74,7 +73,6 @@ class AclVoter extends Voter
                 return true;
             }
         }
-
         if($subject instanceof Places) {
             if(substr($this->testedRessource, 0, 5) != 'PLACE') return false;
             if(
@@ -84,7 +82,7 @@ class AclVoter extends Voter
                 return true;
             }
         }
-
+        
         return (
             in_array($this->testedRessource.'|'.$this->testedPerm.'|'.$subject->getId(), $permissions) || 
             in_array($this->testedRessource.'|ALL|'.$subject->getId(), $permissions)

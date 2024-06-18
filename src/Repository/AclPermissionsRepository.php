@@ -112,9 +112,10 @@ class AclPermissionsRepository extends ServiceEntityRepository
                     
                 }
             }
-
-            
+            //if(!empty($res['perms'])) $res['perms'] = array_unique($res['perms']);
+            //if(!empty($res['places'])) $res['places'] = array_unique($res['places']);    
         }
+        
         return $res;
     }
 
