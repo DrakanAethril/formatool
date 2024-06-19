@@ -26,6 +26,7 @@
 /.docker/
 package-lock.json
 yarn.lock
+composer.lock
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
