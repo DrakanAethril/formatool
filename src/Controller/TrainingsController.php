@@ -619,7 +619,7 @@ class TrainingsController extends AbstractController
         return $this->render('trainings/parameters.html.twig', [
             'rolesEnum' => UsersRolesTrainingsEnum::array(),
             'training' => $training,
-            'menuPlaces' => 'active',
+            'menuTrainings' => 'active',
             'currentTab' => 'people' 
         ]);
     }
@@ -660,9 +660,10 @@ class TrainingsController extends AbstractController
         return $this->redirectToRoute('home');
 
         $teachers = [];
-        foreach($training->getTrainings() as $topic) {
-            if(!empty($topic->getTeacher())) {
-                $teachers[$topic->getTeacher()->getId()] = $topic->getTeacher();
+        foreach($training->getUsersTrainings() as $userTraining) {
+            //dd($userTraining); 
+            if($userTraining->getStatus() == UsersStatusTrainingsEnum::ACTIVE->value && in_array(UsersRolesTrainingsEnum::TEACHER->value, $userTraining->getRoles()) ) {
+                $teachers[$userTraining->getUser()->getId()] = $userTraining->getUser();
             }
         }
         return $this->render('teachers/index.html.twig', [
