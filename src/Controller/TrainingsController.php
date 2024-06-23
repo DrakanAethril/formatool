@@ -674,6 +674,45 @@ class TrainingsController extends AbstractController
         
     }
 
+    //STUDENTS
+    #[Route('/{training<\d+>}/students', name: 'training_students')]
+    public function students(Trainings $training): Response
+    {
+        if(empty($training))
+        return $this->redirectToRoute('home');
+
+        $studentsValidated = [];
+        $studentsWaiting = [];
+        $studentsPending = [];
+        $studentsRefused = [];
+        foreach($training->getUsersTrainings() as $userTraining) {
+            //dd($userTraining); 
+            if($userTraining->getStatus() == UsersStatusTrainingsEnum::ACTIVE->value && in_array(UsersRolesTrainingsEnum::STUDENT->value, $userTraining->getRoles()) ) {
+                $studentsValidated[$userTraining->getUser()->getId()] = $userTraining->getUser();
+            }
+            if($userTraining->getStatus() == UsersStatusTrainingsEnum::WAITING_FILE->value && in_array(UsersRolesTrainingsEnum::STUDENT->value, $userTraining->getRoles()) ) {
+                $studentsWaiting[$userTraining->getUser()->getId()] = $userTraining->getUser();
+            }
+            if($userTraining->getStatus() == UsersStatusTrainingsEnum::PENDING->value && in_array(UsersRolesTrainingsEnum::STUDENT->value, $userTraining->getRoles()) ) {
+                $studentsPending[$userTraining->getUser()->getId()] = $userTraining->getUser();
+            }
+            if($userTraining->getStatus() == UsersStatusTrainingsEnum::REFUSED->value && in_array(UsersRolesTrainingsEnum::STUDENT->value, $userTraining->getRoles()) ) {
+                $studentsRefused[$userTraining->getUser()->getId()] = $userTraining->getUser();
+            }
+            
+        }
+        
+        return $this->render('students/index.html.twig', [
+            'studentsValidated' => $studentsValidated,
+            'studentsWaiting' => $studentsWaiting,
+            'studentsPending' => $studentsPending,
+            'studentsRefused' => $studentsRefused,
+            'menuTrainings' => 'active'
+        ]);
+
+        
+    }
+
     // TIMETABLE MANAGEMENT
 
     #[Route('/{training<\d+>}/timetable/generation', name: 'training_timetable_generation')]
