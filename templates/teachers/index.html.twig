@@ -2,26 +2,58 @@
 
 {% block title %}Liste des enseignants{% endblock %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('datatable') }}
+{% endblock %}
+
 {% block body %}
     <div class="page-header d-print-none">
         <div class="container-xl">
             <div class="row g-2 align-items-center">
                 <div class="col">
-                <h2 class="page-title">
-                    Liste des enseignants
-                </h2>
+                    <div class="page-pretitle">
+                        {{training.title}}
+                    </div>
+                    <h2 class="page-title">
+                        Enseignants
+                    </h2>
                 </div>
             </div>
         </div>
     </div>
     <div class="page-body">
         <div class="container-xl">
-            <div class="row row-cards">
-                {% for teacher in teachers %}
-                    {% include('teachers/teacher_tile.html.twig') %}
-                {% endfor %}
-
+            <div class="row row-deck row-cards">
+                <div class="col-12">
+                    <div class="card">   
+                <div class="table-responsive">
+                    <table class="table card-table table-vcenter text-nowrap datatable" id="teachers-table" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="w-4 text-center"></th>
+                                <th>Nom</th>
+                                <th class="w-4"></th>   
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for teacher in teachers %}
+                                <tr>
+                                    <td>
+                                        <span class="avatar avatar-m rounded" style="background-image: url({{asset(teacher.avatarUrl)}})"></span>
+                                    </td>
+                                    <td class="align-middle">
+                                        <h3 class="m-0 mb-1">{{teacher.displayName}}</h3>
+                                    </td>
+                                    <td class="text-end"></td>
+                                </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascripts_bottom %}
+     {{ encore_entry_script_tags('datatable') }}
 {% endblock %}

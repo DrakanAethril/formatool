@@ -668,6 +668,7 @@ class TrainingsController extends AbstractController
         }
         return $this->render('teachers/index.html.twig', [
             'teachers' => $teachers,
+            'training' => $training,
             'menuTrainings' => 'active'
         ]);
 
@@ -707,6 +708,7 @@ class TrainingsController extends AbstractController
             'studentsWaiting' => $studentsWaiting,
             'studentsPending' => $studentsPending,
             'studentsRefused' => $studentsRefused,
+            'training' => $training,
             'menuTrainings' => 'active'
         ]);
 

@@ -14,6 +14,7 @@ enum UsersStatusTrainingsEnum:string implements TranslatableInterface {
     case ACTIVE = 'ACTIVE';
     case INACTIVE = 'INACTIVE';
     case WAITING_FILE = 'WAITING_FILE';
+    case WAITING_INTERNSHIP = 'WAITING_INTERNSHIP';
     case PENDING = 'PENDING';
     case REFUSED = 'REFUSED';
 
@@ -27,6 +28,7 @@ enum UsersStatusTrainingsEnum:string implements TranslatableInterface {
             self::ACTIVE  => 'Actif',
             self::INACTIVE => 'Désactivé',
             self::WAITING_FILE => 'Dossier incomplet',
+            self::WAITING_INTERNSHIP => 'Recherche alternance',
             self::PENDING => 'En attente',
             self::REFUSED => 'Refusé',
             
