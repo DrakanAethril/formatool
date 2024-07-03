@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\Config\UsersRolesTrainingsEnum;
+use App\Config\UsersStatusTrainingsEnum;
 use App\Repository\TrainingsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -444,5 +446,22 @@ class Trainings
         }
 
         return $this;
+    }
+
+    public function getFinancialEligibleStudents() : int {
+        $nbStudents = 0;
+        $students = $this->getUsersTrainings();
+        if(!empty($students)) {
+            foreach($students as $student) {
+                if(!in_array(UsersRolesTrainingsEnum::STUDENT->value, $student->getRoles()) ) continue;
+                if(
+                    $student->getStatus() == UsersStatusTrainingsEnum::ACTIVE->value || 
+                    $student->getStatus() == UsersStatusTrainingsEnum::WAITING_CONTRACT->value
+                ) {
+                    $nbStudents++;
+                }
+            }
+        }
+        return $nbStudents;
     }
 }

@@ -116,7 +116,9 @@ class TrainingsReportingController extends AbstractController
         $totalCost = 0;
         $totalGain = 0;
         $volumePerSessionType = $lessonSessionsRepository->getTotalLengthPerTypeForTraining($training);
-        $nbStudents = 8;
+        $nbStudents = $training->getFinancialEligibleStudents();
+
+
 
         if(!empty($training->getTrainingFinancialItems())) {
             foreach($training->getTrainingFinancialItems() as $financialItem) {
