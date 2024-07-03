@@ -32,17 +32,21 @@
                             <tr>
                                 <th class="w-4 text-center"></th>
                                 <th>Nom</th>
+                                <th>Statut</th>
                                 <th class="w-4"></th>   
                             </tr>
                         </thead>
                         <tbody>
-                            {% for student in studentsValidated %}
+                            {% for student in students %}
                                 <tr>
                                     <td>
-                                        <span class="avatar avatar-m rounded" style="background-image: url({{asset(student.avatarUrl)}})"></span>
+                                        <span class="avatar avatar-m rounded" style="background-image: url({{asset(student.user.avatarUrl)}})"></span>
                                     </td>
                                     <td class="align-middle">
-                                        <h3 class="m-0 mb-1">{{student.displayName}}</h3>
+                                        <h3 class="m-0 mb-1">{{student.user.displayName}}</h3>
+                                    </td>
+                                    <td class="align-middle">
+                                        <h3 class="m-0 mb-1">{{student.enumStatusObject|trans()}}</h3>
                                     </td>
                                     <td class="text-end"></td>
                                 </tr>

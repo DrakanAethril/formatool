@@ -312,45 +312,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 },*/
             ],
             "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"><"pagination m-0 ms-auto">>',
-            /*rowGroup: {
-                dataSrc: 5,
-                startRender: function ( rows, group ) {
-                    return $('<tr/>')
-                        .append( '<td class="text-center fw-bold" colspan="'+colNum+'">'+group +' ('+rows.count()+' matière(s))'+'</td>' );
-                },
-                endRender: function (rows, group) {
-                    let sumCm =
-                        rows
-                            .data()
-                            .pluck(1)
-                            .reduce((a, b) => a*1 + b*1);
-                    let sumTd =
-                        rows
-                            .data()
-                            .pluck(2)
-                            .reduce((a, b) => a*1 + b*1);
-                    let sumTp =
-                        rows
-                            .data()
-                            .pluck(3)
-                            .reduce((a, b) => a*1 + b*1);
-                    let sumTotal =
-                        rows
-                            .data()
-                            .pluck(4)
-                            .reduce((a, b) => a*1 + b*1);
-    
-                    let tr = document.createElement('tr');
-                    tr.classList.add("text-muted")
-                    dataTable_addCell(tr, '');
-                    dataTable_addCell(tr, sumCm+' H');
-                    dataTable_addCell(tr, sumTd+' H');
-                    dataTable_addCell(tr, sumTp+' H');
-                    dataTable_addCell(tr, sumTotal+' H');
-                    dataTable_addCell(tr, '', 2);
-                    return tr;
-                }
-            }*/
         } );
     }
 
@@ -372,45 +333,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 },*/
             ],
             "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"><"pagination m-0 ms-auto">>',
-            /*rowGroup: {
-                dataSrc: 5,
-                startRender: function ( rows, group ) {
-                    return $('<tr/>')
-                        .append( '<td class="text-center fw-bold" colspan="'+colNum+'">'+group +' ('+rows.count()+' matière(s))'+'</td>' );
-                },
-                endRender: function (rows, group) {
-                    let sumCm =
-                        rows
-                            .data()
-                            .pluck(1)
-                            .reduce((a, b) => a*1 + b*1);
-                    let sumTd =
-                        rows
-                            .data()
-                            .pluck(2)
-                            .reduce((a, b) => a*1 + b*1);
-                    let sumTp =
-                        rows
-                            .data()
-                            .pluck(3)
-                            .reduce((a, b) => a*1 + b*1);
-                    let sumTotal =
-                        rows
-                            .data()
-                            .pluck(4)
-                            .reduce((a, b) => a*1 + b*1);
-    
-                    let tr = document.createElement('tr');
-                    tr.classList.add("text-muted")
-                    dataTable_addCell(tr, '');
-                    dataTable_addCell(tr, sumCm+' H');
-                    dataTable_addCell(tr, sumTd+' H');
-                    dataTable_addCell(tr, sumTp+' H');
-                    dataTable_addCell(tr, sumTotal+' H');
-                    dataTable_addCell(tr, '', 2);
-                    return tr;
-                }
-            }*/
         } );
     }
 

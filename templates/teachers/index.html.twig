@@ -32,6 +32,7 @@
                             <tr>
                                 <th class="w-4 text-center"></th>
                                 <th>Nom</th>
+                                <th>Statut</th>
                                 <th class="w-4"></th>   
                             </tr>
                         </thead>
@@ -39,10 +40,13 @@
                             {% for teacher in teachers %}
                                 <tr>
                                     <td>
-                                        <span class="avatar avatar-m rounded" style="background-image: url({{asset(teacher.avatarUrl)}})"></span>
+                                        <span class="avatar avatar-m rounded" style="background-image: url({{asset(teacher.user.avatarUrl)}})"></span>
                                     </td>
                                     <td class="align-middle">
-                                        <h3 class="m-0 mb-1">{{teacher.displayName}}</h3>
+                                        <h3 class="m-0 mb-1">{{teacher.user.displayName}}</h3>
+                                    </td>
+                                    <td class="align-middle">
+                                        <h3 class="m-0 mb-1">{{teacher.enumStatusObject|trans()}}</h3>
                                     </td>
                                     <td class="text-end"></td>
                                 </tr>

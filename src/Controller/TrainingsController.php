@@ -662,8 +662,8 @@ class TrainingsController extends AbstractController
         $teachers = [];
         foreach($training->getUsersTrainings() as $userTraining) {
             //dd($userTraining); 
-            if($userTraining->getStatus() == UsersStatusTrainingsEnum::ACTIVE->value && in_array(UsersRolesTrainingsEnum::TEACHER->value, $userTraining->getRoles()) ) {
-                $teachers[$userTraining->getUser()->getId()] = $userTraining->getUser();
+            if(in_array(UsersRolesTrainingsEnum::TEACHER->value, $userTraining->getRoles()) ) {
+                $teachers[$userTraining->getId()] = $userTraining;
             }
         }
         return $this->render('teachers/index.html.twig', [
@@ -682,32 +682,16 @@ class TrainingsController extends AbstractController
         if(empty($training))
         return $this->redirectToRoute('home');
 
-        $studentsValidated = [];
-        $studentsWaiting = [];
-        $studentsPending = [];
-        $studentsRefused = [];
+        $students = [];
         foreach($training->getUsersTrainings() as $userTraining) {
             //dd($userTraining); 
-            if($userTraining->getStatus() == UsersStatusTrainingsEnum::ACTIVE->value && in_array(UsersRolesTrainingsEnum::STUDENT->value, $userTraining->getRoles()) ) {
-                $studentsValidated[$userTraining->getUser()->getId()] = $userTraining->getUser();
+            if(in_array(UsersRolesTrainingsEnum::STUDENT->value, $userTraining->getRoles()) ) {
+                $students[$userTraining->getId()] = $userTraining;
             }
-            if($userTraining->getStatus() == UsersStatusTrainingsEnum::WAITING_FILE->value && in_array(UsersRolesTrainingsEnum::STUDENT->value, $userTraining->getRoles()) ) {
-                $studentsWaiting[$userTraining->getUser()->getId()] = $userTraining->getUser();
-            }
-            if($userTraining->getStatus() == UsersStatusTrainingsEnum::PENDING->value && in_array(UsersRolesTrainingsEnum::STUDENT->value, $userTraining->getRoles()) ) {
-                $studentsPending[$userTraining->getUser()->getId()] = $userTraining->getUser();
-            }
-            if($userTraining->getStatus() == UsersStatusTrainingsEnum::REFUSED->value && in_array(UsersRolesTrainingsEnum::STUDENT->value, $userTraining->getRoles()) ) {
-                $studentsRefused[$userTraining->getUser()->getId()] = $userTraining->getUser();
-            }
-            
         }
         
         return $this->render('students/index.html.twig', [
-            'studentsValidated' => $studentsValidated,
-            'studentsWaiting' => $studentsWaiting,
-            'studentsPending' => $studentsPending,
-            'studentsRefused' => $studentsRefused,
+            'students' => $students,
             'training' => $training,
             'menuTrainings' => 'active'
         ]);
