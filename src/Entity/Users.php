@@ -97,7 +97,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->ownedTrainings = new ArrayCollection();
+        //$this->ownedTrainings = new ArrayCollection();
         $this->teachingTopics = new ArrayCollection();
         $this->lessonSessions = new ArrayCollection();
         $this->trainingsContentContact = new ArrayCollection();
