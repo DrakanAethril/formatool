@@ -12,6 +12,13 @@
     {% set addLink = '' %}
     {% set addTxt = '' %}
     {% set tabContent = '' %}
+     {% if currentTab == 'options' %}
+        {% if (is_granted('TRAINING_PARAMETERS_OPTION|WRITE', training)) %}
+            {% set addTxt = 'Nouvelle option' %}
+            {% set addLink = path('training_add_option', {'training': training.id, 'tt': 0}) %}
+        {% endif %}
+        {% set tabContent = 'trainings/parameters/tab_options.html.twig' %}
+    {% endif %}
     {% if currentTab == 'timeSlots' %}
         {% if (is_granted('TRAINING_PARAMETERS_TIMESLOT|WRITE', training)) %}
             {% set addTxt = 'Nouvelle période' %}

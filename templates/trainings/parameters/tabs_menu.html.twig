@@ -1,8 +1,9 @@
 <ul class="nav nav-pills card-header-pills d-print-none" data-bs-toggle="tabs" role="tablist">
-    {% if (is_granted('TRAINING_PARAMETERS_TIMESLOT|READ', training)) %}
+
+    {% if (is_granted('TRAINING_PARAMETERS_OPTION|READ', training)) %}
         <li class="nav-item" role="presentation">
-            <a href="{{path('training_parameters', {'training': training.id})}}" class="nav-link {{ (currentTab == 'timeSlots') ? 'active' : '' }}">
-                Les périodes
+            <a href="{{path('training_parameters_options', {'training': training.id})}}" class="nav-link {{ (currentTab == 'options') ? 'active' : '' }}">
+                Les options
             </a>
         </li>
     {% endif %}

@@ -27,6 +27,7 @@ enum AclRessourcesEnum:string implements TranslatableInterface {
 
     // TRAINING PARAMS
     case TRAINING_PARAMETERS = 'TRAINING_PARAMETERS';
+    case TRAINING_PARAMETERS_OPTION = 'TRAINING_PARAMETERS_OPTION';
     case TRAINING_PARAMETERS_TIMESLOT = 'TRAINING_PARAMETERS_TIMESLOT';
     case TRAINING_PARAMETERS_TOPIC_GROUP = 'TRAINING_PARAMETERS_TOPIC_GROUP';
     case TRAINING_PARAMETERS_TOPIC = 'TRAINING_PARAMETERS_TOPIC';
@@ -61,6 +62,7 @@ enum AclRessourcesEnum:string implements TranslatableInterface {
             self::TRAINING_ALL => 'Accès à toute la formation',
 
             self::TRAINING_PARAMETERS  => 'Paramétrage de la formations',
+            self::TRAINING_PARAMETERS_OPTION => 'Paramétrage de la formation - Options',
             self::TRAINING_PARAMETERS_TIMESLOT => 'Paramétrage de la formation - Périodes',
             self::TRAINING_PARAMETERS_TOPIC_GROUP => 'Paramétrage de la formation - Unités d\'enseignement',
             self::TRAINING_PARAMETERS_TOPIC => 'Paramétrage de la formation - Matières',

@@ -15,18 +15,21 @@ use App\Entity\TopicsGroups;
 use App\Entity\TopicsTrainings;
 use App\Entity\TrainingFinancialItems;
 use App\Entity\Trainings;
+use App\Entity\TrainingsOptions;
 use App\Entity\UsersTrainings;
 use App\Form\FinancialItemType;
 use App\Form\LessonSessionType;
 use App\Form\TimeSlotType;
 use App\Form\TopicsGroupType;
 use App\Form\TopicsTrainingsType;
+use App\Form\TrainingsOptionsType;
 use App\Form\UsersTrainingsType;
 use App\Repository\LessonSessionsRepository;
 use App\Repository\TimeSlotsRepository;
 use App\Repository\TopicsGroupsRepository;
 use App\Repository\TopicsTrainingsRepository;
 use App\Repository\TrainingFinancialItemsRepository;
+use App\Repository\TrainingsOptionsRepository;
 use App\Repository\UsersTrainingsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -174,7 +177,7 @@ class TrainingsController extends AbstractController
     public function removeTopicsGroup(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, $id, TopicsGroupsRepository $topicsGroupsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $topicsTrainings = $topicsGroupsRepository->findOneBy(['id' => intval($id)]);
-        if(!empty($topicsTrainings && $topicsTrainings->getTraining()->getId() == $training->getId())) {
+        if(!empty($topicsTrainings) && $topicsTrainings->getTraining()->getId() == $training->getId()) {
             $idTraining = $topicsTrainings->getTraining()->getId();
             $entityManager->remove($topicsTrainings);
             $entityManager->flush();
@@ -248,7 +251,7 @@ class TrainingsController extends AbstractController
     public function removeLessonSession(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, $id, LessonSessionsRepository $lessonSessionsRepository, EntityManagerInterface $entityManager) : Response
     {   
         $lessonSession = $lessonSessionsRepository->findOneBy(['id' => intval($id)]);
-        if(!empty($lessonSession && $lessonSession->getTraining()->getId() == $training->getId())) {
+        if(!empty($lessonSession) && $lessonSession->getTraining()->getId() == $training->getId()) {
             $idTraining = $lessonSession->getTraining()->getId();
             $entityManager->remove($lessonSession);
             $entityManager->flush();
@@ -486,6 +489,57 @@ class TrainingsController extends AbstractController
         }
     }
 
+    // OPTIONS
+
+    #[Route('/{training<\d+>}/options/add/{tt<\d+>?0}', name: 'training_add_option')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_OPTION->value.'|'.AclPrivilegesEnum::WRITE->value, 'training')]
+    public function addOption(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, int $tt, TrainingsOptionsRepository $trainingsOptionsRepository, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $create = false;
+        if(empty($tt)) {
+            $option = new TrainingsOptions();
+            $option->setTraining($training);
+            $create = true;
+        } else {
+            $option = $trainingsOptionsRepository->findOneBy(['id'=> $tt]);
+            if(empty($option) || $option->getTraining()->getId() !== $training->getId()) {
+                return $this->redirectToRoute('home');
+            }
+        }
+        
+        
+        $form = $this->createForm(TrainingsOptionsType::class, $option);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($option);
+            $entityManager->flush();
+            //redirect on training page
+            return $this->redirectToRoute('training_parameters_options', ['training' => $training->getId()]);
+        }
+
+
+        return $this->render('trainings/add_option.html.twig', [
+            'training' => $training,
+            'optionsForm' => $form->createView(),
+            'menuTrainings' => 'active'
+        ]);
+    }
+
+    #[Route('/{training<\d+>}/options/remove/{id}', name: 'training_remove_option')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_OPTION->value.'|'.AclPrivilegesEnum::DELETE->value, 'training')]
+    public function removeOption(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, $id, TrainingsOptionsRepository $trainingsOptionsRepository, EntityManagerInterface $entityManager) : Response
+    {   
+        $option = $trainingsOptionsRepository->findOneBy(['id' => intval($id)]);
+        if(!empty($option) && $option->getTraining()->getId() == $training->getId()) {
+            $idTraining = $option->getTraining()->getId();
+            $entityManager->remove($option);
+            $entityManager->flush();
+            return $this->redirectToRoute('training_parameters_options', ['training' => $idTraining]);
+        } else {
+            return $this->redirectToRoute('home');
+        }
+    }
 
     // PARAMETERS - DEFAULT TO TIMESLOTS TABS
 
@@ -506,8 +560,26 @@ class TrainingsController extends AbstractController
 
         if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_FINANCIAL->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
             return $this->redirectToRoute('training_parameters_financial', ['training' => $training->getId()]);
+
+        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_OPTION->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
+            return $this->redirectToRoute('training_parameters_options', ['training' => $training->getId()]);
         
             return $this->redirectToRoute('home');
+    }
+
+    #[Route('/{training<\d+>}/parameters/options', name: 'training_parameters_options')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_OPTION->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
+    public function parametersOptions(Trainings $training): Response
+    {
+
+        if(empty($training))
+        return $this->redirectToRoute('home');
+
+        return $this->render('trainings/parameters.html.twig', [
+            'training' => $training,
+            'menuTrainings' => 'active',
+            'currentTab' => 'options' 
+        ]);
     }
 
     #[Route('/{training<\d+>}/parameters/timeslots', name: 'training_parameters_timeslots')]

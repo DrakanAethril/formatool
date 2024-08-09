@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "language": languageFr,
             'columnDefs': [ 
                 {
-                    'targets': [2], /* column index */
+                    'targets': [colNum-1], /* column index */
                     'orderable': false, /* true or false */
                 },
             ],

@@ -125,6 +125,7 @@ class UsersTrainings
             break;
             case UsersRolesTrainingsEnum::PEDAGOGIC_MANAGER->value:
                 $res[] = 'TRAINING_PARAMETERS|READ|'.$this->getTraining()->getId();
+                $res[] = 'TRAINING_PARAMETERS_OPTION|ALL|'.$this->getTraining()->getId();
                 $res[] = 'TRAINING_PARAMETERS_TIMESLOT|ALL|'.$this->getTraining()->getId();
                 $res[] = 'TRAINING_PARAMETERS_TOPIC_GROUP|ALL|'.$this->getTraining()->getId();
                 $res[] = 'TRAINING_PARAMETERS_TOPIC|ALL|'.$this->getTraining()->getId();

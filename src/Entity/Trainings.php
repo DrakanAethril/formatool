@@ -81,6 +81,12 @@ class Trainings
     #[ORM\OneToMany(targetEntity: UsersTrainings::class, mappedBy: 'training')]
     private Collection $usersTrainings;
 
+    /**
+     * @var Collection<int, TrainingsOptions>
+     */
+    #[ORM\OneToMany(targetEntity: TrainingsOptions::class, mappedBy: 'training')]
+    private Collection $trainingsOptions;
+
     public function __construct()
     {
         $this->trainings = new ArrayCollection();
@@ -89,6 +95,7 @@ class Trainings
         $this->lessonSessions = new ArrayCollection();
         $this->trainingFinancialItems = new ArrayCollection();
         $this->usersTrainings = new ArrayCollection();
+        $this->trainingsOptions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -463,5 +470,35 @@ class Trainings
             }
         }
         return $nbStudents;
+    }
+
+    /**
+     * @return Collection<int, TrainingsOptions>
+     */
+    public function getTrainingsOptions(): Collection
+    {
+        return $this->trainingsOptions;
+    }
+
+    public function addTrainingsOption(TrainingsOptions $trainingsOption): static
+    {
+        if (!$this->trainingsOptions->contains($trainingsOption)) {
+            $this->trainingsOptions->add($trainingsOption);
+            $trainingsOption->setTraining($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrainingsOption(TrainingsOptions $trainingsOption): static
+    {
+        if ($this->trainingsOptions->removeElement($trainingsOption)) {
+            // set the owning side to null (unless already changed)
+            if ($trainingsOption->getTraining() === $this) {
+                $trainingsOption->setTraining(null);
+            }
+        }
+
+        return $this;
     }
 }

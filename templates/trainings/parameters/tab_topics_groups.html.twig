@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th>Nom</th>
-                <th>Matière(s) associée(s)</th>
+                {#<th>Matière(s) associée(s)</th>#}
                 <th class="w-1"></th>   
             </tr>
         </thead>
@@ -13,9 +13,9 @@
                     <td>
                         {{topicsGroup.name}}
                     </td>
-                    <td>
+                    {#<td>
                         {{topicsGroup.topicsTrainings|join(', ')}}
-                    </td>
+                    </td>#}
                     
                     <td class="text-end">
                         <div class="btn-list flex-nowrap justify-content-end">
