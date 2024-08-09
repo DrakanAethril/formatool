@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\LessonSessionsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -47,6 +49,17 @@ class LessonSessions
 
     #[ORM\ManyToOne(inversedBy: 'lessonSessions')]
     private ?LessonTypes $lessonType = null;
+
+    /**
+     * @var Collection<int, TrainingsOptions>
+     */
+    #[ORM\ManyToMany(targetEntity: TrainingsOptions::class, inversedBy: 'lessonSessions')]
+    private Collection $trainingOptions;
+
+    public function __construct()
+    {
+        $this->trainingOptions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -173,6 +186,30 @@ class LessonSessions
     public function setLessonType(?LessonTypes $lessonType): static
     {
         $this->lessonType = $lessonType;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TrainingsOptions>
+     */
+    public function getTrainingOptions(): Collection
+    {
+        return $this->trainingOptions;
+    }
+
+    public function addTrainingOption(TrainingsOptions $trainingOption): static
+    {
+        if (!$this->trainingOptions->contains($trainingOption)) {
+            $this->trainingOptions->add($trainingOption);
+        }
+
+        return $this;
+    }
+
+    public function removeTrainingOption(TrainingsOptions $trainingOption): static
+    {
+        $this->trainingOptions->removeElement($trainingOption);
 
         return $this;
     }

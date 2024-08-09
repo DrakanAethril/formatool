@@ -7,6 +7,7 @@ use App\Entity\LessonSessions;
 use App\Entity\LessonTypes;
 use App\Entity\Topics;
 use App\Entity\TopicsTrainings;
+use App\Entity\TrainingsOptions;
 use App\Entity\Users;
 use Doctrine\DBAL\Types\BooleanType;
 use Doctrine\ORM\EntityRepository;
@@ -130,6 +131,21 @@ class LessonSessionType extends AbstractType
                                 ]
                             ]
                     ]
+                ]
+            )
+            ->add('trainingOptions', EntityType::class,
+                [
+                    'class' => TrainingsOptions::class,
+                    'multiple' => true,
+                    'by_reference' => false,
+                    'required' => false,
+                    'query_builder' => function (EntityRepository $er) use ($options): QueryBuilder {
+                        return $er->createQueryBuilder('o')
+                            ->innerJoin('o.training', 'tr', 'WITH', 'tr.id = :training')
+                            ->setParameter('training', $options['training']->getId())
+                            ->orderBy('o.shortname', 'ASC');
+                    },
+                    'autocomplete' => true
                 ]
             );
     }

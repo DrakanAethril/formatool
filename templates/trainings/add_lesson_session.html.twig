@@ -26,7 +26,7 @@
                     {{ form_start(lessonSessionForm, { 'attr' : { 'class': 'card' } } ) }}
                         <div class="card-body">
                             <div class="row row-cards">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="mb-3">
                                         {{ form_label(lessonSessionForm.title, 'Dénomination EDT', {'label_attr': {'class': 'form-label'}}) }}
                                        
@@ -34,7 +34,7 @@
                                        
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="mb-3">
                                         {{ form_label(lessonSessionForm.topic, 'Matière', {'label_attr': {'class': 'form-label required'}}) }}
                                        
@@ -42,7 +42,17 @@
                                        
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        {{ form_label(lessonSessionForm.trainingOptions, 'Options concernées', {'label_attr': {'class': 'form-label', 'required': false}}) }}
+                                        
+                                            {{ form_widget(lessonSessionForm.trainingOptions, {
+                                                    'attr' : {'class' : ''}
+                                                }) }}
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <div class="mb-3">
                                         {{ form_label(lessonSessionForm.teacher, 'Enseignant', {'label_attr': {'class': 'form-label'}}) }}
                                        

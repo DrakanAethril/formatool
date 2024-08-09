@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\TrainingsOptionsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -28,6 +30,17 @@ class TrainingsOptions
 
     #[ORM\Column(length: 50)]
     private ?string $shortname = null;
+
+    /**
+     * @var Collection<int, LessonSessions>
+     */
+    #[ORM\ManyToMany(targetEntity: LessonSessions::class, mappedBy: 'trainingOptions')]
+    private Collection $lessonSessions;
+
+    public function __construct()
+    {
+        $this->lessonSessions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -80,5 +93,37 @@ class TrainingsOptions
         $this->shortname = $shortname;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, LessonSessions>
+     */
+    public function getLessonSessions(): Collection
+    {
+        return $this->lessonSessions;
+    }
+
+    public function addLessonSession(LessonSessions $lessonSession): static
+    {
+        if (!$this->lessonSessions->contains($lessonSession)) {
+            $this->lessonSessions->add($lessonSession);
+            $lessonSession->addTrainingOption($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLessonSession(LessonSessions $lessonSession): static
+    {
+        if ($this->lessonSessions->removeElement($lessonSession)) {
+            $lessonSession->removeTrainingOption($this);
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string 
+    {
+        return $this->getShortname();
     }
 }
