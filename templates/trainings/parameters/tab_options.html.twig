@@ -1,0 +1,37 @@
+<div class="table-responsive">
+    <table class="table card-table table-vcenter text-nowrap datatable" id="training-options-table" style="width:100%">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Abbréviation</th>
+                <th class="w-1"></th>   
+            </tr>
+        </thead>
+        <tbody>
+            {% for option in training.trainingsOptions %}
+                <tr>
+                    <td>
+                        {{option.name}}
+                    </td>
+                    <td>
+                        {{option.shortname}}
+                    </td>
+                    <td class="text-end">
+                        <div class="btn-list flex-nowrap justify-content-end">
+                            {% if (is_granted('TRAINING_PARAMETERS_OPTION|WRITE', training)) %}
+                                <a href="{{path('training_add_option', {'training':training.id, 'tt':option.id})}}" class="btn btn-ghost-warning">
+                                    Modifier
+                                </a>
+                            {% endif %}
+                            {% if (is_granted('TRAINING_PARAMETERS_OPTION|DELETE', training)) %}
+                                <a href="{{path('training_remove_option', {'training':training.id, 'id':option.id})}}" class="btn btn-ghost-danger">
+                                    Supprimer
+                                </a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
