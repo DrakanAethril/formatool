@@ -18,6 +18,7 @@ class HomeController extends AbstractController
         $nbTrainings = 0;
         $trainingId = 0;
         if(!empty($sessionData) && !empty($sessionData['trainings'])) {
+            dd($sessionData);
             foreach($sessionData['trainings'] as $idT => $training) {
                 if(!empty($training['status']) && $training['status'] == 'ACTIVE') {
                     $nbTrainings++;
@@ -27,7 +28,7 @@ class HomeController extends AbstractController
         }
 
         return $this->render('home/index.html.twig', [
-            'trainings' => $trainings->findAll(),
+            'trainings' => $trainings->findBy(['inactive' => null]),
             'menuHome' => 'active'
         ]);
     }
