@@ -54,7 +54,8 @@ class TrainingsAjaxController extends AbstractController
     }
 
     #[Route('/ajax/training/{id<\d+>}/timetable/sessions', name: 'ajax_training_timetable_sessions')]
-    public function timetableSessions(Trainings $training, LessonSessionsRepository $lessonSessionsRepository): Response
+    #[Route('/ajax/training/{id<\d+>}/timetable/sessions/{options}', name: 'ajax_training_timetable_sessions_with_options')]
+    public function timetableSessions(Trainings $training, LessonSessionsRepository $lessonSessionsRepository, $options = null): Response
     {
         $sessions = [];
         if(empty($training))
@@ -66,7 +67,8 @@ class TrainingsAjaxController extends AbstractController
         foreach($sessionsDb as $sessionDb) {
             $dateStartTime = DateTime::createFromFormat('Y-m-d H:i:s', $sessionDb->getDay()->format('Y-m-d').' '.$sessionDb->getStartHour()->format('H:i:s'));
             $dateEndTime = DateTime::createFromFormat('Y-m-d H:i:s', $sessionDb->getDay()->format('Y-m-d').' '.$sessionDb->getEndHour()->format('H:i:s'));
-
+            $sessionDbOptions = empty($sessionDb->getTrainingOptions()) ? [] : $sessionDb->getTrainingOptions()->toArray();
+            if(!empty($options) && $options != 'all' && !in_array($options, $sessionDbOptions)) continue;
             $sessions[] = [
                 'id' => $sessionDb->getId(),
                 'title'=> $sessionDb->getDisplayName(),
@@ -80,7 +82,8 @@ class TrainingsAjaxController extends AbstractController
                     'training' => $sessionDb->getTraining()->getId(),
                     'lessonType' => empty($sessionDb->getLessonType()) ? 'NA' : $sessionDb->getLessonType()->getName(),
                     'updateUrl' => $this->generateUrl('training_update_lessonsession', ['training' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]),
-                    'classRoom' => (empty($sessionDb->getClassRooms())) ? 'NA' : $sessionDb->getClassRooms()->getName()
+                    'classRoom' => (empty($sessionDb->getClassRooms())) ? 'NA' : $sessionDb->getClassRooms()->getName(),
+                    'options' => empty($sessionDbOptions) ? '' : implode('/', $sessionDbOptions).' '
                 ]
             ];
         }

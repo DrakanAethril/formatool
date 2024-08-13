@@ -633,12 +633,16 @@ class TrainingsController extends AbstractController
     }
 
     #[Route('/{training<\d+>}/parameters/timetable', name: 'training_parameters_timetable')]
+    #[Route('/{training<\d+>}/parameters/timetable/{options}', name: 'training_parameters_timetable_with_options')]
     #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_LESSON_SESSION->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
-    public function parametersTimetable(Trainings $training, Request $request): Response
+    public function parametersTimetable(Trainings $training, Request $request, $options=null): Response
     {
 
         if(empty($training))
         return $this->redirectToRoute('home');
+
+        if(empty($options)) $options = 'all';
+        
 
         $focus = date("Y-m-d");
         if(!empty($request->get('focus'))) {
@@ -659,7 +663,8 @@ class TrainingsController extends AbstractController
             'training' => $training,
             'menuTrainings' => 'active',
             'currentTab' => 'timetable',
-            'focus' => $focus 
+            'focus' => $focus,
+            'options' => $options 
         ]);
     }
 

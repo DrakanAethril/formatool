@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
       eventContent: function(arg) {
         return { html: '<b>'+arg.event.title+'</b><br/>'+
-                        '<i>('+arg.event.extendedProps.topic+')</i><br/>'+
+                        '<i>'+arg.event.extendedProps.options+'('+arg.event.extendedProps.topic+')</i><br/>'+
                         '<i>('+arg.event.extendedProps.lessonType+
                         ', salle '+arg.event.extendedProps.classRoom+')</i>' 
                 };
