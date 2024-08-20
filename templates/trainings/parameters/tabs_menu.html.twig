@@ -25,6 +25,9 @@
         <li class="nav-item" role="presentation">
             <a href="{{path('training_parameters_timetable', {'training': training.id})}}" class="nav-link {{ (currentTab == 'timetable') ? 'active' : '' }}">
                     L'agenda
+                    {% if (options|default(null) is not empty) %}
+                        {{ '> '~options }}
+                    {% endif %}
             </a>
         </li>
     {% endif %}

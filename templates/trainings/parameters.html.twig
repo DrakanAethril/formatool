@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Formation : {{training.title}}{% endblock %}
+{% block title %}
+    Formation : {{training.title}}
+{% endblock %}
 
 {% block stylesheets %}
     {{ encore_entry_link_tags('datatable') }}
@@ -42,9 +44,35 @@
         {% set tabContent = 'trainings/parameters/tab_topics_groups.html.twig' %}
     {% endif %}
     {% if currentTab == 'timetable' %}
-        {% if (is_granted('TRAINING_PARAMETERS_LESSON_SESSION|WRITE', training)) %}
-            {% set addTxt = 'Générer l\'agenda' %}
-            {% set addLink = path('training_timetable_generation', {'training': training.id, 'tt': 0}) %}
+        {% if (is_granted('TRAINING_PARAMETERS_LESSON_SESSION|WRITE', training))%}
+            {#
+                {% set addTxt = 'Générer l\'agenda' %}
+                {% set addLink = path('training_timetable_generation', {'training': training.id, 'tt': 0}) %}
+            #}
+            {% set dropdownLink = 'Option' %}
+            {% set dropdownContent = '
+                <div class="dropdown-menu dropdown-menu-arrow">
+                    <a class="dropdown-item" href="'~path("training_parameters_timetable", {"training": training.id})~'">
+                        Toutes les options
+                    </a>
+            '%}
+            {% if training.TrainingsOptions is not empty %}
+                {% for option in training.TrainingsOptions %}
+                    {% set selected = '' %}
+                    {% if (options == option.shortName) %}
+                        {% set selected = ' active' %}
+                    {% endif %}
+                    {% set dropdownContent = dropdownContent~'
+                        <a class="dropdown-item '~selected~'" href="'~path("training_parameters_timetable_with_options", {"training": training.id, "options": option.shortName})~'">
+                            '~option.shortName~'
+                        </a>
+                    '
+                    %}
+                {% endfor %}
+            {% endif %}
+            {% set dropdownContent = dropdownContent ~'
+                </div>
+            '%}
         {% endif %}
         {% set tabContent = 'trainings/parameters/tab_timetable.html.twig' %}
     {% endif %}

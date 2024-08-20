@@ -641,7 +641,7 @@ class TrainingsController extends AbstractController
         if(empty($training))
         return $this->redirectToRoute('home');
 
-        if(empty($options)) $options = 'all';
+        if(empty($options)) $options = false;
         
 
         $focus = date("Y-m-d");
