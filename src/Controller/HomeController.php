@@ -14,7 +14,17 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(TrainingsRepository $trainings, SessionInterface $session ): Response
     {
+
+        // If we are on a teacher account, then redirect to user planning
+        if($this->isGranted('ROLE_TEACHER'))
+            return $this->redirectToRoute('profile_teacher_timetable');
+
+        if($this->isGranted('ROLE_STUDENT'))
+            return $this->redirectToRoute('student_dashboard');
+
         $sessionData = $session->get('AclPermissions');
+
+        /*
         $nbTrainings = 0;
         $trainingId = 0;
         if(!empty($sessionData) && !empty($sessionData['trainings'])) {
@@ -25,7 +35,7 @@ class HomeController extends AbstractController
                 }
             }
         }
-
+        */
         return $this->render('home/index.html.twig', [
             'trainings' => $trainings->findAll(),
             'menuHome' => 'active'

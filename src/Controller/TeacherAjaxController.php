@@ -26,7 +26,7 @@ class TeacherAjaxController extends AbstractController
 
             $sessions[] = [
                 'id' => $sessionDb->getId(),
-                'title'=> $sessionDb->getTopic()->getTopics()->getName().' ('.$sessionDb->getTraining()->getTitle().')',
+                'title'=> $sessionDb->getTopic()->getTopics()->getName().' ('.$sessionDb->getTraining()->getShortDisplayName().')',
                 'start'=> $dateStartTime,
                 'end' => $dateEndTime,
                 //'backgroundColor' => $timeSlot->getTimeSlotsTypes()->getColor(),
