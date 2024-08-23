@@ -19,12 +19,9 @@ class HomeController extends AbstractController
         if($this->isGranted('ROLE_TEACHER'))
             return $this->redirectToRoute('profile_teacher_timetable');
 
-        if($this->isGranted('ROLE_STUDENT'))
-            return $this->redirectToRoute('student_dashboard');
-
         $sessionData = $session->get('AclPermissions');
 
-        /*
+        
         $nbTrainings = 0;
         $trainingId = 0;
         if(!empty($sessionData) && !empty($sessionData['trainings'])) {
@@ -35,7 +32,10 @@ class HomeController extends AbstractController
                 }
             }
         }
-        */
+        
+        if($this->isGranted('ROLE_STUDENT'))
+            return $this->redirectToRoute('training_timetable', ['training' => $trainingId]);
+
         return $this->render('home/index.html.twig', [
             'trainings' => $trainings->findAll(),
             'menuHome' => 'active'

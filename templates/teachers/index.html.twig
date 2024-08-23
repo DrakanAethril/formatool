@@ -32,7 +32,9 @@
                             <tr>
                                 <th class="w-4 text-center"></th>
                                 <th>Nom</th>
-                                <th>Statut</th>
+                                {% if(training.trainingsOptions is not empty) %}
+                                    <th>Options</th>
+                                {% endif %}
                                 <th class="w-4"></th>   
                             </tr>
                         </thead>
@@ -45,9 +47,11 @@
                                     <td class="align-middle">
                                         <span class="m-0 mb-1">{{teacher.user.displayName}}</span>
                                     </td>
-                                    <td class="align-middle">
-                                        <span class="m-0 mb-1">{{teacher.enumStatusObject|trans()}}</span>
-                                    </td>
+                                    {% if(training.trainingsOptions is not empty) %}
+                                        <td class="align-middle">
+                                            <span class="m-0 mb-1">{{teacher.trainingOptions.toArray|sort|join(', ')}}</span>
+                                        </td>
+                                    {% endif %}
                                     <td class="text-end"></td>
                                 </tr>
                             {%endfor%}

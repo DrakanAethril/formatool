@@ -303,7 +303,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "language": languageFr,
             'columnDefs': [ 
                 {
-                    'targets': [0,3], /* column index */
+                    'targets': [0,colNum-1], /* column index */
                     'orderable': false, /* true or false */
                 },
                 /*{
@@ -324,7 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "language": languageFr,
             'columnDefs': [ 
                 {
-                    'targets': [0,3], /* column index */
+                    'targets': [0,colNum-1], /* column index */
                     'orderable': false, /* true or false */
                 },
                 /*{

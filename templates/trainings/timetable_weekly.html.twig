@@ -22,7 +22,7 @@
             <div class="row row-deck row-cards">
                 <div class="col-12">
                     
-                    <div id='calendar-timetable-weekly' data-feed="{{ path('ajax_training_timetable_sessions', {'id': training.id} ) }}" class="w-100"></div>
+                    <div id='calendar-timetable-weekly' data-focus="{{focus}}" data-feed="{{ path('ajax_training_public_timetable_sessions', {'id': training.id} ) }}" class="w-100"></div>
                     
                 </div>
             </div>

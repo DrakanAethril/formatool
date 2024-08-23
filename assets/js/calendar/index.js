@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let eventFeed = $(calendarTtWeekly).attr("data-feed");
 
     let calendar = new Calendar(calendarTtWeekly, {
-      //initialDate: '2023-09-01',
+      initialDate: $(calendarTtWeekly).attr("data-focus"),
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       timeZone: 'Europe/Paris',
       slotMinTime: "08:00",
@@ -70,6 +70,12 @@ document.addEventListener("DOMContentLoaded", () => {
           method: 'POST',
         }
       ],
+      eventContent: function(arg) {
+        return { html: '<b>'+arg.event.title+'</b><br/>'+
+                        '<i>'+arg.event.extendedProps.options+'</i><br/>'+
+                        '(salle '+arg.event.extendedProps.classRoom+')</i>' 
+                };
+      },
       headerToolbar: {
         left : "prev,next today",//left: "prev,next today",
         center: "title",

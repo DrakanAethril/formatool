@@ -107,17 +107,20 @@
                                                         {{training.ShortDisplayName}}
                                                     </a>
                                                     <div class="dropdown-menu">
-                                                        <a href="{{ path('training_detail', {'training': training.id} ) }}" class="dropdown-item">
-                                                            Dashboard
+                                                        <a href="{{ path('training_timetable', {'training': training.id} ) }}" class="dropdown-item">
+                                                            Emploi du temps
                                                         </a>
                                                         <a href="{{ path('training_planning', {'training': training.id} ) }}" class="dropdown-item">
-                                                            Calendrier de la formation
+                                                            Calendrier de l'alternance
                                                         </a>
                                                         <a href="{{ path('training_students', {'training': training.id} ) }}"  href="#" class="dropdown-item">
-                                                            Etudiants
+                                                            Liste des étudiants
                                                         </a>
                                                         <a href="{{ path('training_teachers', {'training': training.id} ) }}"  href="#" class="dropdown-item">
-                                                            Enseignants
+                                                            Liste des enseignants
+                                                        </a>
+                                                        <a href="{{ path('training_detail', {'training': training.id} ) }}"  href="#" class="dropdown-item">
+                                                            Contenu de formation
                                                         </a>
                                                         {% if (is_granted('TRAINING_REPORTING|READ', training)) %}
                                                             <a href="{{ path('training_reporting', {'training': training.id} ) }}" class="dropdown-item">

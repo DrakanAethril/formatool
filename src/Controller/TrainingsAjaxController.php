@@ -55,7 +55,9 @@ class TrainingsAjaxController extends AbstractController
 
     #[Route('/ajax/training/{id<\d+>}/timetable/sessions', name: 'ajax_training_timetable_sessions')]
     #[Route('/ajax/training/{id<\d+>}/timetable/sessions/{options}', name: 'ajax_training_timetable_sessions_with_options')]
-    public function timetableSessions(Trainings $training, LessonSessionsRepository $lessonSessionsRepository, $options = null): Response
+    #[Route('/ajax/training/{id<\d+>}/public/timetable/sessions', name: 'ajax_training_public_timetable_sessions')]
+    #[Route('/ajax/training/{id<\d+>}/public/timetable/sessions/{options}', name: 'ajax_training_public_timetable_sessions_with_options')]
+    public function timetableSessions(Trainings $training, LessonSessionsRepository $lessonSessionsRepository, Request $request, $options = null): Response
     {
         $sessions = [];
         if(empty($training))
@@ -63,29 +65,33 @@ class TrainingsAjaxController extends AbstractController
                 $sessions,
                 headers: ['Content-Type' => 'application/json;charset=UTF-8']
             );
+        $routeName = $request->attributes->get('_route');
         $sessionsDb = $lessonSessionsRepository->findBy(['training' => $training]);
         foreach($sessionsDb as $sessionDb) {
             $dateStartTime = DateTime::createFromFormat('Y-m-d H:i:s', $sessionDb->getDay()->format('Y-m-d').' '.$sessionDb->getStartHour()->format('H:i:s'));
             $dateEndTime = DateTime::createFromFormat('Y-m-d H:i:s', $sessionDb->getDay()->format('Y-m-d').' '.$sessionDb->getEndHour()->format('H:i:s'));
             $sessionDbOptions = empty($sessionDb->getTrainingOptions()) ? [] : $sessionDb->getTrainingOptions()->toArray();
             if(!empty($options) && $options != 'all' && !in_array($options, $sessionDbOptions)) continue;
-            $sessions[] = [
+            $sessionData = [
                 'id' => $sessionDb->getId(),
                 'title'=> $sessionDb->getDisplayName(),
                 'start'=> $dateStartTime,
                 'end' => $dateEndTime,
                 'backgroundColor' => empty($sessionDb->getLessonType()) ? '#D3D3D3' : $sessionDb->getLessonType()->getAgendaColor(),
                 'allDay' => false,
-                'url' => $this->generateUrl('training_add_lessonsession', ['training' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]),
                 'extendedProps' => [
                     'topic' => $sessionDb->getTopic()->getTopics()->getName(),
                     'training' => $sessionDb->getTraining()->getId(),
                     'lessonType' => empty($sessionDb->getLessonType()) ? 'NA' : $sessionDb->getLessonType()->getName(),
-                    'updateUrl' => $this->generateUrl('training_update_lessonsession', ['training' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]),
                     'classRoom' => (empty($sessionDb->getClassRooms())) ? 'NA' : $sessionDb->getClassRooms()->getName(),
                     'options' => empty($sessionDbOptions) ? '' : implode('/', $sessionDbOptions).' '
                 ]
             ];
+            if($routeName == 'ajax_training_timetable_sessions' || $routeName == 'ajax_training_timetable_sessions_with_options') {
+                $sessionData['url'] = $this->generateUrl('training_add_lessonsession', ['training' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]);
+                $sessionData['extendedProps']['updateUrl'] = $this->generateUrl('training_update_lessonsession', ['training' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]);
+            }
+            $sessions[] = $sessionData;
         }
         return $this->json(
             $sessions,

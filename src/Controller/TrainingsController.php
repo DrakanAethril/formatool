@@ -43,7 +43,35 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class TrainingsController extends AbstractController
 {
 
-    #[Route('/{training}', name: 'training_detail')]
+    #[Route('/{training}/timetable', name: 'training_timetable')] 
+    function timetable(Trainings $training, Request $request): Response {
+        
+        if(empty($training))
+        return $this->redirectToRoute('home');
+
+        $focus = date("Y-m-d");
+        if(!empty($request->get('focus'))) {
+            $dateFocus = \DateTime::createFromFormat('Y-m-d', $request->get('focus'));
+            if(!empty($dateFocus)){
+                $focus = $dateFocus->format('Y-m-d');
+            }
+        } else {
+            $now = new \DateTime();
+            if(!empty($training->getStartTrainingDate()) && $training->getStartTrainingDate() > $now) {
+                $focus = $training->getStartTrainingDate()->format('Y-m-d');
+            } else {
+                $focus = $now->format('Y-m-d');
+            }
+        }
+
+        return $this->render('trainings/timetable_weekly.html.twig', [
+            'training' => $training,
+            'focus' => $focus,
+            'menuTrainings' => 'active'
+        ]);
+    }
+
+    #[Route('/{training}/syllabus', name: 'training_detail')]
     public function detail(Trainings $training): Response
     {
 
@@ -712,19 +740,6 @@ class TrainingsController extends AbstractController
         return $this->redirectToRoute('home');
 
         return $this->render('trainings/planning.html.twig', [
-            'training' => $training,
-            'menuTrainings' => 'active'
-        ]);
-    }
-
-    #[Route('/{training<\d+>}/timetable/weekly', name: 'training_timetable_weekly')]
-    public function timetableWeekly(Trainings $training): Response
-    {
-
-        if(empty($training))
-        return $this->redirectToRoute('home');
-
-        return $this->render('trainings/timetable_weekly.html.twig', [
             'training' => $training,
             'menuTrainings' => 'active'
         ]);
