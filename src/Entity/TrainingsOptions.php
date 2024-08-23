@@ -37,9 +37,16 @@ class TrainingsOptions
     #[ORM\ManyToMany(targetEntity: LessonSessions::class, mappedBy: 'trainingOptions')]
     private Collection $lessonSessions;
 
+    /**
+     * @var Collection<int, UsersTrainings>
+     */
+    #[ORM\ManyToMany(targetEntity: UsersTrainings::class, mappedBy: 'trainingOptions')]
+    private Collection $usersTrainings;
+
     public function __construct()
     {
         $this->lessonSessions = new ArrayCollection();
+        $this->usersTrainings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -125,5 +132,32 @@ class TrainingsOptions
     public function __toString(): string 
     {
         return $this->getShortname();
+    }
+
+    /**
+     * @return Collection<int, UsersTrainings>
+     */
+    public function getUsersTrainings(): Collection
+    {
+        return $this->usersTrainings;
+    }
+
+    public function addUsersTraining(UsersTrainings $usersTraining): static
+    {
+        if (!$this->usersTrainings->contains($usersTraining)) {
+            $this->usersTrainings->add($usersTraining);
+            $usersTraining->addTrainingOption($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUsersTraining(UsersTrainings $usersTraining): static
+    {
+        if ($this->usersTrainings->removeElement($usersTraining)) {
+            $usersTraining->removeTrainingOption($this);
+        }
+
+        return $this;
     }
 }

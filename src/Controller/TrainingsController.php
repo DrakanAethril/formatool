@@ -426,7 +426,8 @@ class TrainingsController extends AbstractController
         $form = $this->createForm(UsersTrainingsType::class, $userTrainings, [
             'status' => $status,
             'roles' => $roles,
-            'create' => $create
+            'create' => $create,
+            'training' => $training
         ]);
         $form->handleRequest($request);
 

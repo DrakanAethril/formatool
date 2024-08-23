@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Config\UsersRolesTrainingsEnum;
 use App\Config\UsersStatusTrainingsEnum;
 use App\Entity\Trainings;
+use App\Entity\TrainingsOptions;
 use App\Entity\Users;
 use App\Entity\UsersTrainings;
 use Doctrine\ORM\EntityRepository;
@@ -70,6 +71,23 @@ class UsersTrainingsType extends AbstractType
                 ]
             )
         ;
+        if(!empty($options['training']->getTrainingsOptions())) {
+            $builder->add('trainingOptions', EntityType::class,
+                [
+                    'class' => TrainingsOptions::class,
+                    'multiple' => true,
+                    'by_reference' => false,
+                    'required' => true,
+                    'query_builder' => function (EntityRepository $er) use ($options): QueryBuilder {
+                        return $er->createQueryBuilder('o')
+                            ->innerJoin('o.training', 'tr', 'WITH', 'tr.id = :training')
+                            ->setParameter('training', $options['training']->getId())
+                            ->orderBy('o.shortname', 'ASC');
+                    },
+                    'autocomplete' => true
+                ]
+            );
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -78,7 +96,8 @@ class UsersTrainingsType extends AbstractType
             'data_class' => UsersTrainings::class,
             'status' => false,
             'roles' => false,
-            'create' => true
+            'create' => true,
+            'training' => false
         ]);
     }
 }

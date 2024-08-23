@@ -5,6 +5,7 @@
                 <th>Nom</th>
                 <th>Roles</th>
                 <th>Statut</th>
+                <th>Options</th>
                 <th class="w-1"></th>   
             </tr>
         </thead>
@@ -23,6 +24,9 @@
                     </td>
                     <td>
                         {{ person.enumStatusObject|trans()}}
+                    </td>
+                    <td>
+                        {{ person.trainingOptions.toArray|sort|join(', ')}}
                     </td>
                     <td class="text-end">
                         <div class="btn-list flex-nowrap justify-content-end">

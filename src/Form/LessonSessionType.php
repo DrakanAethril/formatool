@@ -132,22 +132,25 @@ class LessonSessionType extends AbstractType
                             ]
                     ]
                 ]
-            )
-            ->add('trainingOptions', EntityType::class,
-                [
-                    'class' => TrainingsOptions::class,
-                    'multiple' => true,
-                    'by_reference' => false,
-                    'required' => false,
-                    'query_builder' => function (EntityRepository $er) use ($options): QueryBuilder {
-                        return $er->createQueryBuilder('o')
-                            ->innerJoin('o.training', 'tr', 'WITH', 'tr.id = :training')
-                            ->setParameter('training', $options['training']->getId())
-                            ->orderBy('o.shortname', 'ASC');
-                    },
-                    'autocomplete' => true
-                ]
             );
+            if(!empty($options['training']->getTrainingsOptions())) {
+                $builder->add('trainingOptions', EntityType::class,
+                    [
+                        'class' => TrainingsOptions::class,
+                        'multiple' => true,
+                        'by_reference' => false,
+                        'required' => true,
+                        'query_builder' => function (EntityRepository $er) use ($options): QueryBuilder {
+                            return $er->createQueryBuilder('o')
+                                ->innerJoin('o.training', 'tr', 'WITH', 'tr.id = :training')
+                                ->setParameter('training', $options['training']->getId())
+                                ->orderBy('o.shortname', 'ASC');
+                        },
+                        'autocomplete' => true
+                    ]
+                );
+            }
+            
     }
 
     public function configureOptions(OptionsResolver $resolver): void

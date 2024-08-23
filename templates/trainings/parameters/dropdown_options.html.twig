@@ -1,0 +1,16 @@
+<div class="dropdown-menu dropdown-menu-arrow">
+    <a class="dropdown-item" href="{{path("training_parameters_timetable", {"training": training.id})}}">
+        Toutes les options
+    </a>
+    {% if training.TrainingsOptions is not empty %}
+        {% for option in training.TrainingsOptions %}
+            {% set selected = '' %}
+            {% if (options == option.shortName) %}
+                {% set selected = ' active' %}
+            {% endif %}
+            <a class="dropdown-item {{selected}}" href="{{path("training_parameters_timetable_with_options", {"training": training.id, "options": option.shortName})}}">
+                    {{option.shortName}}
+            </a>
+        {% endfor %}
+    {% endif %}
+</div>

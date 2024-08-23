@@ -50,29 +50,9 @@
                 {% set addLink = path('training_timetable_generation', {'training': training.id, 'tt': 0}) %}
             #}
             {% set dropdownLink = 'Option' %}
-            {% set dropdownContent = '
-                <div class="dropdown-menu dropdown-menu-arrow">
-                    <a class="dropdown-item" href="'~path("training_parameters_timetable", {"training": training.id})~'">
-                        Toutes les options
-                    </a>
-            '%}
-            {% if training.TrainingsOptions is not empty %}
-                {% for option in training.TrainingsOptions %}
-                    {% set selected = '' %}
-                    {% if (options == option.shortName) %}
-                        {% set selected = ' active' %}
-                    {% endif %}
-                    {% set dropdownContent = dropdownContent~'
-                        <a class="dropdown-item '~selected~'" href="'~path("training_parameters_timetable_with_options", {"training": training.id, "options": option.shortName})~'">
-                            '~option.shortName~'
-                        </a>
-                    '
-                    %}
-                {% endfor %}
-            {% endif %}
-            {% set dropdownContent = dropdownContent ~'
-                </div>
-            '%}
+            {% set dropdownContent %}
+                {% include('trainings/parameters/dropdown_options.html.twig') %}
+            {% endset %}
         {% endif %}
         {% set tabContent = 'trainings/parameters/tab_timetable.html.twig' %}
     {% endif %}

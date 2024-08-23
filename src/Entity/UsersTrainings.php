@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Config\UsersRolesTrainingsEnum;
 use App\Config\UsersStatusTrainingsEnum;
 use App\Repository\UsersTrainingsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -33,6 +35,17 @@ class UsersTrainings
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $permissions = null;
+
+    /**
+     * @var Collection<int, TrainingsOptions>
+     */
+    #[ORM\ManyToMany(targetEntity: TrainingsOptions::class, inversedBy: 'usersTrainings')]
+    private Collection $trainingOptions;
+
+    public function __construct()
+    {
+        $this->trainingOptions = new ArrayCollection();
+    }
 
     #[ORM\UniqueConstraint(
         name: 'user_training_unique_idx',
@@ -165,6 +178,30 @@ class UsersTrainings
     public function setPermissions(?string $permissions): static
     {
         $this->permissions = $permissions;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TrainingsOptions>
+     */
+    public function getTrainingOptions(): Collection
+    {
+        return $this->trainingOptions;
+    }
+
+    public function addTrainingOption(TrainingsOptions $trainingOption): static
+    {
+        if (!$this->trainingOptions->contains($trainingOption)) {
+            $this->trainingOptions->add($trainingOption);
+        }
+
+        return $this;
+    }
+
+    public function removeTrainingOption(TrainingsOptions $trainingOption): static
+    {
+        $this->trainingOptions->removeElement($trainingOption);
 
         return $this;
     }

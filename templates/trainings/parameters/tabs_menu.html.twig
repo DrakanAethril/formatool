@@ -18,6 +18,9 @@
         <li class="nav-item" role="presentation">
             <a href="{{path('training_parameters_topics', {'training': training.id})}}" class="nav-link {{ (currentTab == 'topics') ? 'active' : '' }}">
                     Les matières
+                    {% if (options|default(null) is not empty and currentTab == 'topics') %}
+                        {{ '> '~options }}
+                    {% endif %}
             </a>
         </li>
     {% endif %}
@@ -25,7 +28,7 @@
         <li class="nav-item" role="presentation">
             <a href="{{path('training_parameters_timetable', {'training': training.id})}}" class="nav-link {{ (currentTab == 'timetable') ? 'active' : '' }}">
                     L'agenda
-                    {% if (options|default(null) is not empty) %}
+                    {% if (options|default(null) is not empty and currentTab == 'timetable') %}
                         {{ '> '~options }}
                     {% endif %}
             </a>
@@ -42,6 +45,9 @@
         <li class="nav-item" role="presentation">
             <a href="{{path('trainings_parameters_people', {'training': training.id})}}" class="nav-link {{ (currentTab == 'people') ? 'active' : '' }}">
                 Les utilisateurs
+                {% if (options|default(null) is not empty and currentTab == 'people' ) %}
+                    {{ '> '~options }}
+                {% endif %}
             </a>
         </li>
     {% endif %}
