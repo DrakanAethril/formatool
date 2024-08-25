@@ -21,10 +21,27 @@
         <div class="container-xl">
             <div class="row row-deck row-cards">
                 <div class="col-12">
-                    
                     <div id='calendar-timetable-weekly' data-focus="{{focus}}" data-feed="{{ path('ajax_training_public_timetable_sessions', {'id': training.id} ) }}" class="w-100"></div>
-                    
                 </div>
+                {% if (training.trainingsOptions is not empty) %}
+                    <div class="col-12">
+                        <div class="btn-list">
+                            <a class="btn">
+                                <span class="badge bg-blue text-blue-fg ms-2 p-2" style="background-color:{{constant('DEFAULT_PUBLIC_AGENDA_COLOR', training.trainingsOptions.first)}} !important">
+                                    Classe entière
+                                </span>
+                            </a>
+                            {% for option in training.trainingsOptions %}
+                                <a class="btn">
+                                    <span class="badge bg-blue text-blue-fg ms-2 p-2" style="background-color:{{option.agendaColor}} !important">
+                                        {{option.shortname}}
+                                    </span>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
             </div>
         </div>
     </div>

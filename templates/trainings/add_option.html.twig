@@ -34,11 +34,19 @@
                                        
                                     </div>
                                 </div>
-                                 <div class="col-md-4">
+                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         {{ form_label(optionsForm.shortname, 'Abbréviation de l\'option', {'label_attr': {'class': 'form-label required'}}) }}
                                        
                                             {{ form_widget(optionsForm.shortname, {'attr': {'class': 'form-control', 'required': true}}) }}
+                                       
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="mb-3">
+                                        {{ form_label(optionsForm.agendaColor, 'Couleur d\'agenda', {'label_attr': {'class': 'form-label required'}}) }}
+                                       
+                                            {{ form_widget(optionsForm.agendaColor, {'attr': {'class': 'form-control form-control-color', 'required': true}}) }}
                                        
                                     </div>
                                 </div>

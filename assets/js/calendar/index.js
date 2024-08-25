@@ -72,8 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
       eventContent: function(arg) {
         return { html: '<b>'+arg.event.title+'</b><br/>'+
-                        '<i>'+arg.event.extendedProps.options+'</i><br/>'+
-                        '(salle '+arg.event.extendedProps.classRoom+')</i>' 
+                        '<i>(salle '+arg.event.extendedProps.classRoom+')</i>'
                 };
       },
       headerToolbar: {

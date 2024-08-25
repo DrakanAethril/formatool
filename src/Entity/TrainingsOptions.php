@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ApiResource]
 class TrainingsOptions
 {
+    public const DEFAULT_PUBLIC_AGENDA_COLOR = '#0054A6';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -42,6 +44,9 @@ class TrainingsOptions
      */
     #[ORM\ManyToMany(targetEntity: UsersTrainings::class, mappedBy: 'trainingOptions')]
     private Collection $usersTrainings;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $agendaColor = null;
 
     public function __construct()
     {
@@ -157,6 +162,18 @@ class TrainingsOptions
         if ($this->usersTrainings->removeElement($usersTraining)) {
             $usersTraining->removeTrainingOption($this);
         }
+
+        return $this;
+    }
+
+    public function getAgendaColor(): ?string
+    {
+        return $this->agendaColor;
+    }
+
+    public function setAgendaColor(?string $agendaColor): static
+    {
+        $this->agendaColor = $agendaColor;
 
         return $this;
     }

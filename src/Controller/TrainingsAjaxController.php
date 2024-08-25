@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\LessonSessions;
 use App\Entity\Trainings;
+use App\Entity\TrainingsOptions;
 use App\Repository\LessonSessionsRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -77,7 +78,6 @@ class TrainingsAjaxController extends AbstractController
                 'title'=> $sessionDb->getDisplayName(),
                 'start'=> $dateStartTime,
                 'end' => $dateEndTime,
-                'backgroundColor' => empty($sessionDb->getLessonType()) ? '#D3D3D3' : $sessionDb->getLessonType()->getAgendaColor(),
                 'allDay' => false,
                 'extendedProps' => [
                     'topic' => $sessionDb->getTopic()->getTopics()->getName(),
@@ -88,8 +88,14 @@ class TrainingsAjaxController extends AbstractController
                 ]
             ];
             if($routeName == 'ajax_training_timetable_sessions' || $routeName == 'ajax_training_timetable_sessions_with_options') {
+                $sessionData['backgroundColor'] = empty($sessionDb->getLessonType()) ? '#D3D3D3' : $sessionDb->getLessonType()->getAgendaColor();
                 $sessionData['url'] = $this->generateUrl('training_add_lessonsession', ['training' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]);
                 $sessionData['extendedProps']['updateUrl'] = $this->generateUrl('training_update_lessonsession', ['training' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]);
+            } else {
+                $sessionData['backgroundColor'] = TrainingsOptions::DEFAULT_PUBLIC_AGENDA_COLOR;
+                if(!empty($sessionDbOptions) && count($sessionDbOptions) == 1) {
+                    $sessionData['backgroundColor'] = $sessionDb->getTrainingOptions()->first()->getAgendaColor();
+                }
             }
             $sessions[] = $sessionData;
         }
