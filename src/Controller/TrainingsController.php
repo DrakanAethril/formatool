@@ -43,11 +43,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class TrainingsController extends AbstractController
 {
 
-    #[Route('/{training}/timetable', name: 'training_timetable')] 
-    function timetable(Trainings $training, Request $request): Response {
+    #[Route('/{training}/timetable', name: 'training_timetable')]
+    #[Route('/{training<\d+>}/timetable/{options}', name: 'training_timetable_with_options')] 
+    function timetable(Trainings $training, Request $request, $options=null): Response {
         
         if(empty($training))
         return $this->redirectToRoute('home');
+        if(empty($options)) $options = false;
 
         $focus = date("Y-m-d");
         if(!empty($request->get('focus'))) {
@@ -67,7 +69,8 @@ class TrainingsController extends AbstractController
         return $this->render('trainings/timetable_weekly.html.twig', [
             'training' => $training,
             'focus' => $focus,
-            'menuTrainings' => 'active'
+            'menuTrainings' => 'active',
+            'options' => $options
         ]);
     }
 

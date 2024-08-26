@@ -21,18 +21,26 @@
         <div class="container-xl">
             <div class="row row-deck row-cards">
                 <div class="col-12">
-                    <div id='calendar-timetable-weekly' data-focus="{{focus}}" data-feed="{{ path('ajax_training_public_timetable_sessions', {'id': training.id} ) }}" class="w-100"></div>
+                    <div id='calendar-timetable-weekly' data-focus="{{focus}}" data-feed="{{ path('ajax_training_public_timetable_sessions_with_options', {'id': training.id, 'options':options} ) }}" class="w-100"></div>
                 </div>
                 {% if (training.trainingsOptions is not empty) %}
+                    {% set activeOption = '' %}
+                    {% if (options is empty) %}
+                        {% set activeOption = 'active' %}
+                    {% endif %}
                     <div class="col-12">
                         <div class="btn-list">
-                            <a class="btn">
+                            <a class="btn {{activeOption}}" href="{{ path('training_timetable', {'training': training.id})}}">
                                 <span class="badge bg-blue text-blue-fg ms-2 p-2" style="background-color:{{constant('DEFAULT_PUBLIC_AGENDA_COLOR', training.trainingsOptions.first)}} !important">
                                     Classe entière
                                 </span>
                             </a>
                             {% for option in training.trainingsOptions %}
-                                <a class="btn">
+                                {% set activeOption = '' %}
+                                {% if (options == option.shortname) %}
+                                    {% set activeOption = 'active' %}
+                                {% endif %}
+                                <a class="btn {{activeOption}}" href="{{ path('training_timetable_with_options', {'training': training.id, 'options': option.shortname})}}">
                                     <span class="badge bg-blue text-blue-fg ms-2 p-2" style="background-color:{{option.agendaColor}} !important">
                                         {{option.shortname}}
                                     </span>
