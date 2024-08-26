@@ -40,20 +40,22 @@
                         </thead>
                         <tbody>
                             {% for student in students %}
-                                <tr>
-                                    <td>
-                                        <span class="avatar avatar-m rounded" style="background-image: url({{asset(student.user.avatarUrl)}})"></span>
-                                    </td>
-                                    <td class="align-middle">
-                                        <span class="m-0 mb-1">{{student.user.displayName}}</span>
-                                    </td>
-                                    {% if(training.trainingsOptions is not empty) %}
-                                        <td class="align-middle">
-                                            <span class="m-0 mb-1">{{student.trainingOptions.toArray|sort|join(', ')}}</span>
+                                {% if (student.enumStatusObject.value != 'INACTIVE' and student.enumStatusObject.value != 'REFUSED') %}
+                                    <tr>
+                                        <td>
+                                            <span class="avatar avatar-m rounded" style="background-image: url({{asset(student.user.avatarUrl)}})"></span>
                                         </td>
-                                    {% endif %}
-                                    <td class="text-end"></td>
-                                </tr>
+                                        <td class="align-middle">
+                                            <span class="m-0 mb-1">{{student.user.displayName}}</span>
+                                        </td>
+                                        {% if(training.trainingsOptions is not empty) %}
+                                            <td class="align-middle">
+                                                <span class="m-0 mb-1">{{student.trainingOptions.toArray|sort|join(', ')}}</span>
+                                            </td>
+                                        {% endif %}
+                                        <td class="text-end"></td>
+                                    </tr>
+                                {% endif %}
                             {%endfor%}
                         </tbody>
                     </table>
