@@ -36,7 +36,7 @@
                             </span>
                         </a>
                     </li>
-                    {% if menu_places is not empty %}
+                    {% if (menu_places is not empty and app.session.get('AclPermissions').places is not empty) %}
 
                         <li class="nav-item dropdown {{menuPlaces|default('')}}">
                             <a class="nav-link dropdown-toggle" href="#menu-trainings" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
