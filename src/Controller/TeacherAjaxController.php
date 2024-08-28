@@ -31,6 +31,10 @@ class TeacherAjaxController extends AbstractController
                 'end' => $dateEndTime,
                 //'backgroundColor' => $timeSlot->getTimeSlotsTypes()->getColor(),
                 'allDay' => false,
+                'extendedProps' => [
+                    'classRoom' => (empty($sessionDb->getClassRooms())) ? 'NA' : $sessionDb->getClassRooms()->getName(),
+                    'options' => empty($sessionDbOptions) ? '' : implode('/', $sessionDbOptions).' '
+                ]
                 //'url' => $this->generateUrl('training_add_lessonsession', ['id' => $sessionDb->getTraining()->getId(), 'tt' => $sessionDb->getId()]),
             ];
         }
