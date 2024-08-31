@@ -27,8 +27,8 @@ class LessonSessions
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $endHour = null;
 
-    #[ORM\Column]
-    private ?int $length = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    private ?string $length = null;
 
     #[ORM\ManyToOne(inversedBy: 'lessonSessions')]
     #[ORM\JoinColumn(nullable: false)]
@@ -102,12 +102,12 @@ class LessonSessions
         return $this;
     }
 
-    public function getLength(): ?int
+    public function getLength(): ?string
     {
         return $this->length;
     }
 
-    public function setLength(int $length): static
+    public function setLength(string $length): static
     {
         $this->length = $length;
 

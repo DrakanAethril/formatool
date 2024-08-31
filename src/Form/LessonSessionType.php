@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -44,8 +45,12 @@ class LessonSessionType extends AbstractType
                 'widget' => 'single_text',
                 'html5' => false
             ])
-            ->add('length', IntegerType::class, [
-                'required'=> true
+            ->add('length', NumberType::class, [
+                'required'=> true,
+                'scale' => 2,
+                'rounding_mode' => \NumberFormatter::ROUND_HALFUP
+                //'input' => 'number',
+                //'html5' => true
             ])
             ->add('topic', EntityType::class,
                 [
