@@ -543,4 +543,11 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getPoliteDisplayName(): string {
+        $res = '';
+        if(!empty($this->getFirstname())) $res .= strtoupper($this->getFirstname()[0]).'. ';
+        if(!empty($this->getLastname())) $res .= ucfirst($this->getLastname());
+        return $res;
+    }
 }

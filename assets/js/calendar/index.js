@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
       eventContent: function(arg) {
         return { html: '<b>'+arg.event.title+'</b><br/>'+
-                        '<i>(salle '+arg.event.extendedProps.classRoom+')</i>'
+                        '<i>'+arg.event.extendedProps.teacher+' ('+arg.event.extendedProps.classRoom+')</i>'
                 };
       },
       headerToolbar: {

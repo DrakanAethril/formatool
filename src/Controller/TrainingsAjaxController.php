@@ -84,7 +84,8 @@ class TrainingsAjaxController extends AbstractController
                     'training' => $sessionDb->getTraining()->getId(),
                     'lessonType' => empty($sessionDb->getLessonType()) ? 'NA' : $sessionDb->getLessonType()->getName(),
                     'classRoom' => (empty($sessionDb->getClassRooms())) ? 'NA' : $sessionDb->getClassRooms()->getName(),
-                    'options' => empty($sessionDbOptions) ? '' : implode('/', $sessionDbOptions).' '
+                    'options' => empty($sessionDbOptions) ? '' : implode('/', $sessionDbOptions).' ',
+                    'teacher' => empty($sessionDb->getTeacher()) ? '' : $sessionDb->getTeacher()->getPoliteDisplayName()
                 ]
             ];
             if($routeName == 'ajax_training_timetable_sessions' || $routeName == 'ajax_training_timetable_sessions_with_options') {
