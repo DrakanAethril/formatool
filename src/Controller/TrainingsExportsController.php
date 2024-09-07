@@ -39,5 +39,6 @@ class TrainingsExportsController extends AbstractController
             return $this->redirectToRoute('training_parameters_options', ['training' => $training->getId()]);
         
             return $this->redirectToRoute('home');
+
     }
 }
