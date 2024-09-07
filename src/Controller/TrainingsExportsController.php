@@ -20,25 +20,37 @@ class TrainingsExportsController extends AbstractController
     #[Route('/{training<\d+>}/exports', name: 'training_exports_routing')]
     #[IsGranted(AclRessourcesEnum::TRAINING_EXPORTS->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
     public function exportsRouting(Trainings $training) {
-        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TIMESLOT->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
-            return $this->redirectToRoute('training_parameters_timeslots', ['training' => $training->getId()]);
+        if($this->isGranted(AclRessourcesEnum::TRAINING_EXPORTS_SIGNATURE->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
+            return $this->redirectToRoute('training_exports_signature', ['training' => $training->getId()]);
 
-        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC_GROUP->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
-            return $this->redirectToRoute('training_parameters_topics_groups', ['training' => $training->getId()]);
-
-        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_TOPIC->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
-            return $this->redirectToRoute('training_parameters_topics', ['training' => $training->getId()]);
-
-        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_LESSON_SESSION->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
-            return $this->redirectToRoute('training_parameters_timetable', ['training' => $training->getId()]);
-
-        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_FINANCIAL->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
-            return $this->redirectToRoute('training_parameters_financial', ['training' => $training->getId()]);
-
-        if($this->isGranted(AclRessourcesEnum::TRAINING_PARAMETERS_OPTION->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
-            return $this->redirectToRoute('training_parameters_options', ['training' => $training->getId()]);
+        if($this->isGranted(AclRessourcesEnum::TRAINING_EXPORTS_INVOICING->value.'|'.AclPrivilegesEnum::READ->value, $training)) 
+            return $this->redirectToRoute('training_exports_invoicing', ['training' => $training->getId()]);
         
-            return $this->redirectToRoute('home');
+        return $this->redirectToRoute('home');
+    }
 
+    #[Route('/{training<\d+>}/exports/signature', name: 'training_exports_signature')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_EXPORTS_SIGNATURE->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
+    public function signature(Trainings $training) {
+        
+        if(empty($training))
+        return $this->redirectToRoute('home');
+
+        return $this->render('trainings_exports/index.html.twig', [
+            'training' => $training,
+            'menuTrainings' => 'active',
+            'currentTab' => 'signature' 
+        ]);
+    }
+
+    #[Route('/{training<\d+>}/exports/invoicing', name: 'training_exports_invoicing')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_EXPORTS_INVOICING->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
+    public function invoicing(Trainings $training) {
+        
+        return $this->render('trainings_exports/index.html.twig', [
+            'training' => $training,
+            'menuTrainings' => 'active',
+            'currentTab' => 'invoicing' 
+        ]);
     }
 }
