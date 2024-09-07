@@ -501,6 +501,24 @@ class TrainingsController extends AbstractController
             return $this->redirectToRoute('home');
         }
     }
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('/{training<\d+>}/user/delete/{id}', name: 'training_delete_person')]
+    public function deletePerson(#[MapEntity(expr: 'repository.find(training)')] Trainings $training, $id, UsersTrainingsRepository $usersTrainingsRepository, EntityManagerInterface $entityManager) : Response
+    {   
+        $userTrainings = $usersTrainingsRepository->findOneBy(['id' => intval($id)]);
+        if(!empty($userTrainings)) {
+            $idTraining = $training->getId();
+            if($userTrainings->getTraining()->getId() != $training->getId()) {
+                return $this->redirectToRoute('home');
+            }
+            $entityManager->remove($userTrainings);
+            $entityManager->flush();
+            return $this->redirectToRoute('trainings_parameters_people', ['training' => $idTraining]);
+        } else {
+            return $this->redirectToRoute('home');
+        }
+    }
     
     #[IsGranted(AclRessourcesEnum::TRAINING_PARAMETERS_USER->value.'|'.AclPrivilegesEnum::WRITE->value, 'training')]
     #[Route('/{training<\d+>}/user/reactivate/{id}', name: 'training_reactivate_person')]

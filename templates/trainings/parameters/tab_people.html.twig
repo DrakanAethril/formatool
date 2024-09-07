@@ -48,6 +48,11 @@
                                     </a>
                                 {% endif %}
                             {% endif %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{path('training_delete_person', {'training':training.id, 'id':person.id})}}" class="btn btn-ghost-info">
+                                    Supprimer
+                                </a>
+                            {% endif %}
                         </div>
                     </td>
                 </tr>
