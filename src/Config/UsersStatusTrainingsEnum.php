@@ -37,4 +37,16 @@ enum UsersStatusTrainingsEnum:string implements TranslatableInterface {
         };
     }
 
+    public static function allowingPlatformAccess(string $status=self::REFUSED) : bool {
+        switch ($status) {
+            case self::ACTIVE->value :
+            case self::WAITING_CONTRACT->value:
+            case self::WAITING_FILE->value:
+            case self::WAITING_INTERNSHIP->value:
+                return true;
+            default:
+                return false;
+        };
+    }
+
 }
