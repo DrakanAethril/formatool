@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Formation : {{training.title}}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('datatable') }}
+{% endblock %}
+
+{% block body %}
+    {% set dropdownLink = '' %}
+    {% set dropdownContent = '' %}
+    {% set addLink = '' %}
+    {% set addTxt = '' %}
+    {% set tabContent = '' %}
+     {% if currentTab == 'signature' %}
+        {% set tabContent = 'trainings/exports/tab_signature.html.twig' %}
+    {% endif %}
+    {% if currentTab == 'invoicing' %}
+        {% set tabContent = 'trainings/exports/tab_invoicing.html.twig' %}
+    {% endif %}
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <div class="page-pretitle">
+                        {{training.title}}
+                    </div>
+                    <h2 class="page-title">
+                        Exports
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-deck row-cards">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            {% include('trainings/exports/tabs_menu.html.twig') %}
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active show">
+                                    {% include(tabContent) %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts_bottom %}
+     {{ encore_entry_script_tags('datatable') }}
+     {{ encore_entry_script_tags('calendar') }}
+{% endblock %}
