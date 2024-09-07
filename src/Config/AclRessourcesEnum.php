@@ -22,6 +22,9 @@ enum AclRessourcesEnum:string implements TranslatableInterface {
     case PLACE_PARAMETERS_CURSUS = 'PLACE_PARAMETERS_CURSUS';
     case PLACE_PARAMETERS_USER = 'PLACE_PARAMETERS_USER';
 
+    // PLACE EXPORTS
+    case PLACE_EXPORTS = 'PLACE_EXPORTS';
+
     // TRAINING ADMIN
     case TRAINING_ALL = 'TRAINING_ALL';
 
@@ -41,6 +44,11 @@ enum AclRessourcesEnum:string implements TranslatableInterface {
     case TRAINING_REPORTING_SCHOLARSHIP = 'TRAINING_REPORTING_SCHOLARSHIP';
     case TRAINING_REPORTING_PEDAGOGIC = 'TRAINING_REPORTING_PEDAGOGIC';
     case TRAINING_REPORTING_FINANCIAL = 'TRAINING_REPORTING_FINANCIAL';
+
+    // TRAINING EXPORTS
+    case TRAINING_EXPORTS = 'TRAINING_EXPORTS';
+    case TRAINING_EXPORTS_SIGNATURE = 'TRAINING_EXPORTS_SIGNATURE';
+    case TRAINING_EXPORTS_INVOICING = 'TRAINING_EXPORTS_INVOICING';
     
     public function trans(TranslatorInterface $translator, string $locale = null): string
     {
@@ -59,6 +67,8 @@ enum AclRessourcesEnum:string implements TranslatableInterface {
             self::PLACE_PARAMETERS_CURSUS => 'Paramétrage de la structure - Cursus',
             self::PLACE_PARAMETERS_USER => 'Paramétrage de la structure - Utilisateurs',
 
+            self::PLACE_EXPORTS => 'Exports pour la structure',
+
             self::TRAINING_ALL => 'Accès à toute la formation',
 
             self::TRAINING_PARAMETERS  => 'Paramétrage de la formations',
@@ -74,6 +84,10 @@ enum AclRessourcesEnum:string implements TranslatableInterface {
             self::TRAINING_REPORTING_SCHOLARSHIP => 'Reporting de la formation - Vie scolaire',
             self::TRAINING_REPORTING_PEDAGOGIC => 'Reporting de la formation - Pédagogique',
             self::TRAINING_REPORTING_FINANCIAL => 'Reporting de la formation - Financier',
+
+            self::TRAINING_EXPORTS => 'Exports pour la formation',
+            self::TRAINING_EXPORTS_SIGNATURE => 'Listes d\'émargement',
+            self::TRAINING_EXPORTS_INVOICING => 'Heures facturables'
 
         };
     }

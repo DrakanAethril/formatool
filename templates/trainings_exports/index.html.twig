@@ -15,10 +15,10 @@
     {% set addTxt = '' %}
     {% set tabContent = '' %}
      {% if currentTab == 'signature' %}
-        {% set tabContent = 'trainings/exports/tab_signature.html.twig' %}
+        {% set tabContent = 'trainings_exports/tabs/signature.html.twig' %}
     {% endif %}
     {% if currentTab == 'invoicing' %}
-        {% set tabContent = 'trainings/exports/tab_invoicing.html.twig' %}
+        {% set tabContent = 'trainings_exports/tabs/invoicing.html.twig' %}
     {% endif %}
     <div class="page-header d-print-none">
         <div class="container-xl">
@@ -40,7 +40,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            {% include('trainings/exports/tabs_menu.html.twig') %}
+                            {% include('trainings_exports/tabs/menu.html.twig') %}
                         </div>
                         <div class="card-body">
                             <div class="tab-content">
