@@ -3,15 +3,16 @@
         table.signature tr, table.signature td {
             border-color: black;
             border: 1px solid black;
+            padding: 5px;
         } 
     </style>
     <table align="center" width="100%" class="table table-bordered signature mb-3" style="page-break-after: always;" style="">
-        <tr  style="border-top:none !important; border-left:none; !important">
+        <tr style="border-top:none !important; border-left:none; !important">
             <td rowspan="3" colspan="2" class="text-center align-middle" width="20%" height="10%" style="border-top:none !important; border-left:none; !important">
                 <img src="{{ asset('img/logo_beaup.png') }}" style="margin:auto; display:block" width="80%" height="80%">
             </td>
-            <td colspan="8" class="text-center align-middle" style="border-top: 1 px solib black;">
-                Institution Beaupeyrat – Centre de formation<br/>
+            <td colspan="8" class="text-center align-middle fs-5" style="border-top: 1 px solib black;">
+                <b>Institution Beaupeyrat – Centre de formation</b><br/>
                 <span class="fs-6"><br/>
                     9ter rue Pétiniaud Beaupeyrat - 87036 Limoges Cedex<br/>
                     Siret : 775 716 715 00013 – APE 8531 Z<br/>
@@ -21,13 +22,13 @@
             </td>
         </tr>
         <tr style="border-top:none !important; border-left:none; !important">
-            <td colspan="8" class="text-center align-middle">
-                {{training.shortTitle}} - OPTION {{training_option}}
+            <td colspan="8" class="text-center align-middle fs-5">
+                <b>{{training.shortTitle}} - OPTION {{training_option}}</b>
             </td>
         </tr>
         <tr style="border-top:none !important; border-left:none; !important">
-            <td colspan="8" class="text-center align-middle">
-                {{signatures_date}}
+            <td colspan="8" class="text-center align-middle fs-5">
+                <b>{{signatures_date}}</b>
             </td>
         </tr>
         <tr>
@@ -99,11 +100,11 @@
         <tr>
             <td colspan="2" class="text-center">Signature Intervenant</td>
             {% for session in sessions %}
-                <td></td>
+                <td class="text-center align-middle fs-4"></td>
             {% endfor %}
             {% if sessions|length < 8 %}
                 {% set remainingCell = 8-sessions|length %}
-                <td class="text-center align-middle fs-5" colspan="{{remainingCell}}">&nbsp;</td>
+                <td class="text-center align-middle fs-4" colspan="{{remainingCell}}">&nbsp;</td>
             {% endif %}
         </tr>
     </table>
