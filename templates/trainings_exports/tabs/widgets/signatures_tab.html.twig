@@ -1,10 +1,16 @@
     <div class="mt-4"></div>
-    <table align="center" width="100%" class="table table-bordered  mb-3" style="page-break-after: always;">
-        <tr>
-            <td rowspan="3" colspan="2" class="text-center align-middle" width="20%" height="10%" style="">
+    <style>
+        table.signature tr, table.signature td {
+            border-color: black;
+            border: 1px solid black;
+        } 
+    </style>
+    <table align="center" width="100%" class="table table-bordered signature mb-3" style="page-break-after: always;" style="">
+        <tr  style="border-top:none !important; border-left:none; !important">
+            <td rowspan="3" colspan="2" class="text-center align-middle" width="20%" height="10%" style="border-top:none !important; border-left:none; !important">
                 <img src="{{ asset('img/logo_beaup.png') }}" style="margin:auto; display:block" width="80%" height="80%">
             </td>
-            <td colspan="8" class="text-center align-middle">
+            <td colspan="8" class="text-center align-middle" style="border-top: 1 px solib black;">
                 Institution Beaupeyrat – Centre de formation<br/>
                 <span class="fs-6"><br/>
                     9ter rue Pétiniaud Beaupeyrat - 87036 Limoges Cedex<br/>
@@ -14,12 +20,12 @@
                 </span>
             </td>
         </tr>
-        <tr>
+        <tr style="border-top:none !important; border-left:none; !important">
             <td colspan="8" class="text-center align-middle">
                 {{training.shortTitle}} - OPTION {{training_option}}
             </td>
         </tr>
-        <tr>
+        <tr style="border-top:none !important; border-left:none; !important">
             <td colspan="8" class="text-center align-middle">
                 {{signatures_date}}
             </td>
@@ -74,14 +80,14 @@
                 {% if student_option == key_option %}
                     {% for student in students_list %}
                         <tr>
-                            <td class="text-center align-middle" width="15%">{{student.user.lastname}}</td>
-                            <td class="text-center align-middle" width="15%">{{student.user.firstname}}</td>
+                            <td class="text-center align-middle fs-2" width="15%">{{student.user.lastname}}</td>
+                            <td class="text-center align-middle fs-2" width="15%">{{student.user.firstname}}</td>
                             {% for session in sessions %}
                                 <td></td>
                             {% endfor %}
                             {% if sessions|length < 8 %}
                                 {% set remainingCell = 8-sessions|length %}
-                                <td class="text-center align-middle fs-5" colspan="{{remainingCell}}"></td>
+                                <td class="text-center align-middle fs-2" colspan="{{remainingCell}}"></td>
                             {% endif %}
                         </tr>
                     {% endfor %}
