@@ -108,6 +108,7 @@ class LessonSessionsRepository extends ServiceEntityRepository
             //->andWhere('l.day <= :val')
             ->setParameter('end', $endDate)
             ->orderBy('l.day', 'ASC')
+            ->addOrderBy('l.startHour', 'ASC')
             ->getQuery()
             ->getResult();
         }
