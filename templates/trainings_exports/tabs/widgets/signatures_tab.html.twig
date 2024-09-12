@@ -100,11 +100,11 @@
         <tr>
             <td colspan="2" class="text-center">Signature Intervenant</td>
             {% for session in sessions %}
-                <td class="text-center align-middle fs-4"></td>
+                <td class="text-center align-middle fs-2"></td>
             {% endfor %}
             {% if sessions|length < 8 %}
                 {% set remainingCell = 8-sessions|length %}
-                <td class="text-center align-middle fs-3" colspan="{{remainingCell}}">&nbsp;</td>
+                <td class="text-center align-middle fs-2" colspan="{{remainingCell}}">&nbsp;</td>
             {% endif %}
         </tr>
     </table>
