@@ -80,14 +80,14 @@
                 {% if student_option == key_option %}
                     {% for student in students_list %}
                         <tr>
-                            <td class="text-center align-middle fs-2" width="15%">{{student.user.lastname}}</td>
-                            <td class="text-center align-middle fs-2" width="15%">{{student.user.firstname}}</td>
+                            <td class="text-center align-middle fs-4" width="15%">{{student.user.lastname}}</td>
+                            <td class="text-center align-middle fs-4" width="15%">{{student.user.firstname}}</td>
                             {% for session in sessions %}
                                 <td></td>
                             {% endfor %}
                             {% if sessions|length < 8 %}
                                 {% set remainingCell = 8-sessions|length %}
-                                <td class="text-center align-middle fs-2" colspan="{{remainingCell}}"></td>
+                                <td class="text-center align-middle fs-4" colspan="{{remainingCell}}"></td>
                             {% endif %}
                         </tr>
                     {% endfor %}
