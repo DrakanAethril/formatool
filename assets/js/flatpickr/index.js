@@ -44,4 +44,17 @@ document.addEventListener("DOMContentLoaded", () => {
         //maxTime: 16,
         noCalendar: true
     });
+
+    flatpickr(".startSignatureExportDate-flatpickr", {
+        enableTime: true,
+        dateFormat: "d-m-Y",
+        enableTime: false
+        //time_24hr : true
+    });
+    flatpickr(".endSignatureExportDate-flatpickr", {
+        enableTime: true,
+        dateFormat: "d-m-Y",
+        enableTime: false
+        //time_24hr : false
+    });
 });

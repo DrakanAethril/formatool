@@ -5,7 +5,11 @@ namespace App\Controller;
 use App\Config\AclPrivilegesEnum;
 use App\Config\AclRessourcesEnum;
 use App\Entity\Trainings;
+use App\Form\SignaturePdfType;
+use App\Repository\LessonSessionsRepository;
+use App\Repository\UsersTrainingsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route as AnnotationRoute;
 use Symfony\Component\Routing\Attribute\Route;
@@ -31,15 +35,59 @@ class TrainingsExportsController extends AbstractController
 
     #[Route('/{training<\d+>}/exports/signature', name: 'training_exports_signature')]
     #[IsGranted(AclRessourcesEnum::TRAINING_EXPORTS_SIGNATURE->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
-    public function signature(Trainings $training) {
+    public function signature(Trainings $training, Request $request, LessonSessionsRepository $lessonSessionsRepository, UsersTrainingsRepository $usersTrainingsRepository) {
         
         if(empty($training))
         return $this->redirectToRoute('home');
 
+        $dataSignatures = [];
+        $studentsList = [];
+
+        $form = $this->createForm(SignaturePdfType::class, null,  []);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $lessons = $lessonSessionsRepository->findSessionsBetweenDatesForTraining($training, $form->get('start_day')->getData(),$form->get('end_day')->getData());
+            if(!empty($lessons)) {
+                foreach($lessons as $lesson) {
+                    $currentLineData = [
+                        'startHour' => $lesson->getStartHour()->format('H:i'),
+                        'endHour' => $lesson->getEndHour()->format('H:i'),
+                        'teacher' => empty($lesson->getTeacher()) ? 'NA' : $lesson->getTeacher()->getPoliteDisplayName(),
+                        'topic' => $lesson->getDisplayName(),
+                        'resource' => $lesson->getTopic()->getTopics()->getName()
+                    ];
+                    if(!empty($lesson->getTrainingOptions())) {
+                        foreach($lesson->getTrainingOptions() as $option) {
+                            $dataSignatures[$option->getShortName()][$lesson->getDay()->format('d/m/Y')][] = $currentLineData;
+                        }
+                    } else {
+                        $dataSignatures['ALL'][$lesson->getDay()->format('d/m/Y')][] = $currentLineData;
+                    }
+                }
+                $aStudentList = $usersTrainingsRepository->getAllowedStudentsForTraining($training);
+                if(!empty($aStudentList)) {
+                    foreach($aStudentList as $student) {
+                        if(empty($training->getTrainingsOptions())) {
+                            $studentsList['ALL'] = $student;
+                        } else {
+                            if(!empty($student->getTrainingOptions())) {
+                                foreach($student->getTrainingOptions() as $option) {
+                                    $studentsList[$option->getShortName()][] = $student;
+                                }
+                            }
+                        }
+                    } 
+                }
+            }
+        }
+
         return $this->render('trainings_exports/index.html.twig', [
             'training' => $training,
             'menuTrainings' => 'active',
-            'currentTab' => 'signature' 
+            'currentTab' => 'signature',
+            'signatureForm' => $form->createView(),
+            'signatureData' => $dataSignatures,
+            'studentsList' => $studentsList
         ]);
     }
 

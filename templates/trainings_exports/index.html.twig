@@ -6,6 +6,7 @@
 
 {% block stylesheets %}
     {{ encore_entry_link_tags('datatable') }}
+    {{ encore_entry_link_tags('flatpickr') }}
 {% endblock %}
 
 {% block body %}
@@ -39,7 +40,7 @@
             <div class="row row-deck row-cards">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header d-print-none">
                             {% include('trainings_exports/tabs/menu.html.twig') %}
                         </div>
                         <div class="card-body">
@@ -61,4 +62,5 @@
 {% block javascripts_bottom %}
      {{ encore_entry_script_tags('datatable') }}
      {{ encore_entry_script_tags('calendar') }}
+    {{ encore_entry_script_tags('flatpickr') }}
 {% endblock %}

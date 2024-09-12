@@ -2,6 +2,10 @@
 
 namespace App\Repository;
 
+use App\Config\UsersRolesTrainingsEnum;
+use App\Config\UsersStatusPlacesEnum;
+use App\Config\UsersStatusTrainingsEnum;
+use App\Entity\Trainings;
 use App\Entity\UsersTrainings;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -45,4 +49,22 @@ class UsersTrainingsRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function getAllowedStudentsForTraining(Trainings $training) : array {
+        $res = [];
+        if(!empty($training)) {
+            $res = $this->createQueryBuilder('ut')
+            ->innerJoin('ut.user', 'u')
+            ->andWhere('ut.training = :training')
+            ->setParameter('training', $training)
+            ->orderBy('u.lastname', 'ASC')
+            ->getQuery()
+            ->getResult();
+            foreach($res as $key =>$student) {
+                if(!UsersStatusTrainingsEnum::allowingPlatformAccess($student->getStatus())) unset($res[$key]);
+                if(!in_array(UsersRolesTrainingsEnum::STUDENT->value, $student->getRoles())) unset($res[$key]);
+            }
+        }
+        return $res;
+    }
 }

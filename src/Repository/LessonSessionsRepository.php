@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\LessonSessions;
 use App\Entity\LessonTypes;
 use App\Entity\Trainings;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -92,6 +93,23 @@ class LessonSessionsRepository extends ServiceEntityRepository
             foreach($lengthPerType as $keyVPST => $valueVPST) {
                 $res += $valueVPST;
             }
+        }
+        return $res;
+    }
+
+    public function findSessionsBetweenDatesForTraining(Trainings $training, DateTime $startDate=null, DateTime $endDate = null) : array {
+        $res = [];
+        if(!empty($startDate) && !empty($endDate) && $endDate>=$startDate) {
+            $res = $this->createQueryBuilder('l')
+            ->andWhere('l.training = :training')
+            ->setParameter('training', $training)
+            ->andWhere('l.day BETWEEN :start AND :end')
+            ->setParameter('start', $startDate)
+            //->andWhere('l.day <= :val')
+            ->setParameter('end', $endDate)
+            ->orderBy('l.day', 'ASC')
+            ->getQuery()
+            ->getResult();
         }
         return $res;
     }

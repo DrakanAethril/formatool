@@ -1,1 +1,28 @@
-signature
+<div class="col-12 d-print-none">
+    {{ form_errors(signatureForm) }}
+    {{ form_start(signatureForm, { 'attr' : { 'class': 'card' } } ) }}
+        <div class="card-body">
+            <div class="row row-cards">
+                    <div class="col-md-3 mb-3">
+                        {{ form_label(signatureForm.start_day, 'Date de début', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(signatureForm.start_day, {'attr': {'class': 'form-control startSignatureExportDate-flatpickr', 'required': false}}) }}
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        {{ form_label(signatureForm.end_day, 'Date de fin', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(signatureForm.end_day, {'attr': {'class': 'form-control endSignatureExportDate-flatpickr', 'required': false}}) }}
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <div class="form-label">&nbsp;</div>
+                        <button type="submit" class="btn btn-primary form-control">Générer</button>
+                    </div>
+                </div>
+        </div>
+    {{ form_end(signatureForm) }}
+</div>
+{% if signatureData is not empty %}
+    {% for key_option, optionData in signatureData %}
+        {% for key_date, sessions in optionData %}
+            {% include('trainings_exports/tabs/widgets/signatures_tab.html.twig') with {'training': training, 'training_option': key_option, 'signatures_date': key_date, 'sessions': sessions, 'students': studentsList} %}
+        {% endfor %}
+    {% endfor %}
+{% endif %}
