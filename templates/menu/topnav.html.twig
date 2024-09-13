@@ -127,6 +127,11 @@
                                                                 Reporting
                                                             </a>
                                                         {% endif %}
+                                                        {% if (is_granted('TRAINING_EXPORTS|READ', training)) %}
+                                                            <a href="{{ path('training_exports_routing', {'training': training.id} ) }}" class="dropdown-item">
+                                                                Exports
+                                                            </a>
+                                                        {% endif %}
                                                         {% if (is_granted('TRAINING_PARAMETERS|READ', training)) %}
                                                             <a href="{{ path('training_parameters', {'training': training.id} ) }}" class="dropdown-item">
                                                                 Paramétrage

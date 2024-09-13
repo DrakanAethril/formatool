@@ -2,14 +2,14 @@
 
     {% if (is_granted('TRAINING_EXPORTS_SIGNATURE|READ', training)) %}
         <li class="nav-item" role="presentation">
-            <a href="{{path('training_exports_signature', {'training': training.id})}}" class="nav-link {{ (currentTab == 'options') ? 'active' : '' }}">
+            <a href="{{path('training_exports_signature', {'training': training.id})}}" class="nav-link {{ (currentTab == 'signature') ? 'active' : '' }}">
                 Feuilles d'émargement
             </a>
         </li>
     {% endif %}
     {% if (is_granted('TRAINING_EXPORTS_INVOICING|READ', training)) %}
         <li class="nav-item" role="presentation">
-            <a href="{{path('training_exports_invoicing', {'training': training.id})}}" class="nav-link {{ (currentTab == 'topicsGroups') ? 'active' : '' }}">
+            <a href="{{path('training_exports_invoicing', {'training': training.id})}}" class="nav-link {{ (currentTab == 'invoicing') ? 'active' : '' }}">
                 Heures facturables
             </a>
         </li>
