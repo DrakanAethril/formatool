@@ -1,1 +1,45 @@
-invoicing
+<div class="col-12 d-print-none">
+    {{ form_errors(invoicingForm) }}
+    {{ form_start(invoicingForm, { 'attr' : { 'class': 'card' } } ) }}
+        <div class="card-body">
+            <div class="row row-cards">
+                    <div class="col-md-3 mb-3">
+                        {{ form_label(invoicingForm.start_day, 'Date de début', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(invoicingForm.start_day, {'attr': {'class': 'form-control startInvoicingExportDate-flatpickr', 'required': false}}) }}
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        {{ form_label(invoicingForm.end_day, 'Date de fin', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(invoicingForm.end_day, {'attr': {'class': 'form-control endInvoicingExportDate-flatpickr', 'required': false}}) }}
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <div class="form-label">&nbsp;</div>
+                        <button type="submit" class="btn btn-primary form-control">Générer</button>
+                    </div>
+                </div>
+        </div>
+    {{ form_end(invoicingForm) }}
+</div>
+{% if invoicingData is not empty %}
+    <table id="training-exports-invoicing" class="table card-table table-vcenter text-nowrap datatable" style="width: 100%">
+        <thead>
+            <tr>
+                <td>Nom</td>
+                <td>Prénom</td>
+                <td>Volume</td>
+                <td>Détails (soon)</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for teacher in invoicingData %}
+                {% if teacher['volume'] is not empty %}
+                    <tr>
+                        <td>{{teacher['last_name']}}</td>
+                        <td>{{teacher['first_name']}}</td>
+                        <td>{{teacher['volume']}}</td>
+                        <td></td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}

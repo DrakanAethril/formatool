@@ -57,4 +57,16 @@ document.addEventListener("DOMContentLoaded", () => {
         enableTime: false
         //time_24hr : false
     });
+    flatpickr(".startInvoicingExportDate-flatpickr", {
+        enableTime: true,
+        dateFormat: "d-m-Y",
+        enableTime: false
+        //time_24hr : true
+    });
+    flatpickr(".endInvoicingExportDate-flatpickr", {
+        enableTime: true,
+        dateFormat: "d-m-Y",
+        enableTime: false
+        //time_24hr : false
+    });
 });
