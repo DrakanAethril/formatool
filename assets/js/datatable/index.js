@@ -350,6 +350,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     'visible': false
                 }
             ],
+            footerCallback: function (row, data, start, end, display) {
+                let api = this.api();
+         
+                // Total Hours
+                let total = api
+                    .column(colNum-2)
+                    .data()
+                    .reduce((a, b) => a*1 + b*1);
+         
+                // Update footer
+                api.column(2).footer().innerHTML =
+                    'Total : '+total+'H'
+            },
             "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
         } );
     }
