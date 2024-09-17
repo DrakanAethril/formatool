@@ -100,16 +100,18 @@ class TrainingsExportsController extends AbstractController
         return $this->redirectToRoute('home');
 
         $dataInvoicing = [];
-        $dataInvoicing['NO_TEACHER']['volume'] = 0;
-        $dataInvoicing['NO_TEACHER']['detail'] = [];
-        $dataInvoicing['NO_TEACHER']['first_name'] = 'NA';
-        $dataInvoicing['NO_TEACHER']['last_name'] = 'NA';
-
         $form = $this->createForm(ExportInvoicingType::class, null,  []);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $lessons = $lessonSessionsRepository->findSessionsBetweenDatesForTraining($training, $form->get('start_day')->getData(),$form->get('end_day')->getData());
             if(!empty($lessons)) {
+
+                $dataInvoicing['NO_TEACHER']['volume'] = 0;
+                $dataInvoicing['NO_TEACHER']['detail'] = [];
+                $dataInvoicing['NO_TEACHER']['first_name'] = 'NA';
+                $dataInvoicing['NO_TEACHER']['last_name'] = 'NA';
+                $dataInvoicing['NO_TEACHER']['id'] = 0;
+
                 foreach($lessons as $lesson) {
                     if(empty($lesson->getTeacher())) {
                         $teacher = 'NO_TEACHER';

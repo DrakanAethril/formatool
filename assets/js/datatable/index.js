@@ -2,6 +2,7 @@ import DataTable from 'datatables.net-dt';
 import languageFr from 'datatables.net-plugins/i18n/fr-FR.js';
 
 import 'datatables.net-rowgroup-dt';
+
 import 'datatables.net-dt/css/jquery.dataTables.min.css';
 
 
@@ -345,9 +346,9 @@ document.addEventListener("DOMContentLoaded", () => {
             "language": languageFr,
             'columnDefs': [ 
                 {
-                    'targets': [0,colNum-1], /* column index */
-                    'orderable': false, /* true or false */
-                },
+                    'targets': [colNum-1],
+                    'visible': false
+                }
             ],
             "dom": '<"card-body border-bottom py-3"<"d-flex"<"text-secondary"l><"ms-auto text-secondary"f>>>t<"card-footer d-flex align-items-center"<"m-0 text-secondary"i><"pagination m-0 ms-auto"p>>',
         } );

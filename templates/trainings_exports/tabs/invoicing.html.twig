@@ -20,13 +20,13 @@
     {{ form_end(invoicingForm) }}
 </div>
 {% if invoicingData is not empty %}
-    <table id="training-exports-invoicing" class="table card-table table-vcenter text-nowrap datatable" style="width: 100%">
+    <table id="training-exports-invoicing" class="table card-table table-vcenter text-nowrap datatable table-striped" style="width: 100%">
         <thead>
             <tr>
                 <td>Nom</td>
                 <td>Prénom</td>
                 <td>Volume</td>
-                <td>Détails (soon)</td>
+                <td></td>
             </tr>
         </thead>
         <tbody>
@@ -36,7 +36,9 @@
                         <td>{{teacher['last_name']}}</td>
                         <td>{{teacher['first_name']}}</td>
                         <td>{{teacher['volume']}}</td>
-                        <td></td>
+                        <td>
+                            {{teacher['detail'] | join('<br/>')| raw}}
+                        </td>
                     </tr>
                 {% endif %}
             {% endfor %}
