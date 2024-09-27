@@ -7,13 +7,6 @@
             </a>
         </li>
     {% endif %}
-    {% if (is_granted('TRAINING_PARAMETERS_TOPIC_GROUP|READ', training)) %}
-        <li class="nav-item" role="presentation">
-            <a href="{{path('training_parameters_topics_groups', {'training': training.id})}}" class="nav-link {{ (currentTab == 'topicsGroups') ? 'active' : '' }}">
-                    Les U.E.
-            </a>
-        </li>
-    {% endif %}
     {% if (is_granted('TRAINING_PARAMETERS_TOPIC|READ', training)) %}
         <li class="nav-item" role="presentation">
             <a href="{{path('training_parameters_topics', {'training': training.id})}}" class="nav-link {{ (currentTab == 'topics') ? 'active' : '' }}">

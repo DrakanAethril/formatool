@@ -3,10 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\TopicsGroups;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class TopicsGroupsCrudController extends AbstractCrudController
@@ -15,7 +17,7 @@ class TopicsGroupsCrudController extends AbstractCrudController
     {
         return TopicsGroups::class;
     }
-
+    
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
@@ -31,9 +33,8 @@ class TopicsGroupsCrudController extends AbstractCrudController
         return [
             TextField::new('name'),
             DateTimeField::new('inactive'),
-            AssociationField::new('training')
+            AssociationField::new('cursus')
                 ->autocomplete()
         ];
     }
-    
 }

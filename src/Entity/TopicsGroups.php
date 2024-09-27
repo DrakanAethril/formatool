@@ -24,12 +24,11 @@ class TopicsGroups
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $inactive = null;
 
-    #[ORM\ManyToOne(inversedBy: 'topicsGroups')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Trainings $training = null;
-
     #[ORM\OneToMany(mappedBy: 'topicsGroups', targetEntity: TopicsTrainings::class)]
     private Collection $topicsTrainings;
+
+    #[ORM\ManyToOne(inversedBy: 'topicsGroups')]
+    private ?Cursus $cursus = null;
 
     public function __construct()
     {
@@ -61,18 +60,6 @@ class TopicsGroups
     public function setInactive(?\DateTimeInterface $inactive): static
     {
         $this->inactive = $inactive;
-
-        return $this;
-    }
-
-    public function getTraining(): ?Trainings
-    {
-        return $this->training;
-    }
-
-    public function setTraining(?Trainings $training): static
-    {
-        $this->training = $training;
 
         return $this;
     }
@@ -109,5 +96,17 @@ class TopicsGroups
 
     public function __toString(): string {
         return $this->getName();
+    }
+
+    public function getCursus(): ?Cursus
+    {
+        return $this->cursus;
+    }
+
+    public function setCursus(?Cursus $cursus): static
+    {
+        $this->cursus = $cursus;
+
+        return $this;
     }
 }

@@ -36,13 +36,6 @@
         {% set tabContent = 'trainings/parameters/tab_topics.html.twig' %}
         {% set allowEditTopics = true %}
     {% endif %}
-    {% if currentTab == 'topicsGroups' %}
-        {% if (is_granted('TRAINING_PARAMETERS_TOPIC_GROUP|WRITE', training)) %}
-            {% set addTxt = 'Nouvelle UE' %}
-            {% set addLink = path('training_add_topics_group', {'training': training.id, 'tt': 0}) %}
-        {% endif %}
-        {% set tabContent = 'trainings/parameters/tab_topics_groups.html.twig' %}
-    {% endif %}
     {% if currentTab == 'timetable' %}
         {% if (is_granted('TRAINING_PARAMETERS_LESSON_SESSION|WRITE', training))%}
             {#

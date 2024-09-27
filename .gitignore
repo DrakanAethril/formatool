@@ -10,6 +10,9 @@
 /design/
 ###< symfony/framework-bundle ###
 
+database.dbml
+dbml-error.log
+
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache

@@ -33,9 +33,6 @@ class Trainings
     #[ORM\OneToMany(mappedBy: 'trainings', targetEntity: TopicsTrainings::class)]
     private Collection $trainings;
 
-    #[ORM\OneToMany(mappedBy: 'training', targetEntity: TopicsGroups::class)]
-    private Collection $topicsGroups;
-
     #[ORM\OneToMany(mappedBy: 'training', targetEntity: TimeSlots::class)]
     private Collection $timeSlots;
 
@@ -90,7 +87,6 @@ class Trainings
     public function __construct()
     {
         $this->trainings = new ArrayCollection();
-        $this->topicsGroups = new ArrayCollection();
         $this->timeSlots = new ArrayCollection();
         $this->lessonSessions = new ArrayCollection();
         $this->trainingFinancialItems = new ArrayCollection();
@@ -186,29 +182,7 @@ class Trainings
      */
     public function getTopicsGroups(): Collection
     {
-        return $this->topicsGroups;
-    }
-
-    public function addTopicsGroup(TopicsGroups $topicsGroup): static
-    {
-        if (!$this->topicsGroups->contains($topicsGroup)) {
-            $this->topicsGroups->add($topicsGroup);
-            $topicsGroup->setTraining($this);
-        }
-
-        return $this;
-    }
-
-    public function removeTopicsGroup(TopicsGroups $topicsGroup): static
-    {
-        if ($this->topicsGroups->removeElement($topicsGroup)) {
-            // set the owning side to null (unless already changed)
-            if ($topicsGroup->getTraining() === $this) {
-                $topicsGroup->setTraining(null);
-            }
-        }
-
-        return $this;
+        return $this->getCursus()->getTopicsGroups();
     }
 
     /**

@@ -38,10 +38,17 @@ class Cursus
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $shortName = null;
 
+    /**
+     * @var Collection<int, TopicsGroups>
+     */
+    #[ORM\OneToMany(targetEntity: TopicsGroups::class, mappedBy: 'cursus')]
+    private Collection $topicsGroups;
+
     public function __construct()
     {
         $this->trainings = new ArrayCollection();
         $this->places = new ArrayCollection();
+        $this->topicsGroups = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -170,5 +177,35 @@ class Cursus
     public function __toString(): string 
     {
         return $this->getShortDisplayName();
+    }
+
+    /**
+     * @return Collection<int, TopicsGroups>
+     */
+    public function getTopicsGroups(): Collection
+    {
+        return $this->topicsGroups;
+    }
+
+    public function addTopicsGroup(TopicsGroups $topicsGroup): static
+    {
+        if (!$this->topicsGroups->contains($topicsGroup)) {
+            $this->topicsGroups->add($topicsGroup);
+            $topicsGroup->setCursus($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTopicsGroup(TopicsGroups $topicsGroup): static
+    {
+        if ($this->topicsGroups->removeElement($topicsGroup)) {
+            // set the owning side to null (unless already changed)
+            if ($topicsGroup->getCursus() === $this) {
+                $topicsGroup->setCursus(null);
+            }
+        }
+
+        return $this;
     }
 }

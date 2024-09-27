@@ -78,9 +78,9 @@ class TopicsTrainingsType extends AbstractType
                         'placeholder' => 'Aucune',
                         'query_builder' => function (EntityRepository $er) use($options) : QueryBuilder {
                             return $er->createQueryBuilder('u')
-                            ->innerJoin('u.training', 't')
-                            ->where('t.id = :idTraining')
-                            ->setParameter('idTraining', $options['training']->getId())
+                            ->innerJoin('u.cursus', 'c')
+                            ->where('c.id = :idCursus')
+                            ->setParameter('idCursus', $options['training']->getCursus()->getId())
                             ->orderBy('u.name', 'ASC');
                         },
                         'autocomplete' => true,
