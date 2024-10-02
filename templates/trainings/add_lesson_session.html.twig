@@ -42,16 +42,18 @@
                                        
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="mb-3">
-                                        {{ form_label(lessonSessionForm.trainingOptions, 'Options concernées', {'label_attr': {'class': 'form-label', 'required': false}}) }}
-                                        
-                                            {{ form_widget(lessonSessionForm.trainingOptions, {
-                                                    'attr' : {'class' : ''}
-                                                }) }}
-                                        
+                                {% if training.trainingsOptions is not empty %}
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            {{ form_label(lessonSessionForm.trainingOptions, 'Options concernées', {'label_attr': {'class': 'form-label', 'required': false}}) }}
+                                            
+                                                {{ form_widget(lessonSessionForm.trainingOptions, {
+                                                        'attr' : {'class' : ''}
+                                                    }) }}
+                                            
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
                                 <div class="col-md-3">
                                     <div class="mb-3">
                                         {{ form_label(lessonSessionForm.teacher, 'Enseignant', {'label_attr': {'class': 'form-label'}}) }}

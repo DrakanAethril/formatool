@@ -69,4 +69,10 @@ document.addEventListener("DOMContentLoaded", () => {
         enableTime: false
         //time_24hr : false
     });
+    flatpickr(".exportReportDay-flatpickr", {
+        enableTime: true,
+        dateFormat: "d-m-Y",
+        enableTime: false
+        //time_24hr : false
+    });
 });

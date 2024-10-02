@@ -1,0 +1,86 @@
+    <div class="mt-4"></div>
+    <style>
+        table.export_report, table.export_report tbody tr, table.export_report tbody td {
+            border: none !important;
+            padding: 5px;
+        } 
+        table.export_report tbody tr.bordered, table.export_report tbody td.bordered {
+            border: 1px solid black !important;
+        }
+    </style>
+    <table align="center" width="100%" class="table export_report mb-3" style="page-break-after: always;" style="">
+        <tr>
+            <td rowspan="2" colspan="2" class="text-center align-middle" width="20%" height="10%">
+                <img src="{{ asset('img/logo_beaup.png') }}" style="margin:auto; display:block" width="80%" height="80%">
+            </td>
+            <td colspan="8" class="text-center align-middle fs-5" style="">
+                <b>Institution Beaupeyrat – Centre de formation</b><br/>
+                <span class="fs-6"><br/>
+                    9ter rue Pétiniaud Beaupeyrat - 87036 Limoges Cedex<br/>
+                    Siret : 775 716 715 00013 – APE 8531 Z<br/>
+                    Déclaration d’activité enregistrée sous le n° 748 700 407 87 auprès du Préfet de la région Nouvelle Aquitaine.<br/>
+                    UFA du CFA ASPECT AQUITAINE - Campus François d'Assise - 2 Allée Marianne Loir - 33800 Bordeaux<br/>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8" class="text-center align-middle fs-4">
+                <b>{{training.shortTitle}} 
+                    {% if training.trainingsOptions is not empty %}
+                        - option {{reportData.trainingOptions | join(', ')}}
+                    {% endif %}
+                </b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="text-center align-middle fs-2 pt-5">
+                &nbsp;
+            </td>
+            <td colspan="8" class="text-center align-middle fs-2 pt-5 pb-5">
+                <b>{{reportData.title}}</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="10" class="text-left pl-2 align-middle fs-3 pt-4 pb-3">
+                <div class=""><b>Liste d'émargement : </b></div>
+            </td>
+        </tr>
+        {% if students is not empty%}
+            <tr>
+                <td class="text-center align-middle fs-5 bordered" colspan="2">Nom</td>
+                <td class="text-center align-middle fs-5 bordered" colspan="2">Prenom</td>
+                <td class="text-center align-middle fs-5 bordered" colspan="2">Qualité</td>
+                <td class="text-center align-middle fs-5 bordered" colspan="4">Signature</td>
+            </tr>
+            {% for student in students %}
+                <tr>
+                    <td class="text-center align-middle fs-4 bordered p-3" colspan="2">{{student.user.lastname}}</td>
+                    <td class="text-center align-middle fs-4 bordered p-3" colspan="2">{{student.user.firstname}}</td>
+                    <td class="text-center align-middle fs-4 bordered p-3" colspan="2">
+                        {% set roles = [] %}
+                        {% for role in student.rolesEnumForDisplay %}
+                            {% set roles = roles | merge([role|trans()]) %}
+                        {% endfor %}
+                        {{roles|sort|join(', ')}}
+                    </td>
+                    <td class="text-center align-middle fs-4 bordered p-3" colspan="4">&nbsp;</td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        <tr>
+            <td colspan="10" class="text-left pl-2 align-middle fs-3 pt-4 pb-3">
+                <div class=""><b>Contenu des discussions : </b></div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="10" class="text-left pl-2 align-middle fs-3 pt-4 pb-3">
+                <div class="">{{reportData.description | raw}}</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="10" class="text-end pt-5 align-middle fs-3 pb-3">
+                <div class="">Fait à Limoges le {{reportData.day.format('d/m/Y') }} par {{reportData.referee.displayName}},</div>
+            </td>
+        </tr>
+
+    </table>

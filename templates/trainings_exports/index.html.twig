@@ -21,6 +21,9 @@
     {% if currentTab == 'invoicing' %}
         {% set tabContent = 'trainings_exports/tabs/invoicing.html.twig' %}
     {% endif %}
+    {% if currentTab == 'report' %}
+        {% set tabContent = 'trainings_exports/tabs/report.html.twig' %}
+    {% endif %}
     <div class="page-header d-print-none">
         <div class="container-xl">
             <div class="row g-2 align-items-center">

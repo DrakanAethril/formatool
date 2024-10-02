@@ -6,6 +6,7 @@ use App\Config\AclPrivilegesEnum;
 use App\Config\AclRessourcesEnum;
 use App\Entity\Trainings;
 use App\Form\ExportInvoicingType;
+use App\Form\ExportReportType;
 use App\Form\SignaturePdfType;
 use App\Repository\LessonSessionsRepository;
 use App\Repository\UsersTrainingsRepository;
@@ -137,6 +138,50 @@ class TrainingsExportsController extends AbstractController
             'invoicingForm' => $form->createView(),
             'invoicingData' => $dataInvoicing,
             'currentTab' => 'invoicing' 
+        ]);
+    }
+
+    #[Route('/{training<\d+>}/exports/report', name: 'training_exports_report')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_EXPORTS_REPORT->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
+    public function report(Trainings $training, Request $request, UsersTrainingsRepository $usersTrainingsRepository) {
+        
+        if(empty($training))
+        return $this->redirectToRoute('home');
+
+        $reportData = [];
+        $studentsList = [];
+
+        $form = $this->createForm(ExportReportType::class, null,  ['training' => $training]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $reportData = $form->getData();
+            if(empty($training->getTrainingsOptions())) {
+                $reportData['trainingOptions'][] = 'ALL';
+            }
+            $aStudentList = $usersTrainingsRepository->getAllowedStudentsForTraining($training);
+            if(!empty($aStudentList)) {
+                foreach($aStudentList as $student) {
+                    if(empty($training->getTrainingsOptions())) {
+                        $studentsList[$student->getId()] = $student;
+                    } else {
+                        if(!empty($student->getTrainingOptions())) {
+                            foreach($student->getTrainingOptions() as $option) {
+                                if(in_array($option, $reportData['trainingOptions']->toArray()))
+                                    $studentsList[$student->getId()] = $student;
+                            }
+                        }
+                    }
+                } 
+            }
+        }
+
+        return $this->render('trainings_exports/index.html.twig', [
+            'training' => $training,
+            'menuTrainings' => 'active',
+            'currentTab' => 'report',
+            'reportForm' => $form->createView(),
+            'students' => $studentsList,
+            'reportData' => $reportData
         ]);
     }
 }
