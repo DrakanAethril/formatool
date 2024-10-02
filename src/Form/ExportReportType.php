@@ -38,7 +38,7 @@ class ExportReportType extends AbstractType
                     'placeholder' => 'Aucun',
                     'query_builder' => function (EntityRepository $er) use ($options): QueryBuilder {
                         return $er->createQueryBuilder('u')
-                            ->innerJoin('u.usersTrainings', 'tr', 'WITH', 'tr.id = :training')
+                            ->innerJoin('u.usersTrainings', 'utr', 'WITH', 'utr.training = :training')
                             ->setParameter('training', $options['training']->getId())
                             ->orderBy('u.lastname', 'ASC');
                     },
