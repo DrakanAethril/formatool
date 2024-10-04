@@ -123,8 +123,8 @@ class TrainingsExportsController extends AbstractController
                         $dataInvoicing[$teacher]['volume'] = 0;
                         $dataInvoicing[$teacher]['detail'] = [];
                         $dataInvoicing[$teacher]['id'] = $lesson->getTeacher()->getId();
-                        $dataInvoicing[$teacher]['first_name'] = $lesson->getTeacher()->getPoliteDisplayName();
-                        $dataInvoicing[$teacher]['last_name'] = $lesson->getTeacher()->getPoliteDisplayName();
+                        $dataInvoicing[$teacher]['first_name'] = $lesson->getTeacher()->getFirstname();
+                        $dataInvoicing[$teacher]['last_name'] = $lesson->getTeacher()->getLastname();
                     }
                     $dataInvoicing[$teacher]['volume'] += $lesson->getLength();
                     $dataInvoicing[$teacher]['detail'][] = $lesson->getDay()->format('d/m/Y').' - '.$lesson->getDisplayName().' - '.$lesson->getLength().'H';
