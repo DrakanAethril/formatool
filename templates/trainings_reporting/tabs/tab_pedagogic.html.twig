@@ -1,7 +1,37 @@
 <div class="row row-cards">
-    <div class="col-lg-6">
+    <div class="col-lg-6 d-print-none">
         <div class="card" style="height: 300px">
             {{ render_chart(chart) }}
+        </div>
+    </div>
+</div>
+<div class="page-header">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <div class="page-pretitle">
+                    Bachelor Informatique AIS/CDWM
+                </div>
+                <h2 class="page-title">
+                    Matières par intervenants
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row row-cards mt-3">
+    <div class="col-12">
+        <div class="card">
+            <table class="table card-table table-vcenter text-nowrap datatable table-striped">
+                {% if dataListByTeachers is not empty %}
+                    {% for teacher in dataListByTeachers %}
+                        <tr>
+                            <td>{{teacher.name}}</td>
+                            <td>{{teacher.topics|join('<br/>')|raw}}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
         </div>
     </div>
 </div>

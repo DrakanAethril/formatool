@@ -96,6 +96,52 @@ class TrainingsReportingController extends AbstractController
             ]
         ]);
 
+        $dataTeachers = [];
+        $dataListByTeachers = [];
+        if(!empty($training) && !empty($training->getCursus()) && !empty($training->getCursus()->getTopicsGroups())) {
+            foreach($training->getCursus()->getTopicsGroups() as $topicGroup) {
+                $dataTeachers[$topicGroup->getId()] = 
+                [
+                    'name' => $topicGroup->getName(),
+                    'topics' => []
+                ];
+                if(!empty($topicGroup->getTopicsTrainings())) {
+                    foreach($topicGroup->getTopicsTrainings() as $topicTraining) {
+                        $topic = $topicTraining->getTopics();
+                        $dataTeachers[$topicGroup->getId()]['topics'][$topic->getId()] = [
+                            'name' => $topic->getName(),
+                            'volume' => 0,
+                            'teachers' => []
+                        ];
+                        if(!empty($topicTraining->getLessonSessions())) {
+                            foreach($topicTraining->getLessonSessions() as $lesson) {
+                                $dataTeachers[$topicGroup->getId()]['topics'][$topic->getId()]['volume'] += $lesson->getLength();
+                                if(!empty($lesson->getTeacher())) {
+                                    $teacher = $lesson->getTeacher();
+                                    if(empty($dataListByTeachers[$teacher->getId()])) {
+                                        $dataListByTeachers[$teacher->getId()] = [
+                                            'name' => $teacher->getPoliteDisplayName(),
+                                            'topics' => []
+                                        ];
+                                    }
+                                    $dataListByTeachers[$teacher->getId()]['topics'][$topic->getId()] = $topic->getName();
+                                    if(empty($dataTeachers[$topicGroup->getId()]['topics'][$topic->getId()]['teachers'][$teacher->getId()])) {
+                                        $dataTeachers[$topicGroup->getId()]['topics'][$topic->getId()]['teachers'][$teacher->getId()] = [
+                                            'name' => $teacher->getPoliteDisplayName(),
+                                            'volume' => $lesson->getLength()
+                                        ];
+                                    } else {
+                                        $dataTeachers[$topicGroup->getId()]['topics'][$topic->getId()]['teachers'][$teacher->getId()]['volume'] += $lesson->getLength();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //dd($dataListByTeachers);
         
         return $this->render('trainings_reporting/index.html.twig', [
             'training' => $training,
@@ -104,7 +150,9 @@ class TrainingsReportingController extends AbstractController
             'volumePerSessionsType' => $volumePerSessionType,
             'totalLessonsVolume' => $lessonSessionsRepository->getGlobalSessionsVolumeForTraining($training, $volumePerSessionType),
             'allTypesNamed' => $allTypesNamed,
-            'chart' => $chart
+            'chart' => $chart,
+            'dataTeachers' => $dataTeachers,
+            'dataListByTeachers' => $dataListByTeachers
         ]);
     }
 
