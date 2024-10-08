@@ -12,6 +12,7 @@
 
 database.dbml
 dbml-error.log
+test.html
 
 ###> phpunit/phpunit ###
 /phpunit.xml
