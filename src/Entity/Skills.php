@@ -35,7 +35,7 @@ class Skills
     private Collection $lesson_sessions;
 
     #[ORM\ManyToOne(inversedBy: 'skills')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?TopicsGroups $topics_group = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
