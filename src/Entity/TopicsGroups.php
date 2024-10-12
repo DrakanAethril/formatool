@@ -30,9 +30,16 @@ class TopicsGroups
     #[ORM\ManyToOne(inversedBy: 'topicsGroups')]
     private ?Cursus $cursus = null;
 
+    /**
+     * @var Collection<int, Skills>
+     */
+    #[ORM\OneToMany(targetEntity: Skills::class, mappedBy: 'topics_group')]
+    private Collection $skills;
+
     public function __construct()
     {
         $this->topicsTrainings = new ArrayCollection();
+        $this->skills = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -106,6 +113,36 @@ class TopicsGroups
     public function setCursus(?Cursus $cursus): static
     {
         $this->cursus = $cursus;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Skills>
+     */
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    public function addSkill(Skills $skill): static
+    {
+        if (!$this->skills->contains($skill)) {
+            $this->skills->add($skill);
+            $skill->setTopicsGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSkill(Skills $skill): static
+    {
+        if ($this->skills->removeElement($skill)) {
+            // set the owning side to null (unless already changed)
+            if ($skill->getTopicsGroup() === $this) {
+                $skill->setTopicsGroup(null);
+            }
+        }
 
         return $this;
     }
