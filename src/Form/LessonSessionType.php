@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\ClassRooms;
 use App\Entity\LessonSessions;
 use App\Entity\LessonTypes;
+use App\Entity\Skills;
 use App\Entity\Topics;
 use App\Entity\TopicsTrainings;
 use App\Entity\TrainingsOptions;
@@ -12,6 +13,7 @@ use App\Entity\Users;
 use Doctrine\DBAL\Types\BooleanType;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use PhpParser\Parser\Multiple;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -63,6 +65,30 @@ class LessonSessionType extends AbstractType
                         },
                     'autocomplete' => true,
                     'required' => true,
+                    'tom_select_options' => [
+                        'plugins' => [
+                                'clear_button' => [
+                                    'className' => 'd-none',
+                                ]
+                            ]
+                    ]
+                ]
+            )
+            ->add('skills', EntityType::class,
+                [
+                    'class' => Skills::class,
+                    'query_builder' => function (EntityRepository $er) use ($options): QueryBuilder {
+                            return $er->createQueryBuilder('s')
+                                ->innerJoin('s.topics_group', 'tg')
+                                ->innerJoin('tg.cursus', 'c')
+                                ->where(':training MEMBER OF c.trainings')
+                                ->setParameter('training', $options['training']->getId())
+                                ;
+                        },
+                    'by_reference' => false,
+                    'autocomplete' => true,
+                    'required' => false,
+                    'multiple' => true,
                     'tom_select_options' => [
                         'plugins' => [
                                 'clear_button' => [
