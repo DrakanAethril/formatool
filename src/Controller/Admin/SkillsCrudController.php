@@ -2,29 +2,20 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\TopicsGroups;
+use App\Entity\Skills;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class TopicsGroupsCrudController extends AbstractCrudController
+class SkillsCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return TopicsGroups::class;
-    }
-    
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud
-            // the labels used to refer to this entity in titles, buttons, etc.
-            ->setEntityLabelInSingular('Unité d\'enseignements')
-            ->setEntityLabelInPlural('Unités d\'enseignements')
-        ;
+        return Skills::class;
     }
 
     
@@ -32,12 +23,14 @@ class TopicsGroupsCrudController extends AbstractCrudController
     {
         return [
             TextField::new('name'),
-            DateTimeField::new('inactive'),
-            AssociationField::new('cursus')
-                ->autocomplete(),
-            AssociationField::new('skills')
+            TextField::new('short_name'),
+            TextEditorField::new('description'),
+            IntegerField::new('cursus_order'),
+            AssociationField::new('topics_group')
                 ->setFormTypeOption('by_reference', false)
                 ->autocomplete(),
+            DateTimeField::new('inactive'),
         ];
     }
+    
 }

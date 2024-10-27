@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Places;
+use App\Entity\Skills;
 use App\Entity\TimeSlots;
 use App\Entity\TimeSlotsTypes;
 use App\Entity\Trainings;
@@ -59,6 +60,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Salles', 'fas fa-person-chalkboard', ClassRooms::class);
         yield MenuItem::linkToCrud('Formations', 'fas fa-certificate', Trainings::class);
         yield MenuItem::linkToCrud('Unités d\'enseignements', 'fas fa-tag', TopicsGroups::class);
+        yield MenuItem::linkToCrud('Compétences', 'fas fa-certificate', Skills::class);
         yield MenuItem::linkToCrud('Matières', 'fas fa-chalkboard-user', Topics::class);
         yield MenuItem::linkToCrud('Matières par formation', 'fas fa-chalkboard-user', TopicsTrainings::class);
         yield MenuItem::linkToCrud('Cours', 'fas fa-calendar-xmark', LessonSessions::class);

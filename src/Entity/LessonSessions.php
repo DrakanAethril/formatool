@@ -56,9 +56,16 @@ class LessonSessions
     #[ORM\ManyToMany(targetEntity: TrainingsOptions::class, inversedBy: 'lessonSessions')]
     private Collection $trainingOptions;
 
+    /**
+     * @var Collection<int, Skills>
+     */
+    #[ORM\ManyToMany(targetEntity: Skills::class, mappedBy: 'lesson_sessions')]
+    private Collection $skills;
+
     public function __construct()
     {
         $this->trainingOptions = new ArrayCollection();
+        $this->skills = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -210,6 +217,33 @@ class LessonSessions
     public function removeTrainingOption(TrainingsOptions $trainingOption): static
     {
         $this->trainingOptions->removeElement($trainingOption);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Skills>
+     */
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    public function addSkill(Skills $skill): static
+    {
+        if (!$this->skills->contains($skill)) {
+            $this->skills->add($skill);
+            $skill->addLessonSession($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSkill(Skills $skill): static
+    {
+        if ($this->skills->removeElement($skill)) {
+            $skill->removeLessonSession($this);
+        }
 
         return $this;
     }
