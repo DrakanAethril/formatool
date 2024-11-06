@@ -27,7 +27,7 @@ class SkillsCrudController extends AbstractCrudController
             TextEditorField::new('description'),
             IntegerField::new('cursus_order'),
             AssociationField::new('topics_group')
-                ->setFormTypeOption('by_reference', false)
+                //->setFormTypeOption('by_reference', false)
                 ->autocomplete(),
             DateTimeField::new('inactive'),
         ];
