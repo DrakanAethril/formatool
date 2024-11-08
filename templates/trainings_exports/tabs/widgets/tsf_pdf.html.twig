@@ -63,14 +63,32 @@
                 <td colspan="2" class="text-center align-middle p-1 text-muted bordered">
                     Volume
                 </td>
-                <td colspan="4" class="text-center align-middle p-1 pl-2 bordered">
-                    20 heures
+                <td class="text-center align-middle p-1 pl-2 bordered">
+                    {% if skill.volume is not empty %}
+                        {{skill.volume}}H
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
                 </td>
                 <td colspan="2" class="text-center align-middle p-1 text-muted bordered">
                     Période
                 </td>
+                <td class="text-center align-middle p-1 pl-2 bordered">
+                    {% if skill.period is not empty %}
+                        {{skill.period}}
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+                </td>
+                <td colspan="2" class="text-center align-middle p-1 text-muted bordered">
+                    Intervenant
+                </td>
                 <td colspan="4" class="text-center align-middle p-1 pl-2 bordered">
-                    20 heures
+                    {% if skill.teacher is not empty %}
+                        {{skill.teacher.politeDisplayName}}
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
                 </td>
             </tr>
             <tr>

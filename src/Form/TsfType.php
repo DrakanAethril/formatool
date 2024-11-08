@@ -21,6 +21,7 @@ class TsfType extends AbstractType
                     'class' => Skills::class,
                     'required' => false,
                     'placeholder' => 'Aucun',
+                    'choice_label' => 'name',
                     'query_builder' => function (EntityRepository $er) use ($options): ORMQueryBuilder {
                         return $er->createQueryBuilder('s')
                             ->innerJoin('s.topics_group', 'tg')

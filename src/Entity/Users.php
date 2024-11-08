@@ -95,6 +95,12 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: UsersTrainings::class, mappedBy: 'user')]
     private Collection $usersTrainings;
 
+    /**
+     * @var Collection<int, Skills>
+     */
+    #[ORM\OneToMany(targetEntity: Skills::class, mappedBy: 'teacher')]
+    private Collection $skills;
+
     public function __construct()
     {
         //$this->ownedTrainings = new ArrayCollection();
@@ -106,6 +112,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         $this->aclPermissions = new ArrayCollection();
         $this->usersPlaces = new ArrayCollection();
         $this->usersTrainings = new ArrayCollection();
+        $this->skills = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -549,5 +556,35 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         if(!empty($this->getFirstname())) $res .= strtoupper($this->getFirstname()[0]).'. ';
         if(!empty($this->getLastname())) $res .= ucfirst($this->getLastname());
         return $res;
+    }
+
+    /**
+     * @return Collection<int, Skills>
+     */
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    public function addSkill(Skills $skill): static
+    {
+        if (!$this->skills->contains($skill)) {
+            $this->skills->add($skill);
+            $skill->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSkill(Skills $skill): static
+    {
+        if ($this->skills->removeElement($skill)) {
+            // set the owning side to null (unless already changed)
+            if ($skill->getTeacher() === $this) {
+                $skill->setTeacher(null);
+            }
+        }
+
+        return $this;
     }
 }
