@@ -21,6 +21,13 @@
             </a>
         </li>
     {% endif %}
+    {% if (is_granted('TRAINING_EXPORTS_TSF|READ', training)) %}
+        <li class="nav-item" role="presentation">
+            <a href="{{path('training_exports_tsf', {'training': training.id})}}" class="nav-link {{ (currentTab == 'tsf') ? 'active' : '' }}">
+                TSF
+            </a>
+        </li>
+    {% endif %}
     {% if addLink is not empty %}  
         <li class="nav-item ms-auto" role="presentation">
             <a href="{{addLink}}" class="nav-link d-sm-inline-block text-primary">

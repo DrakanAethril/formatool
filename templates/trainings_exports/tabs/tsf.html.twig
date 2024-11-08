@@ -1,0 +1,25 @@
+<div class="col-12 d-print-none">
+    {{ form_errors(tsfForm) }}
+    {{ form_start(tsfForm, { 'attr' : { 'class': 'card' } } ) }}
+        <div class="card-body">
+            <div class="row row-cards">
+                    {% if training.trainingsOptions is not empty %}
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                {{ form_label(tsfForm.skills, 'Compétences concernées', {'label_attr': {'class': 'form-label', 'required': false}}) }}
+                                {{ form_widget(tsfForm.skills, {'attr' : {'class' : ''}}) }}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="card-footer text-end">
+                        <button type="submit" class="btn btn-primary ms-auto">Générer</button>
+                    </div>
+                </div>
+        </div>
+    {{ form_end(tsfForm) }}
+</div>
+{% if tsfData is not empty %}
+    {% for skill in tsfData.skills %}
+        {% include('trainings_exports/tabs/widgets/tsf_pdf.html.twig') with {'training': training, 'tsfData': tsfData, 'skill': skill} %}
+    {% endfor %}
+{% endif %}
