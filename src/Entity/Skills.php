@@ -50,6 +50,15 @@ class Skills
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $performance = null;
 
+    #[ORM\ManyToOne(inversedBy: 'skills')]
+    private ?Users $teacher = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $volume = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $period = null;
+
     public function __construct()
     {
         $this->lesson_sessions = new ArrayCollection();
@@ -193,6 +202,42 @@ class Skills
     public function setPerformance(?string $performance): static
     {
         $this->performance = $performance;
+
+        return $this;
+    }
+
+    public function getTeacher(): ?Users
+    {
+        return $this->teacher;
+    }
+
+    public function setTeacher(?Users $teacher): static
+    {
+        $this->teacher = $teacher;
+
+        return $this;
+    }
+
+    public function getVolume(): ?float
+    {
+        return $this->volume;
+    }
+
+    public function setVolume(?float $volume): static
+    {
+        $this->volume = $volume;
+
+        return $this;
+    }
+
+    public function getPeriod(): ?string
+    {
+        return $this->period;
+    }
+
+    public function setPeriod(?string $period): static
+    {
+        $this->period = $period;
 
         return $this;
     }
