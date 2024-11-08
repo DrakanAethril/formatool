@@ -25,6 +25,9 @@ class SkillsCrudController extends AbstractCrudController
             TextField::new('name'),
             TextField::new('short_name'),
             TextEditorField::new('description'),
+            TextEditorField::new('knowledge'),
+            TextEditorField::new('professional'),
+            TextEditorField::new('performance'),
             IntegerField::new('cursus_order'),
             AssociationField::new('topics_group')
                 //->setFormTypeOption('by_reference', false)

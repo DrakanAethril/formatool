@@ -41,6 +41,15 @@ class Skills
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $inactive = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $professional = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $knowledge = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $performance = null;
+
     public function __construct()
     {
         $this->lesson_sessions = new ArrayCollection();
@@ -148,6 +157,42 @@ class Skills
     public function setInactive(?\DateTimeInterface $inactive): static
     {
         $this->inactive = $inactive;
+
+        return $this;
+    }
+
+    public function getProfessional(): ?string
+    {
+        return $this->professional;
+    }
+
+    public function setProfessional(?string $professional): static
+    {
+        $this->professional = $professional;
+
+        return $this;
+    }
+
+    public function getKnowledge(): ?string
+    {
+        return $this->knowledge;
+    }
+
+    public function setKnowledge(?string $knowledge): static
+    {
+        $this->knowledge = $knowledge;
+
+        return $this;
+    }
+
+    public function getPerformance(): ?string
+    {
+        return $this->performance;
+    }
+
+    public function setPerformance(?string $performance): static
+    {
+        $this->performance = $performance;
 
         return $this;
     }

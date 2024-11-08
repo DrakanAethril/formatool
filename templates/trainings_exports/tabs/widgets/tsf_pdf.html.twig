@@ -1,0 +1,112 @@
+    <div class="mt-4"></div>
+    <style>
+        table.export_tsf, table.export_tsf tbody tr, table.export_tsf tbody td {
+            border: none !important;
+            padding: 5px;
+        } 
+        table.export_tsf, table.export_tsf tbody tr.bordered, table.export_tsf tbody tr td.bordered {
+            border: 1px solid grey !important;
+        }
+    </style>
+    <table align="center" width="100%" class="table export_tsf mb-3" style="page-break-after: always; border: none !important;" style="">
+        <tbody>
+            <tr class="b-none">
+                <td rowspan="3" colspan="2" class="text-center align-middle" width="20%" height="10%">
+                    <img src="{{ asset('img/logo_beaup.png') }}" style="margin:auto; display:block" width="80%" height="80%">
+                </td>
+                <td colspan="8" class="text-center align-middle fs-5" style="">
+                    <b>Institution Beaupeyrat – Centre de formation</b><br/>
+                    <span class="fs-6"><br/>
+                        9ter rue Pétiniaud Beaupeyrat - 87036 Limoges Cedex<br/>
+                        Siret : 775 716 715 00013 – APE 8531 Z<br/>
+                        Déclaration d’activité enregistrée sous le n° 748 700 407 87 auprès du Préfet de la région Nouvelle Aquitaine.<br/>
+                        UFA du CFA ASPECT AQUITAINE - Campus François d'Assise - 2 Allée Marianne Loir - 33800 Bordeaux<br/>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8" class="text-center align-middle fs-4">
+                    <b>{{training.title}} 
+                        {# if training.trainingsOptions is not empty %}
+                            - option {{tsfData.trainingOptions | join(', ')}}
+                        {% endif #}
+                    </b>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8" class="text-center align-middle fs-4">
+                    <b>{{training.cursus.name}}</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="m-2">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="12" class="text-center align-middle">
+                    <h2>C.{{skill.cursusOrder}} : {{skill.name}}</h2>
+                </td>
+            </tr>
+            <tr class="table-active align-middle bordered border-light">
+                <td colspan="12" class="text-center align-middle p-2">
+                    Organisation pédagogique
+                </td>
+            </tr>
+            <tr class="align-middle bordered">
+                <td colspan="2" class="text-center align-middle p-1 text-muted bordered">
+                    Unité d'enseignement
+                </td>
+                <td colspan="10" class="text-center align-middle p-1 pl-2 bordered">
+                    {{skill.topicsGroup.name}}
+                </td>
+            </tr>
+            <tr class="align-middle bordered">
+                <td colspan="2" class="text-center align-middle p-1 text-muted bordered">
+                    Volume
+                </td>
+                <td colspan="4" class="text-center align-middle p-1 pl-2 bordered">
+                    20 heures
+                </td>
+                <td colspan="2" class="text-center align-middle p-1 text-muted bordered">
+                    Période
+                </td>
+                <td colspan="4" class="text-center align-middle p-1 pl-2 bordered">
+                    20 heures
+                </td>
+            </tr>
+            <tr>
+                <td class="m-2">&nbsp;</td>
+            </tr>
+            <tr class="table-active align-middle bordered border-light">
+                <td colspan="12" class="text-center align-middle p-2">
+                    Description métier
+                </td>
+            </tr>
+            <tr class="align-middle bordered border-light">
+                    <td colspan="12" class="text-center align-middle p-2">
+                    {{skill.description|raw}}
+                </td>
+            </tr>
+            <tr>
+                <td class="m-2">&nbsp;</td>
+            </tr>
+
+            <tr class="table-active align-middle bordered border-light">
+                <td colspan="6" class="text-center align-middle p-2 bordered">
+                    Connaissances
+                </td>
+                <td colspan="6" class="text-center align-middle p-2 bordered">
+                    Activités
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6" class="text-center align-middle p-2 bordered">
+                    {{skill.knowledge|raw}}
+                </td>
+                <td colspan="6" class="text-center align-middle p-2 bordered">
+                    {{skill.professional|raw}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+        
+    

@@ -50,6 +50,7 @@ enum AclRessourcesEnum:string implements TranslatableInterface {
     case TRAINING_EXPORTS_SIGNATURE = 'TRAINING_EXPORTS_SIGNATURE';
     case TRAINING_EXPORTS_INVOICING = 'TRAINING_EXPORTS_INVOICING';
     case TRAINING_EXPORTS_REPORT = 'TRAINING_EXPORTS_REPORT';
+    case TRAINING_EXPORTS_TSF = 'TRAINING_EXPORTS_TSF';
     
     public function trans(TranslatorInterface $translator, string $locale = null): string
     {
@@ -89,7 +90,8 @@ enum AclRessourcesEnum:string implements TranslatableInterface {
             self::TRAINING_EXPORTS => 'Exports pour la formation',
             self::TRAINING_EXPORTS_SIGNATURE => 'Listes d\'émargement',
             self::TRAINING_EXPORTS_INVOICING => 'Heures facturables',
-            self::TRAINING_EXPORTS_REPORT => 'Comptes Rendus'
+            self::TRAINING_EXPORTS_REPORT => 'Comptes Rendus',
+            self::TRAINING_EXPORTS_TSF => 'TSF'
 
         };
     }

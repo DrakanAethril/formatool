@@ -8,6 +8,7 @@ use App\Entity\Trainings;
 use App\Form\ExportInvoicingType;
 use App\Form\ExportReportType;
 use App\Form\SignaturePdfType;
+use App\Form\TsfType;
 use App\Repository\LessonSessionsRepository;
 use App\Repository\UsersTrainingsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -182,6 +183,35 @@ class TrainingsExportsController extends AbstractController
             'reportForm' => $form->createView(),
             'students' => $studentsList,
             'reportData' => $reportData
+        ]);
+    }
+
+    #[Route('/{training<\d+>}/exports/tsf', name: 'training_exports_tsf')]
+    #[IsGranted(AclRessourcesEnum::TRAINING_EXPORTS_TSF->value.'|'.AclPrivilegesEnum::READ->value, 'training')]
+    public function tsf(Trainings $training, Request $request, LessonSessionsRepository $lessonSessionsRepository) {
+
+        if(empty($training))
+        return $this->redirectToRoute('home');
+
+        $dataTsf = [];
+        $form = $this->createForm(TsfType::class, null,  ['training' => $training]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $reportData = $form->getData();
+            if(empty($reportData['skills'])) {
+                $dataTsf['skills'] = 'ALL';
+            } else {
+                $dataTsf['skills'] = $reportData['skills'];
+            }
+            //dd($dataTsf);
+        }
+        
+        return $this->render('trainings_exports/index.html.twig', [
+            'training' => $training,
+            'menuTrainings' => 'active',
+            'tsfForm' => $form->createView(),
+            'tsfData' => $dataTsf,
+            'currentTab' => 'tsf' 
         ]);
     }
 }
