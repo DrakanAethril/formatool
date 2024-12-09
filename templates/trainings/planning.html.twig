@@ -22,7 +22,7 @@
             <div class="row row-deck row-cards">
                 <div class="col-12">
                     
-                    <div id='calendar-holder' data-feed="{{ path('ajax_training_timeslots', {'id': training.id} ) }}" class="w-100"></div>
+                    <div id='calendar-holder' data-feed="{{ path('ajax_training_timeslots', {'id': training.id} ) }}" data-months-duration="12" data-initial-date="{{training.startTrainingDate | date("01/m/Y")}}" class="w-100"></div>
                     
                 </div>
             </div>

@@ -17,9 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let calendarEl = document.getElementById("calendar-holder");
   if(calendarEl) {
     let eventFeed = $(calendarEl).attr("data-feed");
+    let initialDate = $(calendarEl).attr("data-initial-date");
+    let monthsDuration = $(calendarEl).attr("data-months-duration");
 
     let calendar = new Calendar(calendarEl, {
-      initialDate: '2024-09-01',
+      initialDate: initialDate,
       schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
       timeZone: 'Europe/Paris',
       locale: frLocale,
@@ -38,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
       views: {
         Formation: {
           type: 'multiMonth',
-          duration: { months: 12 }
+          duration: { months: monthsDuration }
         } 
       },
       //navLinks: true, // can click day/week names to navigate views
