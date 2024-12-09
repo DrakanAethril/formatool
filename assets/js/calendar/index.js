@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if(calendarEl) {
     let eventFeed = $(calendarEl).attr("data-feed");
     let initialDate = $(calendarEl).attr("data-initial-date");
-    let monthsDuration = $(calendarEl).attr("data-months-duration");
+    //let monthsDuration = $(calendarEl).attr("data-months-duration");
 
     let calendar = new Calendar(calendarEl, {
       initialDate: initialDate,
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
       views: {
         Formation: {
           type: 'multiMonth',
-          duration: { months: monthsDuration }
+          duration: { months: 12 }
         } 
       },
       //navLinks: true, // can click day/week names to navigate views
