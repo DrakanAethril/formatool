@@ -2,7 +2,11 @@
 
 namespace App\Controller;
 
+use App\Config\UsersRolesTrainingsEnum;
+use App\Config\UsersStatusTrainingsEnum;
+use App\Entity\Trainings;
 use App\Entity\Users;
+use App\Entity\UsersTrainings;
 use App\Form\RegistrationFormType;
 use App\Repository\UsersRepository;
 use App\Security\EmailVerifier;
@@ -36,36 +40,47 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
+            // get the training
+            $training = $form->get('training')->getData();
+            
+            $user->setPassword(rand());
+            $user->setRoles(["ROLE_STUDENT"]);
+
+
 
             $entityManager->persist($user);
+            $entityManager->flush();
+
+            $userTraining = new UsersTrainings();
+            $userTraining->setUser($user);
+            $userTraining->setTraining($training);
+            $userTraining->setRoles([UsersRolesTrainingsEnum::STUDENT->value]);
+            $userTraining->setStatus(UsersStatusTrainingsEnum::PENDING->value);
+
+            $entityManager->persist($userTraining);
             $entityManager->flush();
 
             // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
-                    ->from(new Address('campus@beaupeyrat.com', 'Campus Beaupeyrat'))
+                    ->from(new Address('no-reply@moncampus.net', 'Campus Beaupeyrat'))
                     ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
+                    ->subject('Confirmation de votre email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
 
-            return $userAuthenticator->authenticateUser(
-                $user,
-                $authenticator,
-                $request
-            );
+            return $this->redirectToRoute('app_register_thank', ['training' => $training->getId()]);
         }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/register/thank/{training<\d+>}', name: 'app_register_thank')]
+    public function registerThankYou(Trainings $training) {
+        return $this->render('registration/register-thank.html.twig', [
+            'training' => $training
         ]);
     }
 
@@ -94,8 +109,8 @@ class RegistrationController extends AbstractController
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success', 'Vore email est vérifié.');
 
-        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('app_login');
     }
 }

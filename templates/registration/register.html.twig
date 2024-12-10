@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'empty-tight.html.twig' %}
 
 {% block title %}Register{% endblock %}
 
@@ -7,17 +7,29 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <h1>Register</h1>
+    <div class="text-center mb-4">
+        <a href="{{path('home')}}" class="navbar-brand navbar-brand-autodark"><img src="{{asset('static/logo.svg')}}" height="36" alt=""></a>
+    </div>
+    <div class="card card-md">
+        <div class="card-body">
+            {{ form_errors(registrationForm) }}
 
-    {{ form_errors(registrationForm) }}
+            {{ form_start(registrationForm) }}
+                <h2 class="h2 text-center mb-3">Préinscription</h2>
+                <p class="text-secondary mb-3">Veuillez renseigner les informations ci-dessous afin de vous préinscire à l'une de nos formations</p>
+                <div class="mb-2">{{ form_row(registrationForm.email) }}</div>
+                <div class="mb-2">{{ form_row(registrationForm.lastname) }}</div>
+                <div class="mb-2">{{ form_row(registrationForm.firstname) }}</div>
+                <div class="mb-2">{{ form_row(registrationForm.training) }}</div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+                <div class="mt-3">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <!-- Download SVG icon from http://tabler-icons.io/i/mail -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+                        Me préinscrire
+                    </button>
+                </div>
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
 {% endblock %}
