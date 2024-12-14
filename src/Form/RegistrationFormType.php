@@ -68,10 +68,10 @@ class RegistrationFormType extends AbstractType
                 'query_builder' => function (EntityRepository $er): QueryBuilder {
                     return $er->createQueryBuilder('t')
                         ->where('t.inactive IS NULL')
-                        //->andWhere('t.start_training_date > "'.date('Y-m-d H:i:s').'"')
+                        ->andWhere('t.startTrainingDate > :now')
+                        ->setParameter('now', new \DateTime('now'))
                         ->orderBy('t.shortTitle', 'ASC');
                 }
-                
             ])
             ->add('captcha', Recaptcha3Type::class, [
                 'constraints' => new Recaptcha3(),
@@ -104,6 +104,12 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Users::class,
+            'csrf_protection' => true,
+            // the name of the hidden HTML field that stores the token
+            'csrf_field_name' => 'csrf_token',
+            // an arbitrary string used to generate the value of the token
+            // using a different string for each form improves its security
+            'csrf_token_id'   => '_pre_register_',
         ]);
     }
 }

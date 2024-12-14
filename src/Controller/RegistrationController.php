@@ -109,8 +109,18 @@ class RegistrationController extends AbstractController
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Vore email est vérifié.');
+        //$this->addFlash('success', 'Vore email est vérifié.');
+
+        if(in_array("ROLE_STUDENT", $user->getRoles())) {
+            // redirect to waiting page
+            return $this->redirectToRoute('validated_email_student');
+        }
 
         return $this->redirectToRoute('app_login');
+    }
+
+    #[Route('/email/validated/student', name: 'validated_email_student')]
+    public function emailValidatedStudent() {
+        return $this->render('registration/email_validated_student.html.twig', []);
     }
 }

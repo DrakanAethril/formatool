@@ -13,6 +13,7 @@
 database.dbml
 dbml-error.log
 test.html
+multiplication.php
 
 ###> phpunit/phpunit ###
 /phpunit.xml
